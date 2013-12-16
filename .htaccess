@@ -7,12 +7,7 @@ RewriteCond $1 !^(index\.php|images|css|javascript|font|uploads|uploadify|ink-ad
 RewriteRule ^(.*)$ index.php?/$1 [L]
 
 
-<FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css|swf|ico)(\.gz)?$">
-Header set Expires "Thu, 15 Apr 2015 20:00:00 GMT"
-Header unset ETag
-FileETag None
-</FilesMatch>
-
+ 
 #AuthName "Restricted Area"
 #AuthType Basic
 #AuthUserFile /var/www/html/.htpasswd

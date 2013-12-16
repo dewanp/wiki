@@ -42,11 +42,12 @@ function toggledropdown()
 	if(value == 0){
 		$('#category_id').val('');
 	}
+  
 		
 	$.ajax({
 			type : 'post',
 			url : site_url + "admin/getAdminInfo",
-			data: "category="+value,
+			data: "category="+value+'&edit_category_id='+$('#edit_category_id').val(),
 			success : function(data){
 					var response = $.parseJSON(data);
 					if(response.status == 'admin_exist')

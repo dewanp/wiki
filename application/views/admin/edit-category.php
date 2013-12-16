@@ -29,7 +29,7 @@
 				?>
                 <script>
                 	$(document).ready(function(){
-						toggledropdown();
+						//toggledropdown();
 					});
                 </script>
 			<?php }
@@ -46,7 +46,9 @@
 					<td>
                     <input type="hidden" id="edit_category" name="edit_category" value="<?php echo $category_detail['category_id'];?>" />
 					  <select  id="parent_category" name ="parent_category" class="inputmain" style="width:298px;" onchange="toggledropdown();"> 
-						 <?php foreach($category_result as $optkey=>$optval){ ?>
+						 <?php foreach($category_result as $optkey=>$optval){
+                             if($optkey==$category_detail['category_id'])continue;
+                             ?>
 							 <option value = "<?php echo $optkey; ?>" <?php if(isset($parent_category) && $parent_category == $optkey){?> selected="selected"<?php }?>>
 							 	<?php echo $optval; ?>
                               </option>
@@ -166,6 +168,7 @@
                     <td>
                     	<input type="submit" class="btnorange" value="Save" name="save" />
                     	<input type="hidden" name="category_id" id="category_id" value="<?php echo $category_detail['category_id']; ?>"/>
+                        <input type="hidden" name="edit_category_id" id="edit_category_id" value="<?php echo $category_detail['category_id']; ?>"/>
                         <input type="submit" class="btngrey" value="Cancel"  name="cancel" />
                         <input type="hidden" name="add_category" id="add_category" class="btnorange" value="Add New Category" />
                    </td>

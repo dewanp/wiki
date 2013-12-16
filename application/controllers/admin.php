@@ -1626,7 +1626,7 @@ class Admin extends CI_Controller
 			
 			$category_name = ucwords(strtolower($category_name));
 
-			$this->form_validation->set_rules('category_name', 'Category Name', 'required|trim|xss_clean|callback_checkDuplicateCategory['.$category_id.']');
+			$this->form_validation->set_rules('category_name', 'Category Name', 'required|trim|xss_clean');
 
 			if( $this->form_validation->run() == FALSE )
 			{
@@ -3187,29 +3187,44 @@ class Admin extends CI_Controller
 	public function getAdminInfo()
 	{
 		$category_id = $this->input->post('category');
+        $edit_category_id = $this->input->post('edit_category_id');
 		
+        
+        if($edit_category_id){
+            $current_adm = $this->mymodel->getAdminInfo($edit_category_id,1);
+        }
 		$rec_adm = $this->mymodel->getAdminInfo($category_id,1);
 		$rec_rw = $this->mymodel->getAdminInfo($category_id,2);
 		$rec_r = $this->mymodel->getAdminInfo($category_id,3);
 		$admusers = $rwusers = $rusers = '';
-		$admin_ids = $rw_ids = $r_ids = $prev_admin = array();
+		$admin_ids = $rw_ids = $r_ids = $prev_admin = $inherited_admin = array();
 		
 		if( !empty($rec) || !empty($rec_rw) ||!empty($rec_r) ) {
 			
 			//get user list
-			$user_result = $this->db->select('user_id ,profile_name')->from('user')->where('is_active',1)->get();
+			$user_result = $this->db->select('user_id,profile_name')->from('user')->where('is_active',1)->get();
 			
 			//get admin users
 			foreach($rec_adm as $adminval){
 					$admin_ids[] = $adminval['user_id'];
+                    $inherited_admin[$adminval['user_id']] = $adminval['is_inherited'];
 			}
+            
+            foreach($current_adm as $adminval){
+					$current_admin_ids[] = $adminval['user_id'];                     
+			}
+             
 			foreach($user_result->result_array() as $val)
 			{
-				if( in_array($val['user_id'],$admin_ids) && $category_id != ''){
+				if( (in_array($val['user_id'],$admin_ids) && $category_id != '' ) ){
 					$prev_admin[] = '<label>'.$val['profile_name'].'</label>';
-				}else{
-					$admusers .= '<option value="'.$val['user_id'].'">'.$val['profile_name'].'</option>';
-				}
+				} 
+                    $sel ='';
+                    if( in_array($val['user_id'],$current_admin_ids)){
+                        $sel = 'selected="selected"';
+                    }
+					$admusers .= '<option value="'.$val['user_id'].'" '.$sel.'>'.$val['profile_name'].'</option>';
+				 
 			}
 			//get read/write users
 			foreach($rec_rw as $rwval){

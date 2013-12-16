@@ -58,25 +58,7 @@ switch($_SERVER['SERVER_NAME'])
  * By default development will show errors but testing and live will hide them.
  */
 
-if (defined('ENVIRONMENT'))
-{
-	switch (ENVIRONMENT)
-	{
-		case 'development':
-			error_reporting(E_ALL);
-		break;
-	
-		case 'testing':
-			error_reporting(E_ALL ^ E_NOTICE | E_WARNING );
-		break;
-		case 'production':
-			error_reporting(0);
-		break;
-
-		default:
-			exit('The application environment is not set correctly.');
-	}
-}
+error_reporting('E_ALL ^ E_NOTICE ^ E_WARNING');
 
 /*
  *---------------------------------------------------------------

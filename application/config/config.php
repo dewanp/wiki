@@ -19,7 +19,8 @@ switch($_SERVER['SERVER_NAME'])
 {	
 	case '192.168.0.172':
 	case 'localhost':
-		$config['base_url']	= "http://".$_SERVER['HTTP_HOST']."/vinfotech-wiki/";
+        
+		$config['base_url']	= "http://".$_SERVER['HTTP_HOST']."/wiki/";
 		break;
 	case '118.139.164.242':
 		$config['base_url']	= "http://".$_SERVER['HTTP_HOST']."/vinfotech-wiki/v2";
