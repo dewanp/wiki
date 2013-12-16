@@ -1,0 +1,74 @@
+
+/*   Css add by Jitendra on March 24 (24-03-2012)    */
+
+.admin-head {clear: left; color: #FFFFFF; float: left; font-size: 20px; padding-top: 74px; text-align: center; width: 100%;}
+.j-loginbox {float:left; width:340px; margin:80px 0 0 305px;  border-radius:10px; -moz-border-radius:10px; -webkit-border-radius:10px; -o-border-radius:10px; box-shadow:0 0 5px #999; -moz-box-shadow:0 0 5px #999; -webkit-box-shadow:0 0 5px #999; -o-box-shadow:0 0 5px #999; border:solid 1px #999\9; padding:20px 0;}
+.j-loginbox .j-logintbl {width:300px; float:left; margin-left:20px;}
+.j-loginbox .field  {padding:5px 0 20px 0;}
+.j-loginbox .field .infield {margin:10px;}
+.j-loginbox .field .inputmain {width:280px;}
+.j-loginbox .head {float:left; margin-left:3px;}
+/*   Css end Jitendra     */
+
+.pagination > a , .pagination > strong{float:left; padding:1px 6px 0; border:1px solid transparent; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; background:url(../images/pagination-sap.png) no-repeat 0 1px; color:#333;}
+
+
+/*18 apr 2012 by Jay */
+.grid .tblgrid tr.alt {background:#EDF0F5;}
+
+.addcategoryimage {background: none repeat scroll 0 0 #DDDDDD; border: 8px solid #FFFFFF; border-radius: 4px 4px 4px 4px; box-shadow: 0 0 4px #CCCCCC; float: left; height: 140px; padding: 10px; width: 140px;}
+.tbldtl.add-new-user { margin-left:0;}
+
+/*21/04/2012  */
+img.thumb { border: medium none;  float: left;   height: 30px;   margin-top: -3px;   padding: 0 5px 0 0;  width: 30px;}
+
+/*24/04/2012*/
+.error {width:300px;  visibility:visible; }
+
+/*28-04-2012 
+.user-login ul li a {background: url("../images/d-arrow.png") no-repeat scroll right center transparent; color: #FF8F44;  margin: 0;  padding: 0 12px 0 0;}
+*/
+/* 30/04/2012  : Jay Hardia*/
+.container{float:none;}
+
+/*.titlebox .tright{ width:auto; margin:10px;}
+.titlebox .tleft{ width:auto;}*/
+/* 16/may/2012 */
+.ui-datepicker-trigger { padding: 0 0 0 4px;   vertical-align: middle; }
+
+.header-right-top{padding-top:3px}
+
+.grid .tblgrid tr  {  border-bottom: 0px solid #DEDEDE;   color: #666666;   padding: 8px;}
+
+.noresult { border: 1px solid #DEDEDE;   color: #666666;   padding: 8px; text-align:center;}
+
+.textcenter { text-align:center;}
+.thumb{ height:auto; width:auto;}
+
+.btnorange:hover {background-position:0 -36px;}
+.infield {margin:9px;}
+
+#wrapper{min-height: 500px; padding-bottom:75px;}
+
+.divider { background: url("../images/sepbg.jpg") repeat-x scroll 0 0 #FFFFFF;  float: left;  height: 1px;  width: 100%;}
+.image_sep{ padding:10px 0; float:left; }
+
+/*.titlebox .postleft{float:left; width:auto}
+.titlebox .postright{float:left; width:auto; margin:10px}*/
+
+.j-loginbox.google-ad  table {width:450px; margin:20px auto auto;}
+.j-loginbox.google-ad  table tr td {padding:10px 5px;}
+.j-loginbox.google-ad  table tr td:first-child {width:100px; vertical-align:top; padding-top:10px;}
+.j-loginbox.google-ad .edit-google table tr td:first-child {width:100px; vertical-align:top; padding-top:17px;}
+.j-loginbox.google-ad .edit-google table tr td:last-child {vertical-align:top; padding-top:17px;}
+.j-loginbox.google-ad .edit-percent table tr td:first-child {width:100px; vertical-align:top; padding-top:17px;}
+.j-loginbox.google-ad .edit-percent table tr td:last-child {vertical-align:top; padding-top:17px;}
+.j-loginbox.google-ad  table tr td:first-child + td {width:260px;}
+.j-loginbox.google-ad  table tr td:first-child + td + td {vertical-align:top; padding-top:10px; width:50px}
+.j-loginbox.google-ad  table .error {width:auto;}
+
+.google-ad { width: 500px; margin-left:220px;}
+
+.logsignbox {margin:30px 0 0; float:left; width:100%;}
+.loginmain {float:left; width:950px; margin:0 0 0 25px;}
+.loginmain h2 {color:#ED792D; font-size:24px; float:left; font-family:'TerminalDosis'; margin:0; padding:0;} 

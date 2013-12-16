@@ -1,0 +1,21 @@
+RewriteEngine on
+
+#RewriteCond %{HTTP_HOST} !^www\. [NC]
+#RewriteRule ^ http://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+RewriteCond $1 !^(index\.php|images|css|javascript|font|uploads|uploadify|ink-admin|captcha|pma|excelRead|jwplayer|robots\.txt|logos|(.*)\.php|sitemap\.xml|urllist\.txt|ror\.xml)
+RewriteRule ^(.*)$ index.php?/$1 [L]
+
+
+<FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css|swf|ico)(\.gz)?$">
+Header set Expires "Thu, 15 Apr 2015 20:00:00 GMT"
+Header unset ETag
+FileETag None
+</FilesMatch>
+
+#AuthName "Restricted Area"
+#AuthType Basic
+#AuthUserFile /var/www/html/.htpasswd
+#AuthGroupFile /dev/null
+#require valid-user
+
