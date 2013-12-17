@@ -23,7 +23,7 @@ switch($_SERVER['SERVER_NAME'])
 		$config['base_url']	= "http://".$_SERVER['HTTP_HOST']."/wiki/";
 		break;
 	case '118.139.164.242':
-		$config['base_url']	= "http://".$_SERVER['HTTP_HOST']."/vinfotech-wiki/v2";
+		$config['base_url']	= "http://".$_SERVER['HTTP_HOST']."/vinfotech_wiki/v2";
 		break;
 	case 'devinksmash.elasticbeanstalk.com':
 		$config['base_url']	= "http://".$_SERVER['HTTP_HOST']."/";

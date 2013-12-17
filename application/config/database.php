@@ -84,9 +84,9 @@ $db['default']['stricton'] = FALSE;
 
 /*Staging Database*/
 $db['production']['hostname'] = 'localhost';
-$db['production']['username'] = 'vinfo_wikivtech';
+$db['production']['username'] = 'vinfo_vwiki';
 $db['production']['password'] = 'Vtech2012';
-$db['production']['database'] = 'vinfo_wikivtech';
+$db['production']['database'] = 'vinfo_vinfotechwiki';
 $db['production']['dbdriver'] = 'mysql';
 $db['production']['dbprefix'] = '';
 $db['production']['pconnect'] = TRUE;

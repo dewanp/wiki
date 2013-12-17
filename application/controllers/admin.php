@@ -1812,8 +1812,7 @@ class Admin extends CI_Controller
             $data['have_child_cat']= 1;
 			$data['category_result'] = $this->mymodel->displayCategoryDropdown();
 			
-			$user_result = $this->db->select('user_id ,profile_name')->from('user')->where('is_active',1)->order_by('profile_name','asc')->get();
-			$data['user_result'] = $user_result->result_array();
+	 
 			
 			$this->load->view('admin/include/header', $data);
 			$this->load->view('admin/edit-category');
@@ -3210,7 +3209,7 @@ class Admin extends CI_Controller
 		
 			
 			//get user list
-			$user_result = $this->db->select('user_id,profile_name')->from('user')->where('is_active',1)->get();
+			$user_result = $this->db->select('user_id,profile_name')->from('user')->where('role',2)->where('is_active',1)->get();
 			
 			//get admin users
 			foreach($previous_adm as $adminval){
