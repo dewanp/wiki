@@ -45,7 +45,7 @@
                                 <div class="mpmid">
                                     <ul>
                                        <li>
-									   <a href="javascript:void(0);" onclick="deleteCommentsByPost('/home/deleteComments/<?php echo $row['comment_id'].'/'.$post_id ?>')">Delete Comment</a>
+									   <a href="javascript:void(0);" onclick="deleteCommentsByPost('/admin/deleteComments/<?php echo $row['comment_id'].'/'.$post_id ?>')">Delete Comment</a>
 									   <?php //echo anchor('home/deleteComments/'.$row['comment_id'].'/'.$post_id, 'Delete Comment');?>
 										</li>
 									   

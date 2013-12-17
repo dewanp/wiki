@@ -5,14 +5,14 @@
     <div class="container">
         <div class="maintitle">
             <h1><?php echo $user_detail['user_name'];?></h1>
-            <div class="btnbox"> <?php echo anchor('home/manageusers','<span class="back-icon"></span>Back to all users','class="btnorange"'); ?> </div>
+            <div class="btnbox"> <?php echo anchor('admin/manageusers','<span class="back-icon"></span>Back to all users','class="btnorange"'); ?> </div>
         </div>
         <div class="account-sec-tab">
             <div class="account-info-tab">
-                <div class="float"> <span class="back"><span class="unlimited"></span></span> <span class="mid"> <?php echo anchor('home/manageuserviewdetails/'.$this->session->userdata('user_id'), 'View User') ?> </span> <span class="front"></span> </div>
-                <div class="float active"> <span class="back"></span> <span class="mid"> <?php echo anchor('home/manageuserseditdetails/'.$this->session->userdata('user_id'), 'Edit User')?> </span> <span class="front"></span> </div>
-                <div class="float"> <span class="back"></span> <span class="mid"> <?php echo anchor('home/manageuserscontenthistory/'.$this->session->userdata('user_id') , 'View Content Posted') ?> </span> <span class="front"></span> </div>
-                <div class="float"> <span class="back"></span> <span class="mid"> <?php echo anchor('home/manageusersloginhistory/'.$this->session->userdata('user_id'), 'Login History') ?> </span> <span class="front"></span> </div>
+                <div class="float"> <span class="back"><span class="unlimited"></span></span> <span class="mid"> <?php echo anchor('admin/manageuserviewdetails/'.$this->session->userdata('user_id'), 'View User') ?> </span> <span class="front"></span> </div>
+                <div class="float active"> <span class="back"></span> <span class="mid"> <?php echo anchor('admin/manageuserseditdetails/'.$this->session->userdata('user_id'), 'Edit User')?> </span> <span class="front"></span> </div>
+                <div class="float"> <span class="back"></span> <span class="mid"> <?php echo anchor('admin/manageuserscontenthistory/'.$this->session->userdata('user_id') , 'View Content Posted') ?> </span> <span class="front"></span> </div>
+                <div class="float"> <span class="back"></span> <span class="mid"> <?php echo anchor('admin/manageusersloginhistory/'.$this->session->userdata('user_id'), 'Login History') ?> </span> <span class="front"></span> </div>
             </div>
         </div>
         <div class="leftdtls">
@@ -34,7 +34,7 @@
                 <h4>Personal Information</h4>
             </div>
             <div class="clear"></div>
-            <?php echo form_open('home/updateuserdata'); ?>
+            <?php echo form_open('admin/updateuserdata'); ?>
             <table border="0" cellspacing="0" cellpadding="0" class="tbldtl">
                 <tr>
                     <td> Name:</td>

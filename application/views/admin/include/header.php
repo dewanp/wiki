@@ -49,14 +49,14 @@
                 <div class="header-right-top">
                     <div class="user-login">
                         <ul>
-                            <li id="user-login">
+                            <li id="user-login" onclick="$('#loginbox2').toggle();">
 								<span id="user_header_image"  style="margin-right: 8px;" >
 														<script type="text/javascript">	myShowImage('<?php echo  $this->session->userdata("file_upload_id")?>' ,'30' ,'30' ,'user_header_image');	</script>
 									</span>
 					 				<a href="javascript:void(0);"><?php echo $this->session->userdata("profile_name");?> </a>		
                            </li>
                         </ul>
-                        <div class="loginbox" id="loginbox" style="display:none;">
+                        <div class="loginbox" id="loginbox2" style="display:none;">
                             <ul>
                                 <!-- <li><a href="javascript:void(0);"><span class="account"></span>My Account</a></li> -->
                                 <li>

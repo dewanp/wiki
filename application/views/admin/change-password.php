@@ -6,7 +6,7 @@
         <div class="j-loginbox">
 		<?php if($success_message == ""){ ?>
 
-			<?php   echo form_open('home/changepassword');?>
+			<?php   echo form_open('admin/changepassword');?>
             <table cellpadding="0" cellspacing="0" border="0" width="100%" class="j-logintbl">
                 <tr>
                     <td><span class="head"> Old Password</span></td>

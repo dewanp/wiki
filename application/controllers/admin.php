@@ -10,7 +10,7 @@ class Admin extends CI_Controller
 		parent :: __construct();
 		$this->load->helper( array('url','form','email','string'));
 		$this->load->library(array('form_validation','session','pagination'));
-        $this->load->model(array('commonmodel','mymodel'));
+        $this->load->model(array('commonmodel','mymodel','adminmodel'));
 
 		$this->load->database();
 
@@ -106,9 +106,9 @@ class Admin extends CI_Controller
 			$data['active'] ="admin";
 			$data['success_message'] = "";
 	
-			$this->load->view('include/header', $data);
-			$this->load->view('change-password');
-			$this->load->view('include/footer');
+			$this->load->view('admin/include/header', $data);
+			$this->load->view('admin/change-password');
+			$this->load->view('admin/include/header');
 		}
 		else
 		{
@@ -148,9 +148,9 @@ class Admin extends CI_Controller
 		}
 			$data['title'] = "Vinfotech-wiki Admin Section";
 			$data['active'] ="admin";
-		    $this->load->view('include/header', $data);
-			$this->load->view('change-password');
-			$this->load->view('include/footer');
+		    $this->load->view('admin/include/header', $data);
+			$this->load->view('admin/change-password');
+			$this->load->view('admin/include/header');
 	}
 
 	public function checkOldPassword($password)
@@ -306,9 +306,9 @@ class Admin extends CI_Controller
 			$data['limit'] = $limit ;
 			$data['success_message'] = $this->session->userdata('success_message');
 			$data['search_user'] = $search;
-			$this->load->view('include/header', $data);
-			$this->load->view('suspended-user-list');
-			$this->load->view('include/footer');
+			$this->load->view('admin/include/header', $data);
+			$this->load->view('admin/suspended-user-list');
+			$this->load->view('admin/include/header');
 			$this->session->unset_userdata('success_message');
 		}
 		else
@@ -318,21 +318,7 @@ class Admin extends CI_Controller
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	 
 	
 	
 	
@@ -402,9 +388,9 @@ class Admin extends CI_Controller
 			$data['title'] = "Vinfotech-wiki Admin Section";
 			$data['active'] ="manage_user";	
 
-			$this->load->view('include/header', $data);
-			$this->load->view('manage-users-login-history');
-			$this->load->view('include/footer');
+			$this->load->view('admin/include/header', $data);
+			$this->load->view('admin/manage-users-login-history');
+			$this->load->view('admin/include/header');
 		}
 		else
 		{
@@ -475,9 +461,9 @@ class Admin extends CI_Controller
 			$user_detail = $this->mymodel->manageUserViewDetails($user_id);
 			$data['user_detail'] = $user_detail;
   		
-			$this->load->view('include/header', $data);
-			$this->load->view('manage-users-content-history');
-			$this->load->view('include/footer');
+			$this->load->view('admin/include/header', $data);
+			$this->load->view('admin/manage-users-content-history');
+			$this->load->view('admin/include/header');
 		}
 		else
 		{
@@ -682,9 +668,9 @@ class Admin extends CI_Controller
 			$data['active'] ="manage_user";
 			$data['user_added'] = "";
 	
-			$this->load->view('include/header', $data);
-			$this->load->view('add-user');
-			$this->load->view('include/footer');
+			$this->load->view('admin/include/header', $data);
+			$this->load->view('admin/add-user');
+			$this->load->view('admin/include/header');
 		}
 		else
 		{
@@ -784,9 +770,9 @@ class Admin extends CI_Controller
 					$data['title'] = "Vinfotech-wiki Admin Section";
 					$data['active'] ="manage_user";
 			
-					$this->load->view('include/header', $data);
-					$this->load->view('add-user');
-					$this->load->view('include/footer');
+					$this->load->view('admin/include/header', $data);
+					$this->load->view('admin/add-user');
+					$this->load->view('admin/include/header');
 			 }
 			 else
 		{
@@ -832,7 +818,7 @@ class Admin extends CI_Controller
 	 * This function is used to displaying details about specific user.
 	*/
 	function manageUserViewDetails($user_id)
-	{	$user_id = 1;
+	{	 
 		if($this->mymodel->isLoggedIn()){
 			$user_detail = $this->mymodel->manageUserViewDetails($user_id);
 			$this->session->set_userdata('user_id',$user_id);
@@ -868,13 +854,13 @@ class Admin extends CI_Controller
 					$data['active'] ="manage_user";
 					$data['user_detail'] = $user_detail;
 			
-					$this->load->view('include/header', $data);
-					$this->load->view('manage-users-edit-details');
-					$this->load->view('include/footer');
+					$this->load->view('admin/include/header', $data);
+					$this->load->view('admin/manage-users-edit-details');
+					$this->load->view('admin/include/header');
 				}
 				else
 				{
-					$this->mymodel->updateUserData();
+					$this->adminmodel->updateUserData();
 					redirect('admin/manageuserseditdetails/'.$this->session->userdata('user_id'));
 				}
 
@@ -908,9 +894,9 @@ class Admin extends CI_Controller
 			$data['active'] ="manage_content";
 			$data['title'] = "Vinfotech-wiki Admin Section";
 
-			$this->load->view('include/header', $data);
-			$this->load->view('view-post-multimedia');
-			$this->load->view('include/footer');
+			$this->load->view('admin/include/header', $data);
+			$this->load->view('admin/view-post-multimedia');
+			$this->load->view('admin/include/header');
 		}
 		else
 		{
@@ -965,9 +951,9 @@ class Admin extends CI_Controller
 			$data['active'] ="manage_content";
 			$data['title'] = "Vinfotech-wiki Admin Section";
 
-			$this->load->view('include/header', $data);
-			$this->load->view('manage-content-view-post');
-			$this->load->view('include/footer');
+			$this->load->view('admin/include/header', $data);
+			$this->load->view('admin/manage-content-view-post');
+			$this->load->view('admin/include/header');
 
 		}
 		else
@@ -1355,217 +1341,7 @@ class Admin extends CI_Controller
         $this->displayEditCategory();
 	}
 
-	/* 
-	 * This function perform action of Adding new category. 
-	*/
-	function addCategory()
-	{
-		if($this->input->post('add_category') == 'Add New Category')
-		{
-			$this->form_validation->set_rules('category_name', 'Category Name', 'required|trim|xss_clean|callback_checkDuplicateCategory');
-			
-			if( $this->form_validation->run() == FALSE )
-			{
-				$data['title'] = "Vinfotech-wiki Admin Section";
-				$data['active'] ="category";
-				$data['category_detail']['category_id']	= '';	
-				$data['category_detail']['name']	= $this->input->post('category_name');	
-				$data['category_detail']['is_active']	= $this->input->post('is_active');
-				
-				$data['category_result'] = $this->mymodel->displayCategoryDropdown();
-				
-				$user_result = $this->db->select('user_id ,profile_name')->from('user')->where('is_active',1)->get();
-				$data['user_result'] = $user_result->result_array();
-				
-				if($this->input->post('parent_category')!= ''){
-					$data['parent_category'] = $this->input->post('parent_category');
-				}
-				if($this->input->post('admin')!= ''){
-					$data['admin'] = $this->input->post('admin');
-				}
-				if($this->input->post('read_write')!= ''){
-					$data['read_write'] = $this->input->post('read_write');
-				}
-				if($this->input->post('read')!= ''){
-					$data['read'] = $this->input->post('read');
-				}
-				
-				if($this->input->post('admin_all') == 1){
-					$data['admin_all'] = 1;
-				}
-				
-				if($this->input->post('read_write_all') == 1){
-					$data['read_write_all'] =1;
-				}
-				
-				if($this->input->post('read_all') == 1){
-					$data['read_all'] = 1;
-				}
-				
-				$this->load->view('admin/include/header', $data);
-				$this->load->view('admin/edit-category');
-				$this->load->view('admin/include/footer');
-			}
-			else
-			{
-				$name =$this->input->post('category_name');
-				$is_active = $this->input->post('is_active');
-				$parent = $this->input->post('parent_category');
-				
-				$name = ucwords(strtolower($name));
-				$add_category =array('name'=>$name,
-									 'description'=>$name,
-									 'is_active'=>$is_active,
-									 'parent'	=> $parent
-									);
-                $this->commonmodel->commonAddEdit('category',$add_category);
-				$category_id = $this->db->insert_id();
-				
-				//parameter for add user_category_relation
-				$user_id = $this->session->userdata('user_id');
-				$admins = $this->input->post('admin');
-				$read_write = $this->input->post('read_write');
-				$read = $this->input->post('read');
-				
-				//code for make root category
-				$admindata = array();
-				
-				//first check if parent_category exist then get all admins related to parent and then inherited =1
-				//and rest if this will be go inherited = 0
-				if( !empty($admins) && !empty($parent) )
-				{
-					//now get admin for parent_category
-					$parent_admin = $this->mymodel->getAdminCategories($parent);
-					if(!empty($parent_admin))
-					{
-						$parent_admin_cat = explode(',',$parent_admin['user_ids']);
-						
-						foreach($admins as $key=>$val)
-						{
-							if( in_array($val,$parent_admin_cat)){
-								$admindata[] = array('user_id' => $val,
-												 'category_id' => $category_id,
-												 'permission_type' =>1,
-												 'is_inherited' => 1,
-												 'created_by' => $user_id
-												 );
-							}else{
-								$admindata[] = array('user_id' => $val,
-												 'category_id' => $category_id,
-												 'permission_type' =>1,
-												 'is_inherited' => 0,
-												 'created_by' => $user_id
-												 );
-							}
-						}
-					}
-				}
-				
-				if( !empty($admins) && empty($parent) )
-				{	
-					foreach($admins as $key=>$val)
-					{
-						$admindata[] = array('user_id' => $val,
-											 'category_id' => $category_id,
-											 'permission_type' =>1,
-											 'is_inherited' => 0,
-											 'created_by' => $user_id
-											 );	
-					}
-				}
-				
-				if(!empty($read_write))
-				{	
-					foreach($read_write as $rwkey=>$rwval)
-					{
-						$admindata[] = array('user_id' => $rwval,
-											 'category_id' => $category_id,
-											 'permission_type' =>2,
-											 'is_inherited' => 0,
-											 'created_by' => $user_id
-											 );	
-					}
-				}
-				
-				if(!empty($read))
-				{	
-					foreach($read as $rkey=>$rval)
-					{
-						$admindata[] = array('user_id' => $rval,
-											 'category_id' => $category_id,
-											 'permission_type' =>3,
-											 'is_inherited' => 0,
-											 'created_by' => $user_id
-											 );	
-					}
-				}
-				$this->db->insert_batch('user_category_relation', $admindata);
-				
-				//after this get all child categories and delete all user record for permission type 1 and inherited == 1
-				//Imp code for get all subcategories related to category in one array
-				$category_result = $this->display_children($category_id,0);
-				
-				if( !empty($this->childcategory) )
-				{
-					foreach($this->childcategory as $childcat)
-					{
-					$this->db->delete('user_category_relation',array('category_id'=>$childcat));
-					
-						$categorydata = array();
-						if(!empty($admins))
-						{	
-							foreach($admins as $key=>$val)
-							{
-								$categorydata[] = array('user_id' => $val,
-													 'category_id' => $childcat,
-													 'permission_type' =>1,
-													 'is_inherited' => 1,
-													 'created_by' => $user_id
-													 );	
-							}
-							
-						}
-						
-						if(!empty($read_write))
-						{	
-							foreach($read_write as $rwkey=>$rwval)
-							{
-								$categorydata[] = array('user_id' => $rwval,
-													 'category_id' => $childcat,
-													 'permission_type' =>2,
-													 'is_inherited' => 0,
-													 'created_by' => $user_id
-													 );	
-							}
-						}
-						
-						if(!empty($read))
-						{	
-							foreach($read as $rkey=>$rval)
-							{
-								$categorydata[] = array('user_id' => $rval,
-													 'category_id' => $childcat,
-													 'permission_type' =>3,
-													 'is_inherited' => 0,
-													 'created_by' => $user_id
-													 );	
-							}
-						}
-						$this->db->insert_batch('user_category_relation', $categorydata);
-						
-					}
-				}
-				redirect('admin/displaycategorylist');
-			}
-		}
-		else
-		{
-			redirect('admin/displaycategorylist');
-		}
-	}
-
-	
-	
+ 
 
 	/*
 	 * This function perform action of edit any category .
@@ -1663,7 +1439,7 @@ class Admin extends CI_Controller
 				$this->db->delete('user_category_relation',array('category_id'=>$edit_category_id));
 				 
 				//insert data
-				$admindata = array(); 
+				$admindata = array(); $uniqe_user=array();
 				
 				if( !empty($parent) )
 				{
@@ -1674,6 +1450,7 @@ class Admin extends CI_Controller
 						$parent_admin_cat = explode(',',$parent_admin['user_ids']);
 						foreach($parent_admin_cat as $key=>$val)
 						{
+                            $uniqe_user[]=$val;
 							$admindata[] = array('user_id' => $val,
 											 'category_id' => $edit_category_id,
 											 'permission_type' =>1,
@@ -1689,12 +1466,15 @@ class Admin extends CI_Controller
 				{	
 					foreach($admins as $key=>$val)
 					{
-						$admindata[] = array('user_id' => $val,
+                        if(!in_array($val, $uniqe_user)){
+                            $uniqe_user[]=$val;
+                                $admindata[] = array('user_id' => $val,
 											 'category_id' => $edit_category_id,
 											 'permission_type' =>1,
 											 'is_inherited' => 0,
 											 'created_by' => $user_id
 											 );	
+                        }
 					}
 				}
 				
@@ -1702,26 +1482,30 @@ class Admin extends CI_Controller
 				{	
 					foreach($read_write as $rwkey=>$rwval)
 					{
+                        if(!in_array($rwval, $uniqe_user)){
+                            $uniqe_user[]=$rwval;
 						$admindata[] = array('user_id' => $rwval,
 											 'category_id' => $edit_category_id,
 											 'permission_type' =>2,
 											 'is_inherited' => 0,
 											 'created_by' => $user_id
 											 );	
-					}
+                    }}
 				}
 				
 				if(!empty($read))
 				{	
 					foreach($read as $rkey=>$rval)
 					{
+                         if(!in_array($rval, $uniqe_user)){
+                             $uniqe_user[]=$rval;
 						$admindata[] = array('user_id' => $rval,
 											 'category_id' => $edit_category_id,
 											 'permission_type' =>3,
 											 'is_inherited' => 0,
 											 'created_by' => $user_id
 											 );	
-					}
+                    }}
 				}
                 
                 

@@ -4,13 +4,13 @@
     <div class="container">
         <div class="maintitle">
             <h1>Add User</h1>
-            <div class="btnbox"> <?php echo anchor('home/manageusers' , '<span class="back-icon"></span>Back to all users' , 'class="btnorange"') ?> </div>
+            <div class="btnbox"> <?php echo anchor('admin/manageusers' , '<span class="back-icon"></span>Back to all users' , 'class="btnorange"') ?> </div>
         </div>
         <div class="clear"></div>
 		<?php if($user_added == "") { ?>
         <?php 
 
-		echo form_open('home/adduser');?>
+		echo form_open('admin/adduser');?>
         <table border="0" cellspacing="0" cellpadding="0" class="tbldtl add-user">
             <tr>
                 <td> Name:</td>
@@ -77,7 +77,7 @@
                 <td> </td>
                 <td><p>Congratulations! You have successfully added new user.</p>
 					<br />
-					<p>For adding more user  <?php echo anchor('home/displayadduserview','click here');?></p>
+					<p>For adding more user  <?php echo anchor('admin/displayadduserview','click here');?></p>
 				</td>
             </tr>
 		</table>
