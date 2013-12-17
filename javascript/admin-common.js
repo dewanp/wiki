@@ -33,21 +33,13 @@ function toggletr()
 
 function toggledropdown()
 {
-	var value = $('#parent_category').val()
-	if(value == 0 || value == ''){
-		value = $('#edit_category').val();
-	}
-	$('#category_id').val(value);
-	
-	if(value == 0){
-		$('#category_id').val('');
-	}
-  
-		
+	var value = $('#parent_category').val();
+	 
+	 
 	$.ajax({
 			type : 'post',
 			url : site_url + "admin/getAdminInfo",
-			data: "category="+value+'&edit_category_id='+$('#edit_category_id').val(),
+			data: "parent_category_id="+value+'&edit_category_id='+$('#edit_category_id').val(),
 			success : function(data){
 					var response = $.parseJSON(data);
 					if(response.status == 'admin_exist')

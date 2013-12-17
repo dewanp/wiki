@@ -23,16 +23,8 @@
 			});
 		</script>
 		<?php
-			$action = 'addCategory';
-			if($category_detail['category_id'] != ''){
-				$action = 'editcategory';
-				?>
-                <script>
-                	$(document).ready(function(){
-						//toggledropdown();
-					});
-                </script>
-			<?php }
+			$action = 'editcategory';
+			
 			echo form_open('admin/'.$action);
 		 ?>
         
@@ -44,14 +36,13 @@
                 <tr>
 					<td> Parent Category </td>
 					<td>
-                    <input type="hidden" id="edit_category" name="edit_category" value="<?php echo $category_detail['category_id'];?>" />
+                    
 					  <select  id="parent_category" name ="parent_category" class="inputmain" style="width:298px;" onchange="toggledropdown();"> 
+                          
 						 <?php foreach($category_result as $optkey=>$optval){
-                             if($optkey==$category_detail['category_id'])continue;
+                             if($optkey==$category_detail['category_id'] && $category_detail['category_id']!='')continue;
                              ?>
-							 <option value = "<?php echo $optkey; ?>" <?php if(isset($parent_category) && $parent_category == $optkey){?> selected="selected"<?php }?>>
-							 	<?php echo $optval; ?>
-                              </option>
+					<option value="<?php echo $optkey; ?>" <?php if(isset($parent_category) && $parent_category == $optkey){?> selected="selected"<?php }?>><?php echo $optval; ?></option>
 						 <?php }?>
 					   </select>
 					</td>
@@ -145,13 +136,13 @@
                       <div class="field">
                         <select name="is_active" id="is_active" class="inputmain" style="width:298px;"> 
                           	<option value="1" id="active" <?php echo $status =($category_detail['is_active']==1)?'selected':'' ?> >Active </option>
-                           <option value="0" id="deactive" <?php echo $status =($category_detail['is_active']==0)?'selected':'' ?>>De-active</option>
+                           <option value="0" id="deactive" <?php echo $status =($category_detail['is_active']==0 && $category_detail['is_active']!='')?'selected':'' ?>>De-active</option>
                         </select>
                       </div>
                     </td>
                 </tr>
                 
-                <?php if($action == 'editcategory'){?>
+                <?php if($category_detail['category_id'] && $have_child_cat==1){?>
                 <tr>
                     <td>&nbsp;</td>
                     <td>
@@ -166,11 +157,15 @@
                 <tr>
                     <td>&nbsp;</td>
                     <td>
-                    	<input type="submit" class="btnorange" value="Save" name="save" />
-                    	<input type="hidden" name="category_id" id="category_id" value="<?php echo $category_detail['category_id']; ?>"/>
+                        
+                    	<input type="submit" class="btnorange" value="<?php if($category_detail['category_id']){
+                            ?>Update<?php }else{?>Save<?php } ?>" name="save" />
+                        
+                    	 
                         <input type="hidden" name="edit_category_id" id="edit_category_id" value="<?php echo $category_detail['category_id']; ?>"/>
-                        <input type="submit" class="btngrey" value="Cancel"  name="cancel" />
-                        <input type="hidden" name="add_category" id="add_category" class="btnorange" value="Add New Category" />
+                        <a href="<?php echo site_url('admin/displaycategorylist');?>"><input type="button" class="btngrey" value="Cancel"  name="cancel" /></a>
+                         
+                         
                    </td>
                 </tr>
             </table>

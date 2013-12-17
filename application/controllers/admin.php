@@ -1352,26 +1352,7 @@ class Admin extends CI_Controller
 
 	function displayAddCategory()
 	{
-		if($this->mymodel->isLoggedIn()){
-			$data['title'] = "Vinfotech-wiki Admin Section";
-			$data['active'] ="category";
-			
-			$data['category_result'] = $this->mymodel->displayCategoryDropdown();
-			
-			$user_result = $this->db->select('user_id ,profile_name')->from('user')->where('is_active',1)->get();
-			$data['user_result'] = $user_result->result_array();
-
-			$data['category_detail']['category_id']	= '';	
-			$data['category_detail']['name']	= '';	
-			$data['category_detail']['is_active']	= '';		
-			$this->load->view('admin/include/header', $data);
-			$this->load->view('admin/edit-category');
-			$this->load->view('admin/include/footer');
-		}
-		else
-		{
-			redirect();
-		}
+        $this->displayEditCategory();
 	}
 
 	/* 
@@ -1584,42 +1565,17 @@ class Admin extends CI_Controller
 	}
 
 	
-	/*
-	 * This function is used to load view for Edit category .
-	*/
-	public function displayEditCategory($category_id)
-	{
-		if($this->mymodel->isLoggedIn()){
-			
-			$category_detail = $this->mymodel->displayEditCategory($category_id);
-			$data['title'] = "Vinfotech-wiki Admin Section";
-			$data['active'] ="category";
-			$data['category_detail'] = $category_detail;
-			$data['parent_category'] = $category_detail['parent'];
-			$data['category_result'] = $this->mymodel->displayCategoryDropdown();
-			
-			$user_result = $this->db->select('user_id ,profile_name')->from('user')->where('is_active',1)->order_by('profile_name','asc')->get();
-			$data['user_result'] = $user_result->result_array();
-			
-			$this->load->view('admin/include/header', $data);
-			$this->load->view('admin/edit-category');
-			$this->load->view('admin/include/footer');
-		}
-		else
-		{
-			redirect();
-		}
-	}
+	
 
 	/*
 	 * This function perform action of edit any category .
 	*/
 	public function editCategory()
 	{
-		if($this->input->post('save') =='Save')
+		if($this->input->post())
 		{
-			$category_id =  $this->input->post('category_id');
-			$edit_category_id =  $this->input->post('edit_category');
+			 
+			$edit_category_id =  $this->input->post('edit_category_id');
 			$category_name= $this->input->post('category_name');
 			$parent		 =  $this->input->post('parent_category');
 			$is_active =    $this->input->post('is_active');
@@ -1681,9 +1637,20 @@ class Admin extends CI_Controller
 					                   'parent'		=> $parent
 								);
 
-				$this->db->where('category_id',$edit_category_id);
-				$this->db->update('category',$category_data);
-				
+                
+                
+                if($edit_category_id!=''){
+                   $category_id = $edit_category_id;
+                    $this->db->where('category_id',$edit_category_id);
+                    $this->db->update('category',$category_data);
+                }else{
+                     
+                    $this->commonmodel->commonAddEdit('category',$category_data);
+                    $edit_category_id=$category_id = $this->db->insert_id();
+                }
+                
+                          
+				   
 				//parameters for add user_category_relation
 				$user_id = $this->session->userdata('user_id');
 				$admins = $this->input->post('admin');
@@ -1694,9 +1661,9 @@ class Admin extends CI_Controller
 				//after this get all child categories related to category if find then remove all users with permission type 1 and is_inherited 1
 				//and insert into db
 				$this->db->delete('user_category_relation',array('category_id'=>$edit_category_id));
-				
+				 
 				//insert data
-				$admindata = array();
+				$admindata = array(); 
 				
 				if( !empty($parent) )
 				{
@@ -1708,11 +1675,12 @@ class Admin extends CI_Controller
 						foreach($parent_admin_cat as $key=>$val)
 						{
 							$admindata[] = array('user_id' => $val,
-											 'category_id' => $category_id,
+											 'category_id' => $edit_category_id,
 											 'permission_type' =>1,
 											 'is_inherited' => 1,
 											 'created_by' => $user_id
 											 );
+                          
 						}
 					}
 				}
@@ -1722,7 +1690,7 @@ class Admin extends CI_Controller
 					foreach($admins as $key=>$val)
 					{
 						$admindata[] = array('user_id' => $val,
-											 'category_id' => $category_id,
+											 'category_id' => $edit_category_id,
 											 'permission_type' =>1,
 											 'is_inherited' => 0,
 											 'created_by' => $user_id
@@ -1735,7 +1703,7 @@ class Admin extends CI_Controller
 					foreach($read_write as $rwkey=>$rwval)
 					{
 						$admindata[] = array('user_id' => $rwval,
-											 'category_id' => $category_id,
+											 'category_id' => $edit_category_id,
 											 'permission_type' =>2,
 											 'is_inherited' => 0,
 											 'created_by' => $user_id
@@ -1748,72 +1716,75 @@ class Admin extends CI_Controller
 					foreach($read as $rkey=>$rval)
 					{
 						$admindata[] = array('user_id' => $rval,
-											 'category_id' => $category_id,
+											 'category_id' => $edit_category_id,
 											 'permission_type' =>3,
 											 'is_inherited' => 0,
 											 'created_by' => $user_id
 											 );	
 					}
 				}
+                
+                
+                
 				$this->db->insert_batch('user_category_relation', $admindata);
 				
-				if( $this->input->post('overwirte_child') == 1 )
-				{
+				
 					//after this get all child categories and delete all user record for permission type 1 and inherited == 1
 					//Imp code for get all subcategories related to category in one array
-					$category_result = $this->display_children($category_id,0);
+					$category_result = $this->display_children($edit_category_id,0);
 					
 					if( !empty($this->childcategory) )
 					{
 						foreach($this->childcategory as $childcat)
 						{
-						$this->db->delete('user_category_relation',array('category_id'=>$childcat));
-						
-							$categorydata = array();
-							if(!empty($admins))
-							{	
-								foreach($admins as $key=>$val)
+                      if( $this->input->post('overwirte_child') == 1 )
+                            {       
+                            
+                            $this->db->delete('user_category_relation',array('category_id'=>$childcat));
+                            $inherited_admin = array();
+                                foreach($admindata as $key=>$val)
 								{
-									$categorydata[] = array('user_id' => $val,
+                                    if($val['permission_type']==1) 
+                                        $is_inherited=1;
+                                    else $is_inherited=$val['is_inherited'];
+                                    
+                                        $inherited_admin[] = array('user_id' => $val['user_id'],
+                                                             'category_id' => $childcat,
+                                                             'permission_type' =>$val['permission_type'],
+                                                             'is_inherited' => $is_inherited,
+                                                             'created_by' => $user_id
+                                                             );	
+                                     
+								}
+                              
+                                if(!empty($inherited_admin))
+                                    $this->db->insert_batch('user_category_relation', $inherited_admin);
+							
+                            }else{
+                                $this->db->delete('user_category_relation',array('category_id'=>$childcat,'permission_type'=>1,'is_inherited'=>1));
+                                $inherited_admin = array();
+                                foreach($admindata as $key=>$val)
+								{
+                                    if($val['permission_type']!=1) 
+                                        continue;
+									$inherited_admin[] = array('user_id' => $val['user_id'],
 														 'category_id' => $childcat,
 														 'permission_type' =>1,
 														 'is_inherited' => 1,
 														 'created_by' => $user_id
 														 );	
 								}
-								
-							}
-							
-							if(!empty($read_write))
-							{	
-								foreach($read_write as $rwkey=>$rwval)
-								{
-									$categorydata[] = array('user_id' => $rwval,
-														 'category_id' => $childcat,
-														 'permission_type' =>2,
-														 'is_inherited' => 0,
-														 'created_by' => $user_id
-														 );	
-								}
-							}
-							
-							if(!empty($read))
-							{	
-								foreach($read as $rkey=>$rval)
-								{
-									$categorydata[] = array('user_id' => $rval,
-														 'category_id' => $childcat,
-														 'permission_type' =>3,
-														 'is_inherited' => 0,
-														 'created_by' => $user_id
-														 );	
-								}
-							}
-							$this->db->insert_batch('user_category_relation', $categorydata);
+                                
+                               
+                                if(!empty($inherited_admin))
+                                    $this->db->insert_batch('user_category_relation', $inherited_admin);
+                                //without overwrite admin will get overwrite
+                            }
+							 
 						}
 					}
-				}
-				redirect(base_url().'admin/displayEditCategory/'.$category_id);
+				
+				redirect(base_url().'admin/displayEditCategory/'.$edit_category_id);
 			}
 		}
 		else
@@ -1821,7 +1792,38 @@ class Admin extends CI_Controller
 			redirect('admin/displaycategorylist');
 		}
 	}
-
+/*
+	 * This function is used to load view for Edit category .
+	*/
+	public function displayEditCategory($category_id)
+	{
+		if($this->mymodel->isLoggedIn()){
+		if($category_id)
+			$category_detail = $this->mymodel->displayEditCategory($category_id);
+			$data['title'] = "Vinfotech-wiki Admin Section";
+			$data['active'] ="category";
+			$data['category_detail'] = $category_detail;
+			$data['parent_category'] = $category_detail['parent'];
+            $category_result = $this->display_children($category_id,0);
+            
+            if(empty($this->childcategory)) 
+                $data['have_child_cat']= 0;
+                else
+            $data['have_child_cat']= 1;
+			$data['category_result'] = $this->mymodel->displayCategoryDropdown();
+			
+			$user_result = $this->db->select('user_id ,profile_name')->from('user')->where('is_active',1)->order_by('profile_name','asc')->get();
+			$data['user_result'] = $user_result->result_array();
+			
+			$this->load->view('admin/include/header', $data);
+			$this->load->view('admin/edit-category');
+			$this->load->view('admin/include/footer');
+		}
+		else
+		{
+			redirect();
+		}
+	}
 
 	/* 
 	 * This function check duplicate category. 
@@ -3186,27 +3188,33 @@ class Admin extends CI_Controller
 	/*Function for get admin Info using category Id and in admin_ids Column*/
 	public function getAdminInfo()
 	{
-		$category_id = $this->input->post('category');
+		$parent_category_id = $this->input->post('parent_category_id');
         $edit_category_id = $this->input->post('edit_category_id');
 		
         
         if($edit_category_id){
-            $current_adm = $this->mymodel->getAdminInfo($edit_category_id,1);
+            $current_adm = $this->mymodel->getAdminInfo($edit_category_id,1,1);
+            $rec_rw = $this->mymodel->getAdminInfo($edit_category_id,2);
+            $rec_r = $this->mymodel->getAdminInfo($edit_category_id,3);
         }
-		$rec_adm = $this->mymodel->getAdminInfo($category_id,1);
-		$rec_rw = $this->mymodel->getAdminInfo($category_id,2);
-		$rec_r = $this->mymodel->getAdminInfo($category_id,3);
+        if($parent_category_id!='' && $parent_category_id!=0){
+            $previous_adm = $this->mymodel->getAdminInfo($parent_category_id,1); 
+            if($edit_category_id==''){
+                $rec_rw = $this->mymodel->getAdminInfo($parent_category_id,2);
+               $rec_r = $this->mymodel->getAdminInfo($parent_category_id,3);
+            }
+        }
 		$admusers = $rwusers = $rusers = '';
 		$admin_ids = $rw_ids = $r_ids = $prev_admin = $inherited_admin = array();
 		
-		if( !empty($rec) || !empty($rec_rw) ||!empty($rec_r) ) {
+		
 			
 			//get user list
 			$user_result = $this->db->select('user_id,profile_name')->from('user')->where('is_active',1)->get();
 			
 			//get admin users
-			foreach($rec_adm as $adminval){
-					$admin_ids[] = $adminval['user_id'];
+			foreach($previous_adm as $adminval){
+					$previous_admin_ids[] = $adminval['user_id'];
                     $inherited_admin[$adminval['user_id']] = $adminval['is_inherited'];
 			}
             
@@ -3216,15 +3224,14 @@ class Admin extends CI_Controller
              
 			foreach($user_result->result_array() as $val)
 			{
-				if( (in_array($val['user_id'],$admin_ids) && $category_id != '' ) ){
+				if( (in_array($val['user_id'],$previous_admin_ids)) ){
 					$prev_admin[] = '<label>'.$val['profile_name'].'</label>';
 				} 
-                    $sel ='';
-                    if( in_array($val['user_id'],$current_admin_ids)){
-                        $sel = 'selected="selected"';
-                    }
-					$admusers .= '<option value="'.$val['user_id'].'" '.$sel.'>'.$val['profile_name'].'</option>';
-				 
+                $sel ='';
+                if( in_array($val['user_id'],$current_admin_ids)){
+                    $sel = 'selected="selected"';
+                }
+                $admusers .= '<option value="'.$val['user_id'].'" '.$sel.'>'.$val['profile_name'].'</option>';				 
 			}
 			//get read/write users
 			foreach($rec_rw as $rwval){
@@ -3232,7 +3239,7 @@ class Admin extends CI_Controller
 			}
 			foreach( $user_result->result_array() as $val)
 			{
-				if( in_array($val['user_id'],$rw_ids)  && $category_id != ''){
+				if( in_array($val['user_id'],$rw_ids)){
 					$rwusers .= '<option value="'.$val['user_id'].'" selected="selected">'.$val['profile_name'].'</option>';
 				}else{
 					$rwusers .= '<option value="'.$val['user_id'].'">'.$val['profile_name'].'</option>';
@@ -3245,7 +3252,7 @@ class Admin extends CI_Controller
 			
 			foreach( $user_result->result_array() as $val)
 			{
-				if( in_array($val['user_id'],$r_ids)  && $category_id != ''){
+				if( in_array($val['user_id'],$r_ids)){
 					$rusers .= '<option value="'.$val['user_id'].'" selected="selected">'.$val['profile_name'].'</option>';
 				}else{
 					$rusers .= '<option value="'.$val['user_id'].'">'.$val['profile_name'].'</option>';
@@ -3260,16 +3267,7 @@ class Admin extends CI_Controller
 						'rusers' => $rusers);
 			echo json_encode($outputt);
 			exit;
-		}else{
-			$user_result = $this->db->select('user_id ,profile_name')->from('user')->where('is_active',1)->get();
-			foreach( $user_result->result_array() as $val)
-			{
-					$admusers .= '<option value="'.$val['user_id'].'">'.$val['profile_name'].'</option>';
-			}
-			$outputt = array('status'=>'no_admin','users' => $admusers);
-			echo json_encode($outputt);
-			exit;
-		}
+		 
 	}
 	
 	/** Function for get users list and show selected in dropa down */
