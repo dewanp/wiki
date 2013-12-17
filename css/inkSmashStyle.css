@@ -2024,3 +2024,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e44118', end
 .catypef ul li{padding-left:7px;list-style:none;}
 .show{ display:block;}
 .hide{ display:none;}
+
+ul#category_display li{float:left;width:60px;height:60px;word-break: break-all;color: #fff;}
+ li.cadmin{background-color: green;}
+ li.crw{background-color: #353535;}
+ li.cr{background-color: #2765A3;}
+ 
+ ul#sample li{float:right;width:30px;height:20px;word-break: break-all;color: #fff;padding: 2px;}

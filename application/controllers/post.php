@@ -1169,16 +1169,10 @@ class Post extends CI_Controller {
 		
 		$data['type'] = $type = 'all';
 		$data['most_posted_users'] = true;
-		$data['categories'] = $this->postmodel->getAdminCategories($this->user_id);
+		$data['categories'] = $this->postmodel->get_user_all_category($this->user_id); 
 		
-		$data['category_result'] = $this->postmodel->displayCategoryDropdown();
-		
-		$user_result = $this->db->select('user_id ,profile_name')->from('user')->where('is_active',1)->where('user_id !=',1)->order_by('profile_name','asc')->get();
-		$data['user_result'] = $user_result->result_array();
-		
-		
-		
-		$limit=9;
+		  
+		$limit=200;
 		$start = $this->uri->segment(3,$start);	
 		$all = count($data['categories']);
 		
@@ -1200,7 +1194,36 @@ class Post extends CI_Controller {
 		$this->load->view('post/all-categories',$data);
 		$this->load->view('includes/footer');
 	}
-
+/*
+	 * This function is used to load view for Edit category .
+	*/
+	public function displayEditCategory($category_id)
+	{
+		 
+		if($category_id)
+			$category_detail = $this->mymodel->displayEditCategory($category_id);
+			$data['title'] = "Vinfotech-wiki Admin Section";
+			$data['active'] ="category";
+			$data['category_detail'] = $category_detail;
+			$data['parent_category'] = $category_detail['parent'];
+            $category_result = $this->display_children($category_id,0);
+            
+            if(empty($this->childcategory)) 
+                $data['have_child_cat']= 0;
+                else
+            $data['have_child_cat']= 1;
+			$data['category_result'] = $this->mymodel->displayCategoryDropdown();
+			
+			$user_result = $this->db->select('user_id ,profile_name')->from('user')->where('is_active',1)->order_by('profile_name','asc')->get();
+			$data['user_result'] = $user_result->result_array();
+			
+			 $data['sidebar'] = $this->load->view('includes/sidebar', $data, true);
+            $this->load->view('includes/header');
+            $this->load->view('post/add-edit-category',$data);
+			
+			$this->load->view('includes/footer');
+		 
+	}
 	/**
 	 * Created by Neelesh Chouksey on 2012.03.26
 	 * This function is used to show all categories on the page. 
@@ -2195,117 +2218,7 @@ class Post extends CI_Controller {
 	}
 	
 	
-	/*Function for get admin Info using category Id and in admin_ids Column*/
-	public function getAdminInfo()
-	{
-		$category_id = $this->input->post('category');
-		
-		$rec = $this->postmodel->getAdminInfo($category_id);
-
-		if(!empty($rec)){
-			
-			foreach($rec as $userval){
-				$user_ids[] = $userval['user_id'];
-			}
-			$user_result = $this->db->select('user_id ,profile_name')->from('user')->where('is_active',1)->get();
-			
-			$output = '';
-			foreach( $user_result->result_array() as $val)
-			{
-				
-				if( in_array($val['user_id'],$user_ids)){
-					$output .= '<option value="'.$val['user_id'].'" selected="selected">'.$val['profile_name'].'</option>';
-				}else{
-					$output .= '<option value="'.$val['user_id'].'">'.$val['profile_name'].'</option>';
-				}
-			}
-			
-			$outputt = array('status'=>'admin_exist','users' => $output);
-			echo json_encode($outputt);
-			exit;
-			
-		}else{
-			$outputt = array('status'=>'no_admin');
-			echo json_encode($outputt);
-			exit;
-			
-		}
-	}
-	
-	/*Function for get admin Info using category Id and in admin_ids Column*/
-	public function getAdminInfo()
-	{
-		$category_id = $this->input->post('category');
-		
-		$rec_adm = $this->mymodel->getAdminInfo($category_id,1);
-		$rec_rw = $this->mymodel->getAdminInfo($category_id,2);
-		$rec_r = $this->mymodel->getAdminInfo($category_id,3);
-		$admusers = $rwusers = $rusers = '';
-		$admin_ids = $rw_ids = $r_ids = $prev_admin = array();
-		
-		if( !empty($rec) || !empty($rec_rw) ||!empty($rec_r) ) {
-			
-			//get user list
-			$user_result = $this->db->select('user_id ,profile_name')->from('user')->where('is_active',1)->get();
-			
-			//get admin users
-			foreach($rec_adm as $adminval){
-					$admin_ids[] = $adminval['user_id'];
-			}
-			foreach($user_result->result_array() as $val)
-			{
-				if( in_array($val['user_id'],$admin_ids)){
-					$prev_admin[] = '<label>'.$val['profile_name'].'</label>';
-				}else{
-					$admusers .= '<option value="'.$val['user_id'].'">'.$val['profile_name'].'</option>';
-				}
-			}
-			//get read/write users
-			foreach($rec_rw as $rwval){
-					$rw_ids[] = $rwval['user_id'];
-			}
-			foreach( $user_result->result_array() as $val)
-			{
-				if( in_array($val['user_id'],$rw_ids)){
-					$rwusers .= '<option value="'.$val['user_id'].'" selected="selected">'.$val['profile_name'].'</option>';
-				}else{
-					$rwusers .= '<option value="'.$val['user_id'].'">'.$val['profile_name'].'</option>';
-				}
-			}
-			//get read users
-			foreach($rec_r as $rval){
-					$r_ids[] = $rval['user_id'];
-			}
-			
-			foreach( $user_result->result_array() as $val)
-			{
-				if( in_array($val['user_id'],$r_ids)){
-					$rusers .= '<option value="'.$val['user_id'].'" selected="selected">'.$val['profile_name'].'</option>';
-				}else{
-					$rusers .= '<option value="'.$val['user_id'].'">'.$val['profile_name'].'</option>';
-				}
-			}
-			
-			$outputt = array(
-						'status'=>'admin_exist',						
-						'prevadmin' => implode(', ',$prev_admin),
-						'users' => $admusers,
-						'rwusers' => $rwusers,
-						'rusers' => $rusers);
-			echo json_encode($outputt);
-			exit;
-		}else{
-			$user_result = $this->db->select('user_id ,profile_name')->from('user')->where('is_active',1)->get();
-			foreach( $user_result->result_array() as $val)
-			{
-					$admusers .= '<option value="'.$val['user_id'].'">'.$val['profile_name'].'</option>';
-			}
-			$outputt = array('status'=>'no_admin','users' => $admusers);
-			echo json_encode($outputt);
-			exit;
-		}
-	}
-	
+	 
 
 
 

@@ -503,7 +503,7 @@ class Postmodel extends CI_Model {
 		if($user_id != '')
 		{
 		  $sql =" SELECT c.category_id AS id, c.name, c.is_active,c.parent AS parent_id
-			   FROM category AS c LEFT JOIN user_category_relation AS ucr ON c.category_id = ucr.category_id WHERE FIND_IN_SET(".$user_id.",ucr.user_id) AND c.is_active = 1 ";
+			   FROM category AS c LEFT JOIN user_category_relation AS ucr ON c.category_id = ucr.category_id WHERE ucr.user_id=".$user_id." AND c.is_active = 1 ";
 			
 		$category_list_result = $this->db->query($sql);
 		$query = $category_list_result->result_array();
@@ -652,7 +652,20 @@ class Postmodel extends CI_Model {
 		}
 	}
 
-	
+    public function get_user_all_category($user_id){
+     
+		if($user_id != '')
+		{
+		  $sql =" SELECT c.category_id AS id, c.name, c.is_active,c.parent AS parent_id, ucr.permission_type
+			   FROM category AS c LEFT JOIN user_category_relation AS ucr ON c.category_id = ucr.category_id WHERE ucr.user_id=".$user_id." AND c.is_active = 1 ";
+			
+		$category_list_result = $this->db->query($sql);
+		 return $category_list_result->result_array();
+		 
+		  	
+	  }
+	 
+    }
 	
     
 }

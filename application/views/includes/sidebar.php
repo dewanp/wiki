@@ -48,7 +48,7 @@ $(document).ready(function(){
 		<?php }?>
 		
          <div class="nav-links helps crepostmain">
-                <h2 class="title"><?php echo anchor('post/allcategories','<strong>View All Categories</strong>');?></h2>
+                <h2 class="title"><?php echo anchor('post/allcategories','<strong>View All Categories</strong>');?></h2><h2 class="title"><?php echo anchor('post/displayEditCategory','<strong>Create Category</strong>');?></h2>
          </div>
 		<?php /*?><?php $statusread =  $this->commonmodel->getUserStatusRead($this->user_id);?>
         <?php if($statusread == 'exist'){?>
