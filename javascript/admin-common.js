@@ -45,28 +45,46 @@ function toggledropdown()
 					if(response.status == 'admin_exist')
 					{
 						$('#admin option').remove();
-						$('#admin').html(response.users).trigger("chosen:updated");
+						$('#admin').html(response.users);
+                        var admval; 
+                        
+                        
 						$('#prev_admin').html(response.prevadmin); 
 						
 						$('#read_write option').remove();
-						$('#read_write').html(response.rwusers).trigger("chosen:updated");
+						$('#read_write').html(response.rwusers);
 						
 						$('#read option').remove();
-						$('#read').html(response.rusers).trigger("chosen:updated");
+						$('#read').html(response.rusers);
+                        
+                        
+                          $("select#admin option:selected").each(function(){              
+                             admval = $(this).val();    
+                              $("select#read_write option, select#read option").each(function(){
+                                    if ($(this).val() == admval)
+                                       $(this).attr("disabled","disabled");
+                                }); 
+                            }); 
+                            $("select#read_write option:selected").each(function(){              
+                             admval = $(this).val();    
+                              $("select#admin option, select#read option").each(function(){
+                                    if ($(this).val() == admval)
+                                       $(this).attr("disabled","disabled");
+                                }); 
+                            }); 
+                            $("select#read option:selected").each(function(){              
+                             admval = $(this).val();    
+                              $("select#read_write option, select#admin option").each(function(){
+                                    if ($(this).val() == admval)
+                                       $(this).attr("disabled","disabled");
+                                }); 
+                            }); 
+                        
+                        
+                        
+                        $('.inputmain').trigger('chosen:updated');
 					}
-					if(response.status == 'no_admin')
-					{
-						$('#admin option').remove();
-						$('#admin').html(response.users).trigger("chosen:updated");
-						
-						$('#read_write option').remove();
-						$('#read_write').html(response.users).trigger("chosen:updated");
-						
-						$('#read option').remove();
-						$('#read').html(response.users).trigger("chosen:updated");
-						
-						$('#prev_admin').html(''); 
-					}
+					 
 			}
 		});
 	
@@ -288,10 +306,47 @@ $('#user-login a').click(function(){
 	$("#read_write").chosen({disable_search_threshold: 10});
 	$("#read").chosen({disable_search_threshold: 10});
     
-     $('#admin').on('change', function(evt, params) {
-         //alert(evt.type)
-            //do_something(evt, params);
-  });
+     $('#admin').on('change', function(evt, params) { 
+        admin_change(evt, params);            
+    });
+     $('#read_write').on('change', function(evt, params) { 
+        rw_change(evt, params);            
+    });
+     $('#read').on('change', function(evt, params) { 
+        r_change(evt, params);            
+    });
+  
+  function admin_change(evt, params){
+      
+       $("select#read_write option, select#read option").each(function(){              
+            if ($(this).val() == params.selected)
+              $(this).attr("disabled","disabled");
+           if ($(this).val() == params.deselected)
+              $(this).removeAttr("disabled");          
+            }); 
+          
+          $('.inputmain').trigger('chosen:updated');
+  }
+  function rw_change(evt, params){
+       $("select#admin option, select#read option").each(function(){              
+            if ($(this).val() == params.selected)
+              $(this).attr("disabled","disabled");
+           if ($(this).val() == params.deselected)
+              $(this).removeAttr("disabled");          
+            }); 
+          
+          $('.inputmain').trigger('chosen:updated');
+  }
+  function r_change(evt, params){
+       $("select#read_write option, select#admin option").each(function(){              
+            if ($(this).val() == params.selected)
+              $(this).attr("disabled","disabled");
+           if ($(this).val() == params.deselected)
+              $(this).removeAttr("disabled");          
+            }); 
+          
+          $('.inputmain').trigger('chosen:updated');
+  }
 	
 });	
 
