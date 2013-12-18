@@ -2991,7 +2991,7 @@ class Admin extends CI_Controller
 		$admin_ids = $rw_ids = $r_ids = $prev_admin = $inherited_admin = array();
 		
 		
-			
+			 
 			//get user list
 			$user_result = $this->db->select('user_id,profile_name')->from('user')->where('role',2)->where('is_active',1)->get();
 			
@@ -3014,7 +3014,10 @@ class Admin extends CI_Controller
                 if( in_array($val['user_id'],$current_admin_ids)){
                     $sel = 'selected="selected"';
                 }
-                $admusers .= '<option value="'.$val['user_id'].'" '.$sel.'>'.$val['profile_name'].'</option>';				 
+                if( !in_array($val['user_id'],$previous_admin_ids)){
+                  $admusers .= '<option value="'.$val['user_id'].'" '.$sel.'>'.$val['profile_name'].'</option>';
+                }
+                				 
 			}
 			//get read/write users
 			foreach($rec_rw as $rwval){
@@ -3022,11 +3025,13 @@ class Admin extends CI_Controller
 			}
 			foreach( $user_result->result_array() as $val)
 			{
+                if( !in_array($val['user_id'],$previous_admin_ids)){
 				if( in_array($val['user_id'],$rw_ids)){
 					$rwusers .= '<option value="'.$val['user_id'].'" selected="selected">'.$val['profile_name'].'</option>';
 				}else{
 					$rwusers .= '<option value="'.$val['user_id'].'">'.$val['profile_name'].'</option>';
 				}
+                }
 			}
 			//get read users
 			foreach($rec_r as $rval){
@@ -3035,11 +3040,13 @@ class Admin extends CI_Controller
 			
 			foreach( $user_result->result_array() as $val)
 			{
+                if( !in_array($val['user_id'],$previous_admin_ids)){
 				if( in_array($val['user_id'],$r_ids)){
 					$rusers .= '<option value="'.$val['user_id'].'" selected="selected">'.$val['profile_name'].'</option>';
 				}else{
 					$rusers .= '<option value="'.$val['user_id'].'">'.$val['profile_name'].'</option>';
 				}
+                }
 			}
 			
 			$outputt = array(
@@ -3056,14 +3063,24 @@ class Admin extends CI_Controller
 	/** Function for get users list and show selected in dropa down */
 	public function getUsersList()
 	{
-		$user_result = $this->db->select('user_id ,profile_name')->from('user')->where('is_active',1)->get();
+        $previous_adm = array();
+         $parent_category_id = $this->input->post('parent_category_id');
+         if($parent_category_id!='' && $parent_category_id!='0'){
+        $previous_adm = $this->mymodel->getAdminInfo($parent_category_id,1); 
+        foreach($previous_adm as $adminval){
+					$previous_admin_ids[] = $adminval['user_id'];
+                    
+			}
+         }
+		$user_result = $this->db->select('user_id ,profile_name')->from('user')->where('is_active',1)->where('role',2)->get();
 		$data['user_result'] = $user_result->result_array();
 		
 		$output = '';
  		
 		foreach($user_result->result_array() as $key=> $val)
 		{
-			$output .= '<option value="'.$val['user_id'].'" selected="selected">'.$val['profile_name'].'</option>';
+            if(!in_array($val['user_id'], $previous_admin_ids))
+                $output .= '<option value="'.$val['user_id'].'" selected="selected">'.$val['profile_name'].'</option>';
 		}
 		
 		$users = array('users'=>$output);

@@ -90,8 +90,8 @@ function checkbox_admin_click()
 	if( $('#admin_all').is(':checked') ){
 		$.ajax({
 				type : 'post',
-				url : site_url + "home/getUsersList",
-				data: "",
+				url : site_url + "admin/getUsersList",
+				data: "parent_category_id="+$('#parent_category').val(),
 				success : function(data){
 						var response = $.parseJSON(data);
 						
@@ -108,8 +108,8 @@ function checkbox_click(){
 	if( $('#read_write_all').is(':checked') ){
 		$.ajax({
 				type : 'post',
-				url : site_url + "home/getUsersList",
-				data: "",
+				url : site_url + "admin/getUsersList",
+				data: "parent_category_id="+$('#parent_category').val(),
 				success : function(data){
 						var response = $.parseJSON(data);
 						
@@ -129,8 +129,8 @@ function checkbox_click_two(){
 	if( $('#read_all').is(':checked') ){
 		$.ajax({
 				type : 'post',
-				url : site_url + "home/getUsersList",
-				data: "",
+				url : site_url + "admin/getUsersList",
+				data: "parent_category_id="+$('#parent_category').val(),
 				success : function(data){
 						var response = $.parseJSON(data);
 						
@@ -155,7 +155,7 @@ function copy_parent_readwrite(){
 		if(category_id != '' && category_id != 0 ){
 			$.ajax({
 				type : 'post',
-				url : site_url + "home/getCategryUsers",
+				url : site_url + "admin/getCategryUsers",
 				data: "category_id="+category_id,
 				success : function(data){
 						var response = $.parseJSON(data);
@@ -187,7 +187,7 @@ function copy_parent_read(){
 		if(category_id != ''  && category_id != 0){
 			$.ajax({
 				type : 'post',
-				url : site_url + "home/getCategryReadUsers",
+				url : site_url + "admin/getCategryReadUsers",
 				data: "category_id="+category_id,
 				success : function(data){
 						var response = $.parseJSON(data);
@@ -283,15 +283,17 @@ $('#user-login a').click(function(){
 		$("#catpopup").slideUp();
 	});	
 	//end
-	//$("#parent_category").chosen({disable_search_threshold: 10});
+	 
 	$("#admin").chosen({disable_search_threshold: 10});
 	$("#read_write").chosen({disable_search_threshold: 10});
 	$("#read").chosen({disable_search_threshold: 10});
+    
+     $('#admin').on('change', function(evt, params) {
+         //alert(evt.type)
+            //do_something(evt, params);
+  });
 	
 });	
 
 
-$("#admin").chosen().change(function() {
-    alert('fd');
-	alert( $(this).val());
-});
+ 
