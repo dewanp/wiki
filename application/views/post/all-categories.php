@@ -30,7 +30,7 @@
                             $class='crw';
                         elseif($row['permission_type']==3)
                             $class='cr';
-                        ?>
+                     ?>
                      <li class="<?php echo $class;?>"> <?php echo $row['name'];?></li>
                      <?php
                     }  ?>

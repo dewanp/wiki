@@ -264,6 +264,14 @@
 	
 	
 	
+	function displayFrontCategoryDropdown($user_id)
+	{	$user_id = 11;
+		$query = 'SELECT cat.category_id,cat.name FROM category AS cat LEFT JOIN user_category_relation AS ucr ON ucr.category_id = cat.category_id WHERE ucr.user_id = '.$user_id.' AND ucr.permission_type = 1';
+		$category_list_result = $this->db->query($query);
+		return $category_list_result->result_array();
+    }
+	
+	
 	function displayCategoryDropdown($group_id = 1, $exclude = 0, $level = 0, &$tree = NULL)
 	{
 		$output = array();

@@ -96,3 +96,40 @@ function validateGoogleId()
 		return true ;
 	}
 }
+
+/* Function for remove category and all sub categories*/
+function deleteCategory(category_id)
+{
+	var confirmation = confirm('Are you sure you want to delete category?');
+	if(confirmation){
+	
+	$.ajax({
+			type: "POST",
+			url: site_url + "admin/deleteCategory",
+			data: "category_id="+category_id,
+			success: function (data){ 
+				var response = $.parseJSON(data)
+				if(response.status == 'success'){
+					$('#list_'+category_id).remove();
+				}
+			}
+		});
+	}
+}
+
+//Function for checked overwrite child or not
+function overwrite_child()
+{
+	if( $('#overwirte_child').is(':checked')){
+		var confirmation = confirm('Are you sure you want to overwrite child categories?');		
+		if(confirmation){
+			$('#overwirte_child').attr('checked','checked');
+		}else{
+			$('#overwirte_child').removeAttr('checked');
+		}
+	}
+	if( !$('#overwirte_child').is(':checked')){
+		$('#overwirte_child').removeAttr('checked');
+	}
+}
+

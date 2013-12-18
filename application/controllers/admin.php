@@ -1362,13 +1362,17 @@ class Admin extends CI_Controller
 
 			if( $this->form_validation->run() == FALSE )
 			{
-				$category_detail = $this->mymodel->displayEditCategory($category_id);
+				if($edit_category_id != ''){
+					
+					$category_detail = $this->mymodel->displayEditCategory($edit_category_id);
+				}else{
+					$data['category_detail']['category_id']	= $this->input->post('category_id');	
+					$data['category_detail']['name']	= $this->input->post('category_name');	
+					$data['category_detail']['is_active']	= $this->input->post('is_active');
+				}
+				
 				$data['title'] = "Vinfotech-wiki Admin Section";
 				$data['active'] ="category";
-				
-				$data['category_detail']['category_id']	= $this->input->post('category_id');	
-				$data['category_detail']['name']	= $this->input->post('category_name');	
-				$data['category_detail']['is_active']	= $this->input->post('is_active');
 				
 				$data['category_result'] = $this->mymodel->displayCategoryDropdown();
 				
@@ -1596,7 +1600,7 @@ class Admin extends CI_Controller
             $data['have_child_cat']= 1;
 			$data['category_result'] = $this->mymodel->displayCategoryDropdown();
 			
-	 
+	 		$data['section'] = 'back-end';
 			
 			$this->load->view('admin/include/header', $data);
 			$this->load->view('admin/edit-category');

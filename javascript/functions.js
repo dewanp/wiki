@@ -2853,11 +2853,11 @@
 				}
 				else if(data==1)
 				{
-					window.location = site_url+'post/showposts/all';
+					window.location = site_url+'post/allcategories';
 				}				
 				else
 				{ 
-					window.location = site_url+'post/showposts/all';
+					window.location = site_url+'post/allcategories';
 				}
 			}
 		});

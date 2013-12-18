@@ -11,60 +11,49 @@
 <meta name="description" content="<?php if(property_exists($this,'page_desc') && $this->page_desc!="") echo $this->page_desc; else echo "Ink Smash" ?>" />
 <meta property="og:image" content="<?php echo site_url();?>images/inksmash-logo.png" />
 
-<?php 
-//$s3url = "https://s3.amazonaws.com/".BUCKET_NAME."/";
-$s3url = "";
-?>
 
 <link rel="shortcut icon" href="images/favicon.ico" />
 <!-- CSS start -->
-<link rel="stylesheet" type="text/css" href="css/chosen/style.css" /> 
-<link rel="stylesheet" type="text/css" href="css/chosen/prism.css" /> 
-<link rel="stylesheet" type="text/css" href="css/chosen/chosen.css" />
-<link rel="stylesheet" type="text/css" href="css/inkSmashStyle.css" />
-<link rel="stylesheet" type="text/css" href="css/jquery-ui.css" /> 
- 
+<link rel="stylesheet" type="text/css" href="<?php echo site_url().'css/chosen/style.css'; ?>" /> 
+<link rel="stylesheet" type="text/css" href="<?php echo site_url().'css/chosen/prism.css'; ?>" /> 
+<link rel="stylesheet" type="text/css" href="<?php echo site_url().'css/chosen/chosen.css'; ?>" />
+<link rel="stylesheet" type="text/css" href="<?php echo site_url().'css/inkSmashStyle.css'; ?>" />
+<link rel="stylesheet" type="text/css" href="<?php echo site_url().'css/jquery-ui.css'; ?>" /> 
 <!-- CSS end -->
 
 
 <!-- Javascripts start -->
 <script language="javascript" type="text/javascript">
 	 var site_url = '<?php echo site_url();?>';
-	 var admin_site_url = '<?php echo site_url().'ink-admin/';?>';
 </script>
 
 
-<script type="text/javascript" src="javascript/jquery-1.7.2.min.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo $s3url;?>javascript/jquery-ui.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo site_url().'javascript/jquery-1.7.2.min.js';?>"></script>
+<script language="javascript" type="text/javascript" src="<?php echo site_url().'javascript/jquery-ui.js';?>"></script>
 
-<script language="javascript" type="text/javascript" src="<?php echo $s3url;?>javascript/chosen/chosen.jquery.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo $s3url;?>javascript/chosen/prism.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo site_url().'javascript/chosen/chosen.jquery.js';?>"></script>
+<script language="javascript" type="text/javascript" src="<?php echo site_url().'javascript/chosen/prism.js';?>"></script>
 
-<script language="javascript" type="text/javascript" src="<?php echo $s3url;?>javascript/jquery.tipsy.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo $s3url;?>javascript/jquery.rating.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo $s3url;?>javascript/jquery.autoGrowInput.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo $s3url;?>javascript/jquery.tagedit.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo $s3url;?>javascript/pstrength-min.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo $s3url;?>javascript/label-infields.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo $s3url;?>javascript/custom-form-elements.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo site_url().'javascript/jquery.tipsy.js';?>"></script>
+<script language="javascript" type="text/javascript" src="<?php echo site_url().'javascript/jquery.rating.js';?>"></script>
+<script language="javascript" type="text/javascript" src="<?php echo site_url().'javascript/jquery.autoGrowInput.js';?>"></script>
+<script language="javascript" type="text/javascript" src="<?php echo site_url().'javascript/jquery.tagedit.js';?>"></script>
+<script language="javascript" type="text/javascript" src="<?php echo site_url().'javascript/pstrength-min.js';?>"></script>
+<script language="javascript" type="text/javascript" src="<?php echo site_url().'javascript/label-infields.js';?>"></script>
+<script language="javascript" type="text/javascript" src="<?php echo site_url().'javascript/custom-form-elements.js';?>"></script>
 
+<script language="javascript" type="text/javascript" src="<?php echo site_url().'javascript/functions.js';?>"></script>
+<script language="javascript" type="text/javascript" src="<?php echo site_url().'javascript/user.js';?>"></script>
+<script language="javascript" type="text/javascript" src="<?php echo site_url().'javascript/nicEdit.js';?>"></script>
+<script language="javascript" type="text/javascript" src="<?php echo site_url().'javascript/ajaxupload.js';?>"></script>
+<script language="javascript" type="text/javascript" src="<?php echo site_url().'javascript/admin.js'; ?>"></script>
+<script language="javascript" type="text/javascript" src="<?php echo site_url().'javascript/admin-common.js'; ?>"></script>
 
-<script language="javascript" type="text/javascript" src="<?php //echo $s3url;?>javascript/functions.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo $s3url;?>javascript/user.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo $s3url;?>javascript/nicEdit.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo $s3url;?>javascript/ajaxupload.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo site_url().'javascript/image-gallery.js'; ?>"></script>
+<script language="javascript" type="text/javascript" src="<?php echo site_url().'javascript/common.js'; ?>"></script>
 
-<script language="javascript" type="text/javascript" src="<?php echo $s3url;?>javascript/image-gallery.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo $s3url;?>javascript/common.js"></script>
-
-<script type="text/javascript" src="<?php echo $s3url;?>jwplayer/jwplayer.js"></script>
-
-<script language="javascript" type="text/javascript" src="<?php echo $s3url;?>javascript/jquery.form.js"></script>
-
-<script>
-/* this is for the share this icon upper comment section */
-//stLight.options({publisher: "1f450bf1-53d0-48d0-ad2c-603685f88f3d"});
-</script>
+<script type="text/javascript" src="<?php echo site_url().'jwplayer/jwplayer.js'; ?>"></script>
+<script language="javascript" type="text/javascript" src="<?php echo site_url().'javascript/jquery.form.js'; ?>"></script>
 
 <script language="javascript" type="text/javascript">
 	$(document).ready(function(){

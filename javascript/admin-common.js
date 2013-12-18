@@ -90,7 +90,7 @@ function checkbox_admin_click()
 	if( $('#admin_all').is(':checked') ){
 		$.ajax({
 				type : 'post',
-				url : site_url + "home/getUsersList",
+				url : site_url + "admin/getUsersList",
 				data: "",
 				success : function(data){
 						var response = $.parseJSON(data);
@@ -108,7 +108,7 @@ function checkbox_click(){
 	if( $('#read_write_all').is(':checked') ){
 		$.ajax({
 				type : 'post',
-				url : site_url + "home/getUsersList",
+				url : site_url + "admin/getUsersList",
 				data: "",
 				success : function(data){
 						var response = $.parseJSON(data);
@@ -129,7 +129,7 @@ function checkbox_click_two(){
 	if( $('#read_all').is(':checked') ){
 		$.ajax({
 				type : 'post',
-				url : site_url + "home/getUsersList",
+				url : site_url + "admin/getUsersList",
 				data: "",
 				success : function(data){
 						var response = $.parseJSON(data);
@@ -197,17 +197,6 @@ function copy_parent_read(){
 							$('#read option').remove();
 							$('#read').html(response.users).trigger("chosen:updated");
 						}
-						
-						/*var array = response.parentusers.split(",");
-						$.each(array,function(){
-							var v = this
-							$('#read option').each(function(){
-							  if ($(this).attr("value") == v){ 
-								$(this).attr("selected",true);
-							  }
-							});			  
-						});
-						$('#read').trigger("chosen:updated");*/
 				}
 			});
 		}else{
@@ -227,7 +216,7 @@ function copy_parent_read(){
 $(document).ready(function(){
 	changeText();	
 	
-$('.photo-browse, :radio.designer').css({'opacity':'0'});	
+$('.photo-browse, :radio.designer').css({'opacity':'0'});
 	
 //Outline None	
 	$('a, input').each(function() {
