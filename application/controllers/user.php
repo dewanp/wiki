@@ -843,7 +843,7 @@ class User extends CI_Controller {
 	{
 		$this->load->library('user_agent');
 		$user_name = $this->input->post('user_name');
-		$user = $this->commonmodel->getRecords('user','user_id,email,picture,profile_name,last_visit,last_visit_ip,login_status',array("user_name"=>$user_name,"password"=>md5($this->input->post('password')),"is_active"=>1),'',true);
+		$user = $this->commonmodel->getRecords('user','user_id,email,picture,profile_name,last_visit,last_visit_ip,login_status',array("role"=>2,"user_name"=>$user_name,"password"=>md5($this->input->post('password')),"is_active"=>1),'',true);
 		
 		
 		if($user){
