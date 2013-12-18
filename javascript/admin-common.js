@@ -110,13 +110,26 @@ function checkbox_admin_click()
 				data: "parent_category_id="+$('#parent_category').val(),
 				success : function(data){
 						var response = $.parseJSON(data);
-						
+						var admval;
 						$('#admin option').remove();
-						$('#admin').html(response.users).trigger("chosen:updated");
+						$('#admin').html(response.users);
+                        
+                         $("select#admin option:selected").each(function(){              
+                             admval = $(this).val();    
+                              $("select#read_write option, select#read option").each(function(){
+                                    if ($(this).val() == admval)
+                                       $(this).attr("disabled","disabled");
+                                }); 
+                            });                                                   
+                        
+                        $('.inputmain').trigger('chosen:updated');
 				}
 			});
 	}else{
-		 $('#admin option:selected').removeAttr('selected').trigger("chosen:updated");
+		 $('#admin option:selected').removeAttr('selected');
+         $("select#read_write option, select#read option").removeAttr("disabled","disabled"); 
+                        
+          $('.inputmain').trigger('chosen:updated');
 	}	
 }
 
@@ -128,16 +141,28 @@ function checkbox_click(){
 				data: "parent_category_id="+$('#parent_category').val(),
 				success : function(data){
 						var response = $.parseJSON(data);
-						
+						var admval;
 						$('#read_write option').remove();
-						$('#read_write').html(response.users).trigger("chosen:updated");
+						$('#read_write').html(response.users);
+                          $("select#read_write option:selected").each(function(){              
+                             admval = $(this).val();    
+                              $("select#admin option, select#read option").each(function(){
+                                    if ($(this).val() == admval)
+                                       $(this).attr("disabled","disabled");
+                                }); 
+                            }); 
+                          
+                            $('.inputmain').trigger('chosen:updated');
 				}
 			});
 	}else{
 		 if( $('#copy_parent_rw') .is(':checked') ){
 		 	$('#copy_parent_rw').attr('checked',false);
 		 }
-		 $('#read_write option:selected').removeAttr('selected').trigger("chosen:updated");
+		 $('#read_write option:selected').removeAttr('selected');
+         $("select#admin option, select#read option").removeAttr("disabled","disabled"); 
+                        
+          $('.inputmain').trigger('chosen:updated');
 	}	
 }
 
@@ -149,16 +174,26 @@ function checkbox_click_two(){
 				data: "parent_category_id="+$('#parent_category').val(),
 				success : function(data){
 						var response = $.parseJSON(data);
-						
+						var admval;
 						$('#read option').remove();
-						$('#read').html(response.users).trigger("chosen:updated");
+						$('#read').html(response.users);
+                        $("select#read option:selected").each(function(){              
+                             admval = $(this).val();    
+                              $("select#read_write option, select#admin option").each(function(){
+                                    if ($(this).val() == admval)
+                                       $(this).attr("disabled","disabled");
+                                }); 
+                            }); 
+                            $('.inputmain').trigger('chosen:updated');
 				}
 			});
 	}else{
 		 if( $('#copy_parent_r') .is(':checked') ){
 		 	$('#copy_parent_r').attr('checked',false);
 		 }
-		 $('#read option:selected').removeAttr('selected').trigger("chosen:updated");
+		 $('#read option:selected').removeAttr('selected');
+         $("select#read_write option, select#admin option").removeAttr("disabled","disabled");
+          $('.inputmain').trigger('chosen:updated');
 	}
 }
 
