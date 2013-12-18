@@ -78,9 +78,7 @@ function toggledropdown()
                                     if ($(this).val() == admval)
                                        $(this).attr("disabled","disabled");
                                 }); 
-                            }); 
-                        
-                        
+                            });                          
                         
                         $('.inputmain').trigger('chosen:updated');
 					}
