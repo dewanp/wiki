@@ -213,17 +213,6 @@ function copy_parent_read(){
 							$('#read option').remove();
 							$('#read').html(response.users).trigger("chosen:updated");
 						}
-						
-						/*var array = response.parentusers.split(",");
-						$.each(array,function(){
-							var v = this
-							$('#read option').each(function(){
-							  if ($(this).attr("value") == v){ 
-								$(this).attr("selected",true);
-							  }
-							});			  
-						});
-						$('#read').trigger("chosen:updated");*/
 				}
 			});
 		}else{
@@ -243,7 +232,7 @@ function copy_parent_read(){
 $(document).ready(function(){
 	changeText();	
 	
-$('.photo-browse, :radio.designer').css({'opacity':'0'});	
+$('.photo-browse, :radio.designer').css({'opacity':'0'});
 	
 //Outline None	
 	$('a, input').each(function() {

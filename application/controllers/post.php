@@ -1212,12 +1212,20 @@ class Post extends CI_Controller {
                 $data['have_child_cat']= 0;
                 else
             $data['have_child_cat']= 1;
-			$data['category_result'] = $this->mymodel->displayCategoryDropdown();
+			
+			$db_categories = $this->mymodel->displayFrontCategoryDropdown($this->user_id);
+			$category_result = array();
+			foreach($db_categories as $key=>$val)
+			{
+				$category_result[$val['category_id']] = $val['name'];
+			}
+			$data['category_result'] = $category_result;
+			$data['section'] = 'front-end';
 			
 			$user_result = $this->db->select('user_id ,profile_name')->from('user')->where('is_active',1)->order_by('profile_name','asc')->get();
 			$data['user_result'] = $user_result->result_array();
 			
-			 $data['sidebar'] = $this->load->view('includes/sidebar', $data, true);
+			$data['sidebar'] = $this->load->view('includes/sidebar', $data, true);
             $this->load->view('includes/header');
             $this->load->view('post/add-edit-category',$data);
 			
