@@ -116,12 +116,16 @@
                          </div>
                     </td>
                 </tr>
-                
-                
+                <?php if($section == 'front-end') {?> 
+                <input type="hidden" value="1" name="is_active" id="is_active"/>
+                    <?php 
+                } else { ?>
+                      
                 <tr>
                     <td>Status</td>
                     <td>
                       <div class="field">
+                          
                         <select name="is_active" id="is_active" class="inputmain" style="width:298px;"> 
                           	<option value="1" id="active" <?php echo $status =($category_detail['is_active']==1)?'selected':'' ?> >Active </option>
                            <option value="0" id="deactive" <?php echo $status =($category_detail['is_active']==0 && $category_detail['is_active']!='')?'selected':'' ?>>De-active</option>
@@ -129,6 +133,8 @@
                       </div>
                     </td>
                 </tr>
+                    <?php }?>
+              
                 
                 <?php if($category_detail['category_id'] && $have_child_cat==1){?>
                 <tr>
@@ -152,7 +158,7 @@
                     	 
                         <input type="hidden" name="edit_category_id" id="edit_category_id" value="<?php echo $category_detail['category_id']; ?>"/>
                         <input type="hidden" name="section" id="section" value="<?php echo $section; ?>"/>
-                        <a href="<?php echo site_url('admin/displaycategorylist');?>"><input type="button" class="btngrey" value="Cancel"  name="cancel" /></a>
+                        <a href="<?php if($section == 'front-end') echo site_url('post/allcategories'); else echo site_url('admin/displaycategorylist');?>"><input type="button" class="btngrey" value="Cancel"  name="cancel" /></a>
                          
                          
                    </td>

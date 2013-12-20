@@ -28,7 +28,7 @@ class Home extends CI_Controller {
 		
 		if($this->commonmodel->isLoggedIn())
 		{
-			redirect('post/showposts/all');
+			redirect('post/allcategories');
 		}
 		else
 		{ 

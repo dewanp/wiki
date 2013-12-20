@@ -104,10 +104,14 @@ function removeCheckR(){
 function checkbox_admin_click()
 {
 	if( $('#admin_all').is(':checked') ){
+        var selected_user=[];
+        $("select#read_write option:selected, select#read option:selected").each(function(){             
+            selected_user.push($(this).val());                                
+        }); 
 		$.ajax({
 				type : 'post',
 				url : site_url + "admin/getUsersList",
-				data: "parent_category_id="+$('#parent_category').val(),
+				data: "parent_category_id="+$('#parent_category').val()+'&selected_user='+selected_user,
 				success : function(data){
 						var response = $.parseJSON(data);
 						var admval;
@@ -135,10 +139,14 @@ function checkbox_admin_click()
 
 function checkbox_click(){
 	if( $('#read_write_all').is(':checked') ){
+         var selected_user=[];
+        $("select#admin option:selected, select#read option:selected").each(function(){             
+            selected_user.push($(this).val());                                
+        }); 
 		$.ajax({
 				type : 'post',
 				url : site_url + "admin/getUsersList",
-				data: "parent_category_id="+$('#parent_category').val(),
+				data: "parent_category_id="+$('#parent_category').val()+'&selected_user='+selected_user,
 				success : function(data){
 						var response = $.parseJSON(data);
 						var admval;
@@ -156,10 +164,8 @@ function checkbox_click(){
 				}
 			});
 	}else{
-		 if( $('#copy_parent_rw') .is(':checked') ){
-		 	$('#copy_parent_rw').attr('checked',false);
-		 }
-		 $('#read_write option:selected').removeAttr('selected');
+		 
+		 
          $("select#admin option, select#read option").removeAttr("disabled","disabled"); 
                         
           $('.inputmain').trigger('chosen:updated');
@@ -168,10 +174,14 @@ function checkbox_click(){
 
 function checkbox_click_two(){
 	if( $('#read_all').is(':checked') ){
+         var selected_user=[];
+        $("select#read_write option:selected, select#admin option:selected").each(function(){             
+            selected_user.push($(this).val());                                
+        }); 
 		$.ajax({
 				type : 'post',
 				url : site_url + "admin/getUsersList",
-				data: "parent_category_id="+$('#parent_category').val(),
+				data: "parent_category_id="+$('#parent_category').val()+'&selected_user='+selected_user,
 				success : function(data){
 						var response = $.parseJSON(data);
 						var admval;
@@ -188,10 +198,8 @@ function checkbox_click_two(){
 				}
 			});
 	}else{
-		 if( $('#copy_parent_r') .is(':checked') ){
-		 	$('#copy_parent_r').attr('checked',false);
-		 }
-		 $('#read option:selected').removeAttr('selected');
+		  
+		  
          $("select#read_write option, select#admin option").removeAttr("disabled","disabled");
           $('.inputmain').trigger('chosen:updated');
 	}
@@ -222,10 +230,7 @@ function copy_parent_readwrite(){
 			$('#read_write_error').text('You need to select parent category first');
 		}
 	}else{
-		 if($('#read_write_all').is(':checked')){
-			$('#read_write_all').attr("checked",false);
-		 }
-		 $('#copy_parent_rw option').removeAttr('selected');
+		 
 		 $('#read_write_error').text('');
 		 $('#read_write option:selected').removeAttr('selected').trigger("chosen:updated");
 	}

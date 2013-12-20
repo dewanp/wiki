@@ -9,6 +9,7 @@ class Post extends CI_Controller {
 	var $user_id =0;
 	
 	public $childcategory = array();
+    public $parentcategory = array();
 	
 	/**
 	 * Index Page for this controller.
@@ -761,14 +762,18 @@ class Post extends CI_Controller {
 		if($this->user_id != '')
 		{
 			$data['type'] = $type;
-			
-			$permission = $this->commonmodel->check_permission($type,$this->user_id);
+			 
+                $permission = $this->commonmodel->check_permission($type,$this->user_id);
 			
 			if(!$permission){
 				redirect('post/allcategories');
 				exit;
 			}
-			
+            $this->display_parent($type,0);
+            
+			ksort($this->parentcategory);
+            $data['breadcrumb'] = $this->parentcategory;
+             
 			$data['permission'] = $permission;
 			$data['posts'] = $this->postmodel->getCategoriesPosts($this->user_id,$type);
 			
@@ -1722,7 +1727,22 @@ class Post extends CI_Controller {
 		} 
 	}
 	
+	/* Function for get sub-catetgories related to root category*/
+	function display_parent($child, $level)
+	{ 
+		$query = 'SELECT c.parent,c.name,cr.permission_type FROM category c left join user_category_relation cr on c.parent=cr.category_id and cr.user_id="'.$this->user_id.'" WHERE c.category_id="'.$child.'"';
+		$resultt = $this->db->query($query);
 	
+		foreach($resultt->result_array() as $row)
+		{ 
+			$thisref = &$this->parentcategory;		
+			$thisref[$row['parent']]['parent'] =   $row['parent'];
+            $thisref[$row['parent']]['name'] =   $row['name'];
+            $thisref[$row['parent']]['permission_type'] =   $row['permission_type'];
+			$this->parentcategory =  &$thisref ; 		 
+			$this->display_parent($row['parent'], $level+1);
+		} 
+	}
 	/*
 	 * This function is used for setting up user's google 
 	 * adsense account by getting google ads client id.

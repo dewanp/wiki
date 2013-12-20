@@ -3071,6 +3071,8 @@ class Admin extends CI_Controller
 	{
         $previous_adm = array();
          $parent_category_id = $this->input->post('parent_category_id');
+         $selected_user = explode(',', $this->input->post('selected_user'));
+          
          if($parent_category_id!='' && $parent_category_id!='0'){
         $previous_adm = $this->mymodel->getAdminInfo($parent_category_id,1); 
         foreach($previous_adm as $adminval){
@@ -3085,7 +3087,7 @@ class Admin extends CI_Controller
  		
 		foreach($user_result->result_array() as $key=> $val)
 		{
-            if(!in_array($val['user_id'], $previous_admin_ids))
+            if(!in_array($val['user_id'], $previous_admin_ids) && !in_array($val['user_id'], $selected_user))
                 $output .= '<option value="'.$val['user_id'].'" selected="selected">'.$val['profile_name'].'</option>';
 		}
 		

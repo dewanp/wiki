@@ -3,8 +3,12 @@
 	<div class="rightmain">
 		<div class="breadcrumb"> <span class="arrowleft"></span>
 			<ul>
-				<li><a href="javascript:void(0);" class="active">Home</a></li>
-				
+				<li><a href="<?php echo site_url('post/allcategories'); ?>" class="active">Home</a></li>
+				<?php
+            foreach($breadcrumb as $row){ ?>
+                <li><a href="<?php if(isset($row['permission_type'])){ echo site_url('post/showposts/'.$row['parent']);}else{ echo 'javascript:void(0);';}?>" <?php if($row['parent']==$type){ echo 'class="active"';}?>><?php echo $row['name'];?> </a></li>
+          <?php  }
+            ?>
                 <li><a href="javascript:void(0);" class="active"><?php if(strtolower($type)=='paragraph'){echo 'Articles';}else{ echo 'Posts';}?> </a></li>
 			</ul>
             <?php

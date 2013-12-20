@@ -80,7 +80,7 @@ $route['contact-us'] = "page/contact_us";
 $route['management'] = "page/management";
 $route['how-it-works'] = "page/how_it_works";
 
-
+$route['admin'] = "admin/login";
 $route['([A-Za-z0-9~%.:_\-]*)'] = "user/profile/$1";
 $route['([A-Za-z0-9~%.:_\-]*)/favorites'] = "user/profile/$1/favorites";
 
