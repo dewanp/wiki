@@ -1,36 +1,34 @@
- <?php
-			$action = 'editcategory';
-			
-			echo form_open('admin/'.$action);
-		 ?>
-            <table border="0" cellspacing="0" cellpadding="0" class="tbldtl">
+<?php 
+	$action = 'editcategory';
+	echo form_open('admin/'.$action);
+?>
+	<script>
+		$(document).ready(function(){
+			toggledropdown();
+		});
+    </script>
+    
+    <table border="0" cellspacing="0" cellpadding="0" class="tbldtl">
                 
-                
-                <tr>
-					<td> Parent Category </td>
-					<td>
+			 <?php if($section == 'front-end'){?>
+                <input type="hidden" id="parent_category" name ="parent_category" value="<?php echo $parent_category;?>"/>
+             <?php }else if($section == 'back-end'){?>
+                 <tr>
+                    <td> Parent Category </td>
+                    <td>
                     
-					  <select  id="parent_category" name ="parent_category" class="inputmain" style="width:298px;" onchange="toggledropdown();"> 
-                         
-                         <?php if($section == 'front-end'){?>
-						 		<option value="0" selected="selected">--- None ---</option>
-								<?php foreach($category_result as $optkey=>$optval){?>	
-								<option value="<?php echo $optkey; ?>" <?php if(isset($parent_category) && $parent_category == $optkey){?> selected="selected"<?php }?>><?php echo $optval; ?></option>
-								<?php }?>
-						<?php }?>
-                         
-                         
-						 <?php if($section == 'back-end'){
-						 foreach($category_result as $optkey=>$optval){
-                             if($optkey==$category_detail['category_id'] && $category_detail['category_id']!='')continue;
-                             ?>
-					<option value="<?php echo $optkey; ?>" <?php if(isset($parent_category) && $parent_category == $optkey){?> selected="selected"<?php }?>><?php echo $optval; ?></option>
-						 <?php }
-						  }?>
-                         
-					   </select>
-					</td>
-			    </tr>
+                <select  id="parent_category" name ="parent_category" class="inputmain" style="width:298px;" onchange="toggledropdown();"> 								
+                    <?php foreach($category_result as $optkey=>$optval){
+                            if($optkey==$category_detail['category_id'] && $category_detail['category_id']!='')continue;
+                     ?>
+                            <option value="<?php echo $optkey; ?>" <?php if(isset($parent_category) && $parent_category == $optkey){?> selected="selected"<?php }?>><?php echo $optval; ?></option>
+                    <?php }?>
+               </select>
+               
+                </td>
+            </tr>    
+            <?php }?>
+					
                 
                 <tr>
                     <td>Category Name</td>
@@ -45,7 +43,13 @@
                 </tr>
                 
                 
-                <tr id="admin_tr" class="">
+                <?php if($section == 'front-end' && $permission==1 && $inheritance==0){
+						$style ='style="display:none;"';
+					  }else if($section == 'front-end' && $permission==1 && $inheritance==1){
+					  	$style ='style=""';
+					  }
+				?>
+                <tr id="admin_tr" class="" <?php echo $style;?>>
                     <td> Admin </td>
                     <td>
                     	<div id="prev_admin">
@@ -93,21 +97,21 @@
                 <tr>
                     <td> Read </td>
                     <td> 
-                         <select id="read" name ="read[]" class="inputmain" style="width:298px" multiple="multiple"  data-placeholder="--- Select People ---" onchange="removeCheckR()" style="width:298px;">
+                         <select id="read" name ="read[]" class="inputmain" multiple="multiple"  data-placeholder="--- Select People ---" onchange="removeCheckR()" style="width:298px;">
                             
-						<?php if($category_detail['category_id'] == ''){?>
-                        <?php foreach($user_result as $user){ ?>
-                         <option value = "<?php echo $user['user_id']; ?>">
-                            <?php echo $user['profile_name']; ?>
-                         </option>
-						 <?php }?>
-                         <?php }?> 
-                            
-                            
-                         </select>
+						<?php if($category_detail['category_id'] == '')
+							  {
+							  	foreach($user_result as $user)
+								{
+						?>
+                             <option value = "<?php echo $user['user_id'];?>"><?php echo $user['profile_name'];?></option>
+						 <?php }
+						 	  }
+						?> 
+                        </select>
                          
                          <div style="display:block; vertical-align:top; margin-top:5px;">
-                             <span>Or Select All </span>
+                             <span>Or Select All</span>
                              <input type="checkbox" id="read_all" name="read_all" value="1" onclick="checkbox_click_two()"/><br/>
                          </div>
                     </td>
@@ -154,4 +158,4 @@
                    </td>
                 </tr>
             </table>
-            <?php echo form_close(); ?>
+    <?php echo form_close(); ?>

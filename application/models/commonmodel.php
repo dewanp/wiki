@@ -204,28 +204,28 @@ class Commonmodel extends CI_Model {
 	*	Function for check permission to user on particular category or not.
 	*	check in admin_ids column using cat_id where condition
 	*	Different case for all permissions. 
-	*	1 for admin, 2 for r/w, 3 for read, 4 for default.
+	*	1 for admin, 2 for r/w, 3 for read, 4 for default
 	*	
 	*/
 	public function check_permission($cat_id, $user_id)
 	{
 		if($cat_id != '' && $user_id != '')
 		{
-			$admin_query = " SELECT ucr.user_id FROM user_category_relation AS ucr WHERE FIND_IN_SET(".$user_id." ,ucr.user_id) AND category_id = ".$cat_id." AND ucr.permission_type = 1 ";
+			$admin_query = " SELECT ucr.user_id FROM user_category_relation AS ucr WHERE ucr.user_id = ".$user_id." AND category_id = ".$cat_id." AND ucr.permission_type = 1 ";
 			$admin_result = $this->db->query($admin_query);
 			$admin_permission = $admin_result->row_array();
 			if(!empty($admin_permission)){
 				return 1;
 			}
 			
-			$rw_query = " SELECT ucr.user_id FROM user_category_relation AS ucr WHERE  FIND_IN_SET(".$user_id." ,ucr.user_id) AND category_id = ".$cat_id ." AND ucr.permission_type = 2 ";
+			$rw_query = " SELECT ucr.user_id FROM user_category_relation AS ucr WHERE ucr.user_id = ".$user_id." AND category_id = ".$cat_id ." AND ucr.permission_type = 2 ";
 			$rw_result = $this->db->query($rw_query);
 			$rw_permission = $rw_result->row_array();
 			if(!empty($rw_permission)){
 				return 2;
 			}
 		
-			$r_query = " SELECT ucr.user_id FROM user_category_relation AS ucr WHERE  FIND_IN_SET(".$user_id.",ucr.user_id) AND category_id = ".$cat_id ." AND ucr.permission_type = 3 ";
+			$r_query = " SELECT ucr.user_id FROM user_category_relation AS ucr WHERE  ucr.user_id = ".$user_id." AND category_id = ".$cat_id ." AND ucr.permission_type = 3 ";
 			$r_result = $this->db->query($r_query);
 			$r_permission = $r_result->row_array();
 			if(!empty($r_permission)){
@@ -234,6 +234,22 @@ class Commonmodel extends CI_Model {
 			return false;
 		}
 	}
+	
+	public function check_inherited($cat_id, $user_id)
+	{
+		if($cat_id != '' && $user_id != '')
+		{
+			$admin_query = " SELECT ucr.user_id FROM user_category_relation AS ucr WHERE ucr.user_id = ".$user_id." AND category_id = ".$cat_id." AND ucr.permission_type = 1 AND ucr.is_inherited = 1 ";
+			$admin_result = $this->db->query($admin_query);
+			$admin_permission = $admin_result->row_array();
+			if(!empty($admin_permission)){
+				return 1;
+			}
+			return 0;
+		}	
+	}		
+	
+	
 	
 	/**
 	*	Function for check user exist in admin and read/write column 

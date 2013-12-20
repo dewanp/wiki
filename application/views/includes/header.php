@@ -14,11 +14,10 @@
 
 <link rel="shortcut icon" href="images/favicon.ico" />
 <!-- CSS start -->
-<link rel="stylesheet" type="text/css" href="<?php echo site_url().'css/chosen/style.css'; ?>" /> 
-<link rel="stylesheet" type="text/css" href="<?php echo site_url().'css/chosen/prism.css'; ?>" /> 
+<link rel="stylesheet" type="text/css" href="<?php echo site_url().'css/jquery-ui.css'; ?>" />
 <link rel="stylesheet" type="text/css" href="<?php echo site_url().'css/chosen/chosen.css'; ?>" />
 <link rel="stylesheet" type="text/css" href="<?php echo site_url().'css/inkSmashStyle.css'; ?>" />
-<link rel="stylesheet" type="text/css" href="<?php echo site_url().'css/jquery-ui.css'; ?>" /> 
+<link rel="stylesheet" type="text/css" href="<?php echo site_url().'css/fixes.css'; ?>" />
 <!-- CSS end -->
 
 

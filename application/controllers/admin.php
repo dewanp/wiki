@@ -1571,8 +1571,10 @@ class Admin extends CI_Controller
 							 
 						}
 					}
-				
-				redirect(base_url().'admin/displayEditCategory/'.$edit_category_id);
+				if($this->input->post('section')=='back-end')
+					redirect(base_url().'admin/displayEditCategory/'.$edit_category_id);
+				else if($this->input->post('section')=='front-end')
+					redirect(base_url().'post/displayEditCategory/'.$edit_category_id);
 			}
 		}
 		else
@@ -1601,7 +1603,7 @@ class Admin extends CI_Controller
 			$data['category_result'] = $this->mymodel->displayCategoryDropdown();
 			
 	 		$data['section'] = 'back-end';
-			
+			//echo'<pre>';print_r($data);exit;
 			$this->load->view('admin/include/header', $data);
 			$this->load->view('admin/edit-category');
 			$this->load->view('admin/include/footer');

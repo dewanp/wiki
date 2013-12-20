@@ -114,7 +114,7 @@ class Post extends CI_Controller {
 		
 	}
 	
-	public function add()
+	public function add($category_id='')
 	{
 		if($this->commonmodel->isLoggedIn())
 		{ 
@@ -125,7 +125,15 @@ class Post extends CI_Controller {
 			redirect('user/login');
 		}
 		$data = array();
-		$data['category_list'] = $this->postmodel->getCategoryIds($this->user_id);
+		
+		$permission = $this->commonmodel->check_permission($category_id,$this->user_id);
+		if(!$permission){
+			$this->session->set_flashdata('Insufficient_rights', 'Insufficient rights for create/edit post.');
+			redirect('post/allcategories');
+			exit;
+		}
+		
+		//$data['category_list'] = $this->postmodel->getCategoryIds($this->user_id);
 		//echo'<pre>';print_r($data['category_list']);exit;
 		$data['profile_links'] = $this->load->view('user/profile-links', $data, true);
 		$data['capsules'] = $this->commonmodel->getRecords('capsule_type', '', array('is_active' => 1));
@@ -256,7 +264,7 @@ class Post extends CI_Controller {
 		}
 		
 		$data = array();
-		$data['category_list'] = $this->postmodel->getCategoryIds($this->user_id);
+		//$data['category_list'] = $this->postmodel->getCategoryIds($this->user_id);
 		
 		//load current post
 		$post = $this->commonmodel->getRecords('post', '', array('post_id' => $post_id), '', true);
@@ -753,6 +761,15 @@ class Post extends CI_Controller {
 		if($this->user_id != '')
 		{
 			$data['type'] = $type;
+			
+			$permission = $this->commonmodel->check_permission($type,$this->user_id);
+			
+			if(!$permission){
+				redirect('post/allcategories');
+				exit;
+			}
+			
+			$data['permission'] = $permission;
 			$data['posts'] = $this->postmodel->getCategoriesPosts($this->user_id,$type);
 			
 			$data['most_posted_users'] = true;
@@ -1156,7 +1173,6 @@ class Post extends CI_Controller {
 		$data['most_posted_users'] = true;
 		$data['categories'] = $this->postmodel->get_user_all_category($this->user_id); 
 		
-		  
 		$limit=200;
 		$start = $this->uri->segment(3,$start);	
 		$all = count($data['categories']);
@@ -1175,6 +1191,10 @@ class Post extends CI_Controller {
 		$data['user_id'] = $this->user_id;
 		$data['sidebar'] = $this->load->view('includes/sidebar', $data, true);
 		
+		if($this->session->flashdata('Insufficient_rights')!= ''){
+			$data['flash_msg'] = $this->session->flashdata('Insufficient_rights');
+		}
+		
 		$this->load->view('includes/header');
 		$this->load->view('post/all-categories',$data);
 		$this->load->view('includes/footer');
@@ -1186,11 +1206,23 @@ class Post extends CI_Controller {
 	{
 		 
 		if($category_id)
+			
+			$permission = $this->commonmodel->check_permission($category_id,$this->user_id);
+			$data['permission'] = $permission;
+			if($permission != 1){
+				redirect('post/allcategories');
+				exit;
+			}
+			
+			$inherited = $this->commonmodel->check_inherited($category_id,$this->user_id);
+			$data['inheritance'] = $inherited;
+			
 			$category_detail = $this->mymodel->displayEditCategory($category_id);
 			$data['title'] = "Vinfotech-wiki Admin Section";
 			$data['active'] ="category";
 			$data['category_detail'] = $category_detail;
 			$data['parent_category'] = $category_detail['parent'];
+			
             $category_result = $this->display_children($category_id,0);
             
             if(empty($this->childcategory)) 
@@ -1198,22 +1230,15 @@ class Post extends CI_Controller {
                 else
             $data['have_child_cat']= 1;
 			
-			$db_categories = $this->mymodel->displayFrontCategoryDropdown($this->user_id);
-			$category_result = array();
-			foreach($db_categories as $key=>$val)
-			{
-				$category_result[$val['category_id']] = $val['name'];
-			}
-			$data['category_result'] = $category_result;
 			$data['section'] = 'front-end';
 			
 			$user_result = $this->db->select('user_id ,profile_name')->from('user')->where('is_active',1)->order_by('profile_name','asc')->get();
 			$data['user_result'] = $user_result->result_array();
 			
 			$data['sidebar'] = $this->load->view('includes/sidebar', $data, true);
-            $this->load->view('includes/header');
+            
+			$this->load->view('includes/header');
             $this->load->view('post/add-edit-category',$data);
-			
 			$this->load->view('includes/footer');
 		 
 	}

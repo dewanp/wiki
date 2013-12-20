@@ -17,11 +17,7 @@
             </div>
         </div>
         <div class="clear"></div>
-         <script>
-			$(document).ready(function(){
-				toggledropdown();
-			});
-		</script>
+         
         <div class="rightdtls">
            <?php $this->load->view('admin/edit-category-form',$data); ?>
    <div class="clear"></div>

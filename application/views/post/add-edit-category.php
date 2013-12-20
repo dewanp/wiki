@@ -8,11 +8,9 @@
             </ul>
         </div>
         <div class="rightinner"> 
-            <?php if( !empty($category_result) && count($category_result) > 1 ){?>
             	<div class="showcomment"> 
 			   <?php $this->load->view('admin/edit-category-form',$data); ?>
 			</div>
-            <?php }?>
         </div>
     </div>
 	<div class="clear"></div>

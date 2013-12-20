@@ -8,8 +8,13 @@
             </ul>
         </div>
         <div class="rightinner">
+        	<?php if(isset($flash_msg)){?>
+            <div class="error">
+            	<?php echo $flash_msg;?>
+            </div>
+            <?php }?>
             <div class="sub-title">
-                <h2>Categories</h2>
+                <h2 class="border-none">Categories</h2>
                  <ul id="sample">
                      <li class="cadmin">Admin</li>
                      <li class="crw">RW</li>
@@ -23,7 +28,6 @@
                  <ul id="category_display">
                      
                     <?php foreach ($categories as $row){
-						//echo'<pre>';print_r($categories);
                         $class='';
                         if($row['permission_type']==1)
                             $class='cadmin';

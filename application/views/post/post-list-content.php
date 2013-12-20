@@ -1,4 +1,4 @@
-	<?php if(!empty( $posts)){ //echo'<pre>';print_r($posts);?>
+	<?php if(!empty( $posts)){?>
 	<?php $i = 1; foreach($posts as $post){?>
 		<div class="searchdtl" id="div-id-<?php echo $i; ?>">
 			<div class="sdleft">
@@ -43,11 +43,9 @@
                                 <li><?php $p_url =  getPostUrl($post['post_id']); echo anchor($p_url,'View' ,'class="publish"')?></li>
                                 <li><a href="javascript:void(0)" onclick="prepareConfirmPopup(this,'Are you sure?')" class="delete">Delete</a>
                                 <div class="adl"><a href="javascript:void(0)" onclick="deletePost('<?php echo $post['post_id']?>'),hidePost('<?php echo 'div-id-'.$i; ?>')" class="btnorange">Yes</a></div></li>
-                               <!-- <li><?php echo anchor('post/add/'.$post['category_id'],'Write Post' ,'class="edit"')?></li>-->
                             
 							<?php }elseif($permission == 2){?>
-                           	<li><?php $p_url =  getPostUrl($post['post_id']); echo anchor($p_url,'View' ,'class="publish"')?></li>
-                            <!--<li><?php echo anchor('post/add/'.$post['category_id'],'Write Post' ,'class="edit"')?></li> -->   
+                           		<li><?php $p_url =  getPostUrl($post['post_id']); echo anchor($p_url,'View' ,'class="publish"')?></li>
                             
 							<?php }elseif($permission == 3){?>
                             	<li><?php $p_url =  getPostUrl($post['post_id']); echo anchor($p_url,'View' ,'class="publish"')?></li>
@@ -61,7 +59,5 @@
           <?php }?>
 		</div>
 		<div class="divider"></div>  
-	<?php $i++; }?>
-	<?php }else{?>
-    	
-	<?php }?>	
+	<?php $i++; }
+	}?>
