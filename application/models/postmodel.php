@@ -479,16 +479,31 @@ class Postmodel extends CI_Model {
  		$where = '';
 		if(is_numeric($type))
 		{
-			$where = ' AND p.category_id = '.$type;
+			$where = ' WHERE p.category_id = '.$type;
 		}
 		
-		$query = "SELECT   p.*,u.user_name, u.profile_name,
+		if(!is_numeric($type))
+		{
+			$get_query = " SELECT GROUP_CONCAT(category_id) AS categories FROM user_category_relation WHERE user_id = ".$user_id;
+			$cat_result = $this->db->query($get_query);
+			$cats = $cat_result->row_array();
+			if(!empty($cats))
+			{
+				$where = ' WHERE p.category_id IN ('.$cats['categories'].') ';
+			}
+		}
+		
+		/*$query = "SELECT   p.*,u.user_name, u.profile_name,
 				  (SELECT c.name FROM category AS c WHERE c.category_id = p.category_id)AS category_name
 				  FROM post p LEFT JOIN user u ON u.user_id = p.user_id 
 				  WHERE
 				  p.category_id IN(SELECT ucr.category_id FROM user_category_relation AS ucr WHERE FIND_IN_SET(".$user_id.",ucr.user_id))
 				  ".$where." AND p.is_active = 1 
-				  ORDER BY p.created_date DESC LIMIT $offset, $limit";
+				  ORDER BY p.created_date DESC LIMIT $offset, $limit";*/
+		$query = "SELECT   p.*,u.user_name, u.profile_name,
+				  (SELECT c.name FROM category AS c WHERE c.category_id = p.category_id)AS category_name
+				  FROM post p LEFT JOIN user u ON u.user_id = p.user_id ".$where."
+				  AND p.is_active = 1 ORDER BY p.created_date DESC LIMIT $offset, $limit";
 		
 		$post_result = $this->db->query($query);
 		$posts = $post_result->result_array();	

@@ -1,4 +1,4 @@
-	<?php if(!empty( $posts)){?>
+	<?php if(!empty( $posts)){ //echo'<pre>';print_r($posts);?>
 	<?php $i = 1; foreach($posts as $post){?>
 		<div class="searchdtl" id="div-id-<?php echo $i; ?>">
 			<div class="sdleft">
@@ -27,7 +27,7 @@
 				</p>
 				<div class="by"><b>Posted By:</b> <a href="<?php echo site_url($post['user_name'])?>"><?php if($post['profile_name']) echo $post['profile_name']; else echo $post['user_name'];?></a> at <b><?php echo date("M d,Y",$post['created_date'])?></b> In <b><?php echo $post['category_name']?></b></div>
 			</div>
-           <?php $premission_array = array(); $permission = $this->commonmodel->check_permission($post['category_id'],$login_user_id);
+           <?php $permission = $this->commonmodel->check_permission($post['category_id'],$login_user_id);
 		   			 if($permission){
 		   ?>
 			<span class="or-icons">
@@ -39,17 +39,17 @@
                           <ul>
                             <?php if($permission == 1){?>
                             
-                            	<!--<li><?php echo anchor('post/add','Add Post' ,'class="edit"')?></li>-->
                                 <li><?php echo anchor('post/edit/'.$post['post_id'],'Edit Post' ,'class="edit"')?></li>
                                 <li><?php $p_url =  getPostUrl($post['post_id']); echo anchor($p_url,'View' ,'class="publish"')?></li>
                                 <li><a href="javascript:void(0)" onclick="prepareConfirmPopup(this,'Are you sure?')" class="delete">Delete</a>
                                 <div class="adl"><a href="javascript:void(0)" onclick="deletePost('<?php echo $post['post_id']?>'),hidePost('<?php echo 'div-id-'.$i; ?>')" class="btnorange">Yes</a></div></li>
-                            <?php }elseif($permission == 2){?>
+                               <!-- <li><?php echo anchor('post/add/'.$post['category_id'],'Write Post' ,'class="edit"')?></li>-->
                             
-                          		<!--<li><?php echo anchor('post/add','Add Post' ,'class="edit"')?></li>-->
+							<?php }elseif($permission == 2){?>
                            	<li><?php $p_url =  getPostUrl($post['post_id']); echo anchor($p_url,'View' ,'class="publish"')?></li>
-                                
-                            <?php }elseif($permission == 3){?>
+                            <!--<li><?php echo anchor('post/add/'.$post['category_id'],'Write Post' ,'class="edit"')?></li> -->   
+                            
+							<?php }elseif($permission == 3){?>
                             	<li><?php $p_url =  getPostUrl($post['post_id']); echo anchor($p_url,'View' ,'class="publish"')?></li>
                             <?php }?>
                           </ul>
@@ -58,7 +58,7 @@
                     </div>
                 </div>
             </span>
-            <?php }?>
+          <?php }?>
 		</div>
 		<div class="divider"></div>  
 	<?php $i++; }?>

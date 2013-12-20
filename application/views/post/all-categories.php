@@ -22,7 +22,8 @@
                  
                  <ul id="category_display">
                      
-                    <?php foreach ($categories as $row){  
+                    <?php foreach ($categories as $row){
+						//echo'<pre>';print_r($categories);
                         $class='';
                         if($row['permission_type']==1)
                             $class='cadmin';
@@ -31,7 +32,11 @@
                         elseif($row['permission_type']==3)
                             $class='cr';
                      ?>
-                     <li class="<?php echo $class;?>"> <?php echo $row['name'];?></li>
+                     <a href="<?php echo 'post/showposts/'.$row['id'];?>">
+                         <li class="<?php echo $class;?>">
+                            <?php echo $row['name'];?>
+                         </li>
+                     </a>
                      <?php
                     }  ?>
                      </ul>

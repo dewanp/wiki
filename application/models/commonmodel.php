@@ -235,7 +235,6 @@ class Commonmodel extends CI_Model {
 		}
 	}
 	
-	
 	/**
 	*	Function for check user exist in admin and read/write column 
 	*	if exist then show createpost button

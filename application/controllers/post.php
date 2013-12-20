@@ -397,21 +397,6 @@ class Post extends CI_Controller {
 			show_404();
 		}
 		
-		
-		/*if($post['user_id'] != $user_id && $this->commonmodel->isLoggedIn()){			
-			$rs_user_following = $this->db->select("user_follow_id")->from('user_follow')->where(array('following'=>$post['user_id'] ,'follower'=>$user_id))->get();
-			
-			if($rs_user_following->num_rows()){
-				$followdata = $rs_user_following->row_array();
-				$data['followthisuser']= "<div class=\"follow-link\"><a href=\"javascript:void(0);\" onclick=\"unFollowUserbyAnyLocation(this,'".$followdata['user_follow_id']."','breadcrumb')\" title=\"Unfollow This User\"></a></div>";
-			}else{
-				$data['followthisuser']= "<div class=\"unfollow-link\"><a href=\"javascript:void(0);\" onclick=\"followUserbyAnyLocation(this,'".$post['user_id']."','".$user_id."','breadcrumb')\" title=\"Follow This User\"></a></div>";
-			}
-			
-		}else{
-			$data['followthisuser']= '';
-		}*/
-		
 		$data['post'] = $post;
 		
 		// post My Favorites
