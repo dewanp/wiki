@@ -39,7 +39,7 @@
                           <ul>
                             <?php if($permission == 1){?>
                             
-                                <li><?php echo anchor('post/edit/'.$post['post_id'],'Edit Post' ,'class="edit"')?></li>
+                                <li><?php echo anchor('post/edit/'.$post['post_id'].'/'.$post['category_id'],'Edit Post' ,'class="edit"')?></li>
                                 <li><?php $p_url =  getPostUrl($post['post_id']); echo anchor($p_url,'View' ,'class="publish"')?></li>
                                 <li><a href="javascript:void(0)" onclick="prepareConfirmPopup(this,'Are you sure?')" class="delete">Delete</a>
                                 <div class="adl"><a href="javascript:void(0)" onclick="deletePost('<?php echo $post['post_id']?>'),hidePost('<?php echo 'div-id-'.$i; ?>')" class="btnorange">Yes</a></div></li>

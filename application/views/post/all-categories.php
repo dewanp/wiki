@@ -21,34 +21,9 @@
                      <li class="cr">R</li>
                  </ul>
             </div>
-            <div class="catbox">
-            <?php if(!empty($categories)){?>
-                <div class="catypef">
-                 
-                 <ul id="category_display">
-                     
-                    <?php foreach ($categories as $row){
-                        $class='';
-                        if($row['permission_type']==1)
-                            $class='cadmin';
-                        elseif($row['permission_type']==2)
-                            $class='crw';
-                        elseif($row['permission_type']==3)
-                            $class='cr';
-                     ?>
-                     <a href="<?php echo 'post/showposts/'.$row['id'];?>">
-                         <li class="<?php echo $class;?>">
-                            <?php echo $row['name'];?>
-                         </li>
-                     </a>
-                     <?php
-                    }  ?>
-                     </ul>
-                </div>
-                <div class="catnav"> <?php  echo $this->pagination->create_links(); ?></div>
-                <?php }else{?>
-                	<?php echo "<span style=\"color:red;\">No Categories Available. </span>";?>
-                <?php }?>
+            <div class="" style="margin-left:25px;">
+           		<?php $this->load->view('post/folder-view');?>
+           		<div class="catnav"> <?php  echo $this->pagination->create_links(); ?></div>
             </div>
            
         </div>

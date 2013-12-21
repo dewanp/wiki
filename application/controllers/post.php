@@ -94,7 +94,6 @@ class Post extends CI_Controller {
 		$this->load->view('includes/header');
 		$this->load->view('post/my-post-list',$data);
 		$this->load->view('includes/footer');
-		
 	}
 
 	/**
@@ -134,11 +133,8 @@ class Post extends CI_Controller {
 			exit;
 		}
 		
-		//$data['category_list'] = $this->postmodel->getCategoryIds($this->user_id);
-		//echo'<pre>';print_r($data['category_list']);exit;
-		$data['profile_links'] = $this->load->view('user/profile-links', $data, true);
+		$data['category'] = $category_id;
 		$data['capsules'] = $this->commonmodel->getRecords('capsule_type', '', array('is_active' => 1));
-		$data['post_capsule_list'] = '';
 		$data['sidebar'] = $this->load->view('includes/sidebar', $data, true);
 		
 		$this->load->view('includes/header');
@@ -163,7 +159,7 @@ class Post extends CI_Controller {
 		{
 			redirect('user/login');
 		}
-		
+		$category_id = $this->input->post('category');
 		if ($this->input->post('add_post') == 'Add new post')
 		{
 			$user_id = $this->user_id;
@@ -181,11 +177,6 @@ class Post extends CI_Controller {
 				$data['category'] = $this->input->post('category');
 				$data['description'] = $this->input->post('description');
 				
-				$data['category_list'] = $this->postmodel->getCategoryIds($this->user_id);
-				
-				$data['profile_links'] = $this->load->view('user/profile-links', $data, true);
-				$data['capsules'] = $this->commonmodel->getRecords('capsule_type', '', array('is_active' => 1));
-				$data['post_capsule_list'] = '';
 				$data['sidebar'] = $this->load->view('includes/sidebar', $data, true);
 				
 				$this->load->view('includes/header');
@@ -194,13 +185,12 @@ class Post extends CI_Controller {
 			}
 			else
 			{
-				$category_ids = implode(',',$this->input->post('category'));
 				$new_post = array(
 					'title' => $this->input->post('title'),
-					'category_id' => $category_ids,
-					'sub_category_id' => $category_ids,
+					'category_id' => $category_id,
+					'sub_category_id' => $category_id,
 					'description' => $this->input->post('description'),
-					'user_id' => $user_id,
+					'user_id' => $this->user_id,
 					'created_date' => time(),
 					'changed_date' => time(),
 					'is_active' => 1,
@@ -211,49 +201,19 @@ class Post extends CI_Controller {
 				$new_post_id = $this->db->insert_id();
 				if($new_post_id != '')
 				{
-					redirect('post/showposts/all');
+					redirect('post/showposts/'.$category_id);
 				}
 			}
 	 	}else{
-			redirect('post/showposts/all');
+			redirect('post/showposts/'.$category_id);
 		}
 	}
 	
-	
-	/*
-	* This function is used for checking existing tags for a post.
-	*/
-	function tagcheck($str){
-		if(count($str)>1){
-			$nearr = array();
-			foreach($str as $v){
-				$nearr[strtolower($v)]=strtolower($v);
-			}
-			if(count($nearr)==count($str)){
-				return true;
-			}else{
-				$this->form_validation->set_message('tagcheck', 'All tags should be different.');
-			return false;
-			}			
-		}else{
-			$this->form_validation->set_message('tagcheck', 'Please add At least Two tags.');
-			return false;
-		}
-	}
-	
-
-
-	public function subCategory()
-	{
-		echo $tid = $this->input->post('tid',0);
-		exit;
-	}
-
 	/**
 	 * post edit function
 	 *
 	 */
-	public function edit($post_id)
+	public function edit($post_id, $category_id)
 	{
 		if($this->commonmodel->isLoggedIn())
 		{ 
@@ -265,8 +225,6 @@ class Post extends CI_Controller {
 		}
 		
 		$data = array();
-		//$data['category_list'] = $this->postmodel->getCategoryIds($this->user_id);
-		
 		//load current post
 		$post = $this->commonmodel->getRecords('post', '', array('post_id' => $post_id), '', true);
 		
@@ -274,9 +232,7 @@ class Post extends CI_Controller {
 			show_404();
 		}
 		$data['post'] = $post;
-		$data['profile_links'] = $this->load->view('user/profile-links', $data, true);
-		$data['post_capsule_list'] = $this->load->view('post/left-moreblock', $data, true);
-		$data['post_capsule_list'] = '';
+		$data['category'] = $category_id;
 		$data['sidebar'] = $this->load->view('includes/sidebar', $data, true);
 		
 		$this->load->view('includes/header');
@@ -299,7 +255,7 @@ class Post extends CI_Controller {
 		{
 			redirect('user/login');
 		}
-		
+		$category_id = $this->input->post('category');
 		if ($this->input->post('edit_post') == 'Edit post')
 		{
 			$user_id = $this->user_id;
@@ -319,13 +275,8 @@ class Post extends CI_Controller {
 				$data['description'] = $this->input->post('description');
 				
 				
-				$data['category_list'] = $this->postmodel->getCategoryIds($this->user_id);
 				$post = $this->commonmodel->getRecords('post', '', array('post_id' => $post_id), '', true);
 				$data['post'] = $post;
-				
-				$data['profile_links'] = $this->load->view('user/profile-links', $data, true);
-				$data['capsules'] = $this->commonmodel->getRecords('capsule_type', '', array('is_active' => 1));
-				$data['post_capsule_list'] = '';
 				$data['sidebar'] = $this->load->view('includes/sidebar', $data, true);
 				
 				$this->load->view('includes/header');
@@ -334,11 +285,10 @@ class Post extends CI_Controller {
 			}
 			else
 			{
-				$category_ids = implode(',',$this->input->post('category'));
 				$new_post = array(
 					'title' => $this->input->post('title'),
-					'category_id' => $category_ids,
-					'sub_category_id' => $category_ids,
+					'category_id' => $category_id,
+					'sub_category_id' => $category_id,
 					'description' => $this->input->post('description'),
 					'user_id' => $user_id,
 					'created_date' => time(),
@@ -348,10 +298,10 @@ class Post extends CI_Controller {
 				);
 			
 				$this->commonmodel->commonAddEdit('post', $new_post,$post_id);
-				redirect('post/showposts');
+				redirect('post/showposts/'.$category_id);
 			}
 	 	}else{
-			redirect('post/showposts');
+			redirect('post/showposts/'.$category_id);
 		}
 	}
 
@@ -382,24 +332,8 @@ class Post extends CI_Controller {
 		$data['user_id'] = $user_id;
 		$data['post_id'] = $post_id;
 		$data['capsule_type'] = $capsule_type;
-		// load current post
-		//$post = $this->commonmodel->getRecords('post', '', array('post_id' => $post_id,'is_active'=>1,'is_block'=>0), '', true);
-		
-		// do not show 404 page
-		
 		$post_author_id = $this->commonmodel->getRecords('post', 'user_id', array('post_id' => $post_id), '', true);
-       // $post_zip_info = $this->commonmodel->getRecords('follow_location','follow_location_id',array('user_id'=>$user_id,'zip_code'=>$post['post_zip_code']),'',true);
-        if(empty($post_zip_info))
-        {
-            $data['localpost'] = $post['local_post'];
-            $data['zip_code'] = $post['post_zip_code'];
-            $data['fol_unfol_status'] = 'follow';
-        }else
-        {
-            $data['localpost'] = $post['local_post'];
-            $data['zip_code'] = $post['post_zip_code'];
-            $data['fol_unfol_status'] = 'unfollow';
-        }
+       
 		$data['post_author_id'] = $post_author_id['user_id'];
 
 		if(empty($post)){
@@ -455,200 +389,20 @@ class Post extends CI_Controller {
 		
 		
 		//post capsules		
-		//$data['post_capsules'] =  $this->capsulemodel->capsuleDetail($post_id ,$capsule_type);
 		$this->page_title = $post['title'];
-		//$this->page_keywords = $post['title'];
 		$this->page_desc = $post['description'];
 		
 		$this->page_keywords = $data['tags'];
 
-		//Admin Google Add
-		//$admin_percent = $this->commonmodel->getRecords('google_ad', 'admin_percent', array('google_ad_id' => 1), '', true);
-		//$data['admin_percent'] = $admin_percent['admin_percent'];
-		
-		// get all data of Answer about this post_id
-		if($post['sub_category_id'] == QNA_SUB_CATEGORY_ID){
-			$rs_answer_detail =$this->db->select('a.*, u.user_name, u.profile_name, u.picture ')
-								 		->from('answer as a')
-										->join('user as u','a.user_id = u.user_id','left')
-										->where('a.post_id',$post_id)
-										->order_by('a.created_date','asc')
-										->get();
-			$data['answer_detail'] = $rs_answer_detail->result_array();
-		}
-
 		// all categories links left
 		$data['categories'] = $this->commonmodel->getRecords('category');
-		// all capsules
-		$data['capsules'] = $this->commonmodel->getRecords('capsule_type', '', array('is_active' => 1));
-		$data['profile_links'] = $this->load->view('user/profile-links', $data, true);
-		$data['post_capsule_list'] = '';
 		$data['sidebar'] = $this->load->view('includes/sidebar', $data, true);
 
 
 		$this->load->view('includes/header',$data);
-
-		if($post['sub_category_id'] != QNA_SUB_CATEGORY_ID){
-			$this->load->view('post/post-view');
-		}else{
-			$this->load->view('post/post-view-qna');
-		}
-
+		$this->load->view('post/post-view');
 		$this->load->view('includes/footer');
 		$this->session->set_userdata('redirect_url',current_url());
-	}
-
-
-
-	/**
-	 * preview function controller.
-	 *
-	 */
-	public function preview($post_id)
-	{
-		$data = array();
-		$data['post_id'] = $post_id;
-		
-		// load current post
-		$post = $this->commonmodel->getRecords('post', '', array('post_id' => $post_id), '', true);
-		if(empty($post)){
-			show_404();
-		}
-		
-		$data['post'] = $post;
-		
-		
-		$post_author_id = $this->commonmodel->getRecords('post', 'user_id', array('post_id' => $post_id), '', true);
-		$data['post_author_id'] = $post_author_id;
-		$data['user_id'] = $this->session->userdata('user_id');
-		
-		// post image
-		$data['post_image'] = $this->commonmodel->getRecords('file_upload', '', array('file_upload_id' => $post['post_image']) , '', true);
-		// post category
-		$data['post_category'] = $this->commonmodel->getRecords('category', '', array('category_id' => $post['category_id']) , '', true);
-		// post sub category
-		$data['post_sub_category'] = $this->commonmodel->getRecords('sub_category', '', array('sub_category_id' => $post['sub_category_id']) , '', true);
-		// post tags
-		$data['tags'] = $this->postmodel->tagDetailByPostId($post_id);
-		// post capsules		
-		$data['post_capsules'] =  $this->capsulemodel->capsuleDetail($post_id);
-		
-		if($post['sub_category_id'] == QNA_SUB_CATEGORY_ID){
-			$rs_answer_detail =$this->db->select('a.*, u.user_name, u.profile_name, u.picture ')
-								 		->from('answer as a')
-										->join('user as u','a.user_id = u.user_id','left')
-										->where('a.post_id',$post_id)
-										->order_by('a.created_date','asc')
-										->get();
-			$data['answer_detail'] = $rs_answer_detail->result_array();
-		}
-
-
-		// all categories links left
-		$data['categories'] = $this->commonmodel->getRecords('category');
-		// all capsules
-		$data['capsules'] = $this->commonmodel->getRecords('capsule_type', '', array('is_active' => 1));
-		$data['profile_links'] = $this->load->view('user/profile-links', $data, true);
-		$data['post_capsule_list'] = '';
-		$data['sidebar'] = $this->load->view('includes/sidebar', $data, true);
-
-		$this->load->view('includes/header');
-		
-		if($post['sub_category_id'] != QNA_SUB_CATEGORY_ID){
-			$this->load->view('post/post-preview',$data); 
-		}else{
-			$this->load->view('post/post-preview-qna',$data);
-		}
-		$this->load->view('includes/footer');
-	}
-
-	 /*
-	  * This function is used to update capsule wrapper. 
-	   * Called by  Ajax function
-	 */
-	public function updateCapsuleWrapper()
-	{
-		$post_id = $this->input->post('post_id');
-		$view_type = $this->input->post('view_type','view');
-		$capsule_type = $this->input->post('capsule_type');
-		$data['post_id'] = $post_id;
-		$data['post_capsules'] =  $this->capsulemodel->capsuleDetail($post_id, $capsule_type,$view_type);
-		
-		echo $this->load->view('post/capsule-wrapper/'.$view_type, $data, true);
-		exit;
-	}
-	
-	/*
-	  * This function is used to update capsule  comment wrapper. 
-	   * Called by  Ajax function
-	*/
-	public function updateCapsuleCommentWrapper()
-	{
-		$post_id = $this->input->post('post_id');
-		$view_type = $this->input->post('view_type','view');
-		$capsule_type = $this->input->post('capsule_type');
-		$data['post_id'] = $post_id;
-		$data['post_capsules'] =  $this->capsulemodel->capsuleCommentDetail($post_id, $capsule_type,$view_type);
-		echo $this->load->view('post/capsule-wrapper/'.$view_type, $data, true);
-		exit;
-	}
-
-	/*
-	 * This function is used to show post to user.
-	 * Called by Ajax function.
-	*/
-	public function postBasicInfo()
-	{
-		$post_id = $this->input->post('post_id');
-		$view_type = $this->input->post('view_type','view');
-		$data['post_id'] = $post_id;
-		// load current post
-		$post = $this->commonmodel->getRecords('post', '', array('post_id' => $post_id), '', true);	
-		$data['post'] = $post;
-		
-
-		//User information of this post
-		$user_info = $this->commonmodel->getRecords('user','user_name,profile_name', array('user_id'=>$post['user_id']), '',true);
-		$data['user_info'] = $user_info ;
-		
-		// Zip code of current user
-		$data['isZipCode'] = $this->commonmodel->isZipCode();
-		
-		// post category
-		$data['post_category'] = $this->commonmodel->getRecords('category', '', array('category_id' => $post['category_id']) , '', true);
-		// post sub category
-		$data['post_sub_category'] = $this->commonmodel->getRecords('sub_category', '', array('sub_category_id' => $post['sub_category_id']) , '', true);
-		$data['category_list'] = $this->commonmodel->getRecords('category');
-		$data['sub_category_list'] = $this->commonmodel->getRecords('sub_category');
-		// post tags
-		$data['tags'] = $this->postmodel->tagDetailByPostId($post_id);
-
-		$result =$this->db->select('z.city, s.state')
-							->from('post as p')
-							->join('usa_zip_codes as z','p.post_zip_code = z.zip_code','left')
-							->join('state as s','z.state = s.abbreviation','left')
-							->where('p.post_id',$post_id)
-							->get();
-		$result = $result->row_array();
-		$data['post']['city'] = $result['city'];
-		$data['post']['state'] = $result['state'];
-		$data['ip_address'] = $this->input->ip_address();
-		
-		echo $this->load->view('post/basic-info/'.$view_type, $data, true);
-		exit;
-	}
-
-	/*
-	 *  This function is used to update list of capsules.
-	 * Called by Ajax function.
-	 */
-	public function updateCapsuleList()
-	{
-		$post_id = $this->input->post('post_id');
-		$data['post_id'] = $post_id;
-		$data['post_capsules'] =  $this->capsulemodel->capsuleDetail($post_id);
-		echo $this->load->view('post/left-capsule-list', $data, true);
-		exit;
 	}
 
 	/*
@@ -769,10 +523,13 @@ class Post extends CI_Controller {
 				redirect('post/allcategories');
 				exit;
 			}
+			 
+			$this->display_children($type,0);
             $this->display_parent($type,0);
-            
+            ksort($this->childcategory);
 			ksort($this->parentcategory);
             $data['breadcrumb'] = $this->parentcategory;
+			$data['child_category'] = $this->childcategory;
              
 			$data['permission'] = $permission;
 			$data['posts'] = $this->postmodel->getCategoriesPosts($this->user_id,$type);
@@ -794,56 +551,6 @@ class Post extends CI_Controller {
 		
 	}
 
-	
-	public function showPollsPosts()
-	{
-		$data =array();
-
-		$data['polls'] = $this->postmodel->getShowPoll();	   
-		$data['type'] = "all";
-		$data['posts'] = true;	
-	    $data['most_posted_users'] = true;
-		
-		$data['categories'] = $this->commonmodel->getRecords('category');
-		$data['post_capsule_list'] = '';
-		$data['sidebar'] = $this->load->view('includes/sidebar', $data, true);
-		
-		$this->load->view('includes/header');
-		$this->load->view('post/polls-list',$data);
-		$this->load->view('includes/footer');
-	}
-	
-	public function loadMoreShowPollsPost()
-	{
-		$offset = $this->input->post('offset');
-		$data['polls'] = $this->postmodel->getShowPoll($offset);
-		$this->load->view("post/poll-list-content",$data);
-	}
-
-	public function showQnaPosts()
-	{
-		$data =array();
-
-		$data['qna'] = $this->postmodel->getshowQna();
-		$data['type'] = "all";
-		$data['posts'] = true;	
-	    $data['most_posted_users'] = true;
-		
-		$data['categories'] = $this->commonmodel->getRecords('category');
-		$data['post_capsule_list'] = '';
-		$data['sidebar'] = $this->load->view('includes/sidebar', $data, true);
-		
-		$this->load->view('includes/header');
-		$this->load->view('post/qna-list',$data);
-		$this->load->view('includes/footer');
-	}
-
-	public function loadMoreShowQnaPosts()
-	{
-		$offset = $this->input->post('offset');
-		$data['qna'] = $this->postmodel->getShowQna($offset);
-		$this->load->view("post/qna-list-content",$data);
-	}
 
 	/**
 	 * This function is used to load more posts from db 
@@ -856,143 +563,6 @@ class Post extends CI_Controller {
 		$offset = $this->input->post('offset');
 		$data['posts'] = $this->postmodel->getShowPosts($type, $offset);
 		$this->load->view("post/post-list-content",$data);
-	}
-
-	/**
-	 * Created by Neelesh Chouksey on 2012.04.17
-	 * This function is used to show image posts.
-	 * 
-	 */
-	public function showImagePosts()
-	{
-		$data = array();
-		
-		$data['images'] = $this->postmodel->getShowImage();
-		$data['type'] = "all";
-		$data['posts'] = true;	
-		$data['most_posted_users'] = true;
-		
-		$data['categories'] = $this->commonmodel->getRecords('category');
-		$data['post_capsule_list'] = '';
-		$data['sidebar'] = $this->load->view('includes/sidebar', $data, true);
-		
-		$this->load->view('includes/header');
-		$this->load->view('post/image-list',$data);
-		$this->load->view('includes/footer');
-	}
-
-	/**
-	 * This function is used to load more images from db 
-	 * Created by Neelesh Choukesy on 2012.04.17
-	 * 
-	 */
-	public function loadMoreShowImagePosts()
-	{
-		$offset = $this->input->post('offset');
-		$data['images'] = $this->postmodel->getShowImage($offset);
-		$this->load->view("post/image-list-content",$data);
-	}
-
-	/**
-	 * Created by Neelesh Chouksey on 2012.04.30
-	 * This function is used to show videos posts.
-	 * 
-	 */
-	
-	public function showVideoPosts()
-	{
-		$data = array();
-		
-		$data['videos'] = $this->postmodel->getShowVideo();
-		$data['type'] = "all";
-		$data['posts'] = true;	
-		$data['most_posted_users'] = true;
-		
-		$data['categories'] = $this->commonmodel->getRecords('category');
-		$data['post_capsule_list'] = '';
-		$data['sidebar'] = $this->load->view('includes/sidebar', $data, true);
-		
-		$this->load->view('includes/header');
-		$this->load->view('post/video-list',$data);
-		$this->load->view('includes/footer');
-	}
-
-	/**
-	 * This function is used to load more videos from db 
-	 * Created by Neelesh Choukesy on 2012.04.30
-	 * 
-	 */
-	public function loadMoreShowVideoPosts()
-	{
-		$offset = $this->input->post('offset');
-		$data['videos'] = $this->postmodel->getShowVideo($offset);
-		$this->load->view("post/video-list-content",$data);
-	}
-
-	/**
-	 * Created by Neelesh Chouksey on 2012.04.17
-	 * This function is used to show image detail page.
-	 * 
-	 */
-	
-	public function show($type = 'image',$id = 0)
-	{
-		$data = array();
-		
-		$data['type'] = $type;
-		$method = "getShow$type";
-		$data[$type] = $this->postmodel->$method(0,1,$id);
-		$data['most_posted_users'] = true;
-		//echo '<pre>';print_r($data[$type]);exit;
-		$data['categories'] = $this->commonmodel->getRecords('category');
-		$data['post_capsule_list'] = '';
-		$data['sidebar'] = $this->load->view('includes/sidebar', $data, true);
-		
-		$this->load->view('includes/header');
-		$this->load->view("post/show-$type",$data);
-		$this->load->view('includes/footer');
-		
-	}
-
-	/**
-	 * This function is used to load more posted users
-	 * Created by Neelesh Choukesy on 2012.03.01
-	 * 
-	 */
-	public function getMostPostedUsers()
-	{
-		$type = $this->input->post('type');
-		$offset = $this->input->post('offset');
-		$data['most_posted_users'] = $this->postmodel->getMostPostedUsers($type, $offset);
-		
-		$this->load->view("post/most-posted-users",$data);
-	}
-
-	/**
-	 * Created by Neelesh Chouksey on 2012.03.01
-	 * This function is used to show map for local posts.
-	 * 
-	 */
-	public function localPostsMap()
-	{
-		$data = array();
-		
-		$data['categories'] = $this->commonmodel->getRecords('category');
-		$data['sidebar'] = $this->load->view('includes/sidebar', $data, true);
-
-		$map_cities = $this->postmodel->getMapCities();
-		
-		
-		//$post_count = $this->postmodel->getPostCountStates();
-		foreach($map_cities as $map_city)
-		{
-			$data['map_states'][$map_city['state_id']][] = $map_city;
-		}
-		
-		$this->load->view('includes/header');
-		$this->load->view('post/localpost',$data);
-		$this->load->view('includes/footer');
-		
 	}
 
 	/**
@@ -1013,67 +583,6 @@ class Post extends CI_Controller {
 		echo '['.implode(',',$autosuggest_cities).']';;
 		exit;
 				
-	}
-
-	/**
-	 * Created by Neelesh Chouksey on 2012.02.29
-	 * This function is used to show image posts.
-	 * 
-	 */
-	public function showLocalPosts($zip_code)
-	{		
-		$data = array();
-		$data['zip_code'] = $zip_code;
-		$data['type'] = 'all';
-		$data['posts'] = $this->postmodel->getLocalPosts(urldecode($zip_code));
-		$data['city_name'] = $this->postmodel->getCityName(urldecode($zip_code));
-
-		if ($this->input->is_ajax_request())
-		{
-				$this->page_title = $data['city_name']['state'];
-
-				$output = $this->load->view('post/post-list-content',$data,true);
-				
-				echo json_encode(array('data'=>$output,'city_name'=>$data['city_name']['state'],'cur_url'=>current_url()));
-				exit;
-		}else{
-				if(is_numeric($zip_code)){
-                    $data['post_zip_info'] = $this->commonmodel->getRecords('follow_location','follow_location_id',array('user_id'=>$this->user_id,'zip_code'=>$zip_code),'',true);
-                }else{					
-                    $data['post_zip_info'] = $this->commonmodel->getRecords('follow_location','follow_location_id',array('user_id'=>$this->user_id,'state'=>$zip_code),'',false);
-                }
-                if(empty($data['post_zip_info'])){
-                        $data['fol_unfol_status'] = 'follow_link';
-                }else{
-                        $data['fol_unfol_status'] = 'unfollow_link';
-                }
-				if(!empty($data['city_name']))
-				{
-					$this->page_title = $data['city_name']['state'];
-					$data['zip_city_name'] = $data['city_name']['state'];
-				}
-				$data['most_posted_users'] = true;
-				
-				$data['categories'] = $this->commonmodel->getRecords('category');
-				$data['sidebar'] = $this->load->view('includes/sidebar', $data, true);
-				
-				$this->load->view('includes/header');
-				$this->load->view('post/localpost-list',$data);
-				$this->load->view('includes/footer');
-			}
-	}
-
-	/**
-	 * This function is used to load more local posts from db 
-	 * Created by Neelesh Choukesy on 2012.03.19
-	 * 
-	 */
-	public function loadMoreLocalPosts()
-	{
-		$zip_code = $this->input->post('zip_code');
-		$offset = $this->input->post('offset');
-		$data['posts'] = $this->postmodel->getLocalPosts($zip_code, $offset);
-		$this->load->view("post/post-list-content",$data);
 	}
 	
 	/**
@@ -1115,54 +624,6 @@ class Post extends CI_Controller {
 		$this->db->query($query);
 	}
 	
-	
-	public function savePostBasicInfo(){
-				
-		$post_id = $this->input->post('post_id');
-		$zip_code_array = explode("-",$this->input->post('post_zip_code'));
-		$zip_code = $zip_code_array[0];
-
-		$update_post = array(
-				'title' => $this->input->post('title'),
-				'description' => $this->input->post('description'),
-				'changed_date' => time(),
-				'post_image' => $this->input->post('file_upload_id'),
-				'general_post' => $this->input->post('general_post','0'),
-				'post_zip_code' => $zip_code,
-				'local_post' => $this->input->post('local_post','0'),
-			);
-			
-		$this->commonmodel->commonAddEdit('post', $update_post, $post_id);
-		
-		// search for attach tags
-		$tag_array = $this->input->post('tag');		
-		$tag_term_id = array();
-		
-		// All tag id new and old one
-		foreach($tag_array as $tag){
-			$replace_array = array('+', '=', '_', '!', '/', '\\' ,'?', '@', '#', '<', '>', '$', '%', '^', '&', '*', '(', ')', ':', ';');			
-			$trimed_tag = str_replace($replace_array, '-', trim($tag));
-			$avail_tag = $this->commonmodel->getRecords('tag','tag_id',array('name' =>$trimed_tag),'',true);	
-			// tag will be numeric if it was selected old one otherwise
-
-			if(!empty($avail_tag)){
-				$tag_term_id[$avail_tag['tag_id']] = $avail_tag['tag_id'];
-			}else{					
-				// adding new tag to database if user creates any new tag				
-				$new_tag = array('name' => $trimed_tag);
-				$this->commonmodel->commonAddEdit('tag', $new_tag);						
-				$new_tag_id = $this->db->insert_id();
-				$tag_term_id[$new_tag_id] = $new_tag_id;
-			}				
-		}
-		
-		$this->db->delete('post_tag', array('post_id' => $post_id));
-		// adding records to category term post table for making relation with term and post
-		foreach($tag_term_id as $tag_id){
-			$this->commonmodel->commonAddEdit('post_tag', array('post_id' => $post_id, 'tag_id'=> $tag_id));
-		}
-	}
-
 	/**
 	 * Created by Neelesh Chouksey on 2012.03.26
 	 * This function is used to show all categories on the page.
@@ -1176,7 +637,7 @@ class Post extends CI_Controller {
 		
 		$data['type'] = $type = 'all';
 		$data['most_posted_users'] = true;
-		$data['categories'] = $this->postmodel->get_user_all_category($this->user_id); 
+		$data['child_category'] = $this->postmodel->get_user_all_category($this->user_id); 
 		
 		$limit=200;
 		$start = $this->uri->segment(3,$start);	
@@ -1204,7 +665,8 @@ class Post extends CI_Controller {
 		$this->load->view('post/all-categories',$data);
 		$this->load->view('includes/footer');
 	}
-/*
+	
+	/*
 	 * This function is used to load view for Edit category .
 	*/
 	public function displayEditCategory($category_id)
@@ -1247,77 +709,11 @@ class Post extends CI_Controller {
 			$this->load->view('includes/footer');
 		 
 	}
-	/**
-	 * Created by Neelesh Chouksey on 2012.03.26
-	 * This function is used to show all categories on the page. 
-	 * of similar type of category
-	 */
 	
-	public function categoryPosts($category_id = 0)
-	{
-		$data = array();
-		
-		$data['type'] = $type = 'all';
-		$data['most_posted_users'] = true;
-		$data['category_id'] = $category_id;
-		$data['posts'] = $category_id ? $this->postmodel->getCategoryPosts($category_id) : array();
-		
-		$data['categories'] = $this->commonmodel->getRecords('category');
-		$data['post_capsule_list'] = '';
-		$data['sidebar'] = $this->load->view('includes/sidebar', $data, true);
-		
-		$this->load->view('includes/header');
-		$this->load->view('post/category-posts',$data);
-		$this->load->view('includes/footer');
-	}
-
-	/**
-	 * This function is used to load more category posts from db 
-	 * Created by Neelesh Choukesy on 2012.03.26
-	 * 
-	 */
-	public function loadMoreCategoryPosts()
-	{
-		$category_id = $this->input->post('category_id');
-		$offset = $this->input->post('offset');
-		$data['posts'] = $this->postmodel->getCategoryPosts($category_id, $offset);
-		$this->load->view("post/post-list-content",$data);
-	}
-
-	/**
-	 * Created by Neelesh Chouksey on 2012.03.26
-	 * This function is used to show category posts by search category.
-	 * 
-	 */
-	public function searchCategoryPosts($category)
-	{ 
-		$category = urldecode($category); 
-		$category = $this->commonmodel->getRecords('category','category_id',array('name' =>$category),'',true);
-		//print_r($category);exit;
-		if(!count($category))$category['category_id'] = 0;
-		$this->categoryPosts($category['category_id']);
-	}
-
-	/*
-	 * This function is used for making post publish 
-	 * i.e show to all users or unpublic i.e  save as draft.
-	*/
-	public function postOp(){
-		$post_id = $this->input->post('post_id');
-		$op = $this->input->post('op');
-		switch($op){
-			case 'publish':
-					$this->commonmodel->commonAddEdit('post', array('is_active' => 1),$post_id);
-				break;
-			case 'unpublish':
-					$this->commonmodel->commonAddEdit('post', array('is_active' => 0),$post_id);
-				break;
-		}
-	}
 	/*
 	 * This function is used for getting suggestion from user about new category in this site
 	 * Called by Ajax function.
-	 * Created by : Jay Hardia
+	 * Created by : ashvin
 	*/
 
 	public function suggestCategory()
@@ -1715,13 +1111,15 @@ class Post extends CI_Controller {
 	/* Function for get sub-catetgories related to root category*/
 	function display_children($parent, $level)
 	{ 
-		$query = 'SELECT category_id,name FROM category '.'WHERE parent="'.$parent.'"';
+ 		$query = 'SELECT c.category_id,c.name,cr.permission_type FROM category c left join user_category_relation cr on c.parent=cr.category_id and cr.user_id="'.$this->user_id.'" WHERE c.parent="'.$parent.'"';
 		$resultt = $this->db->query($query);
 	
 		foreach($resultt->result_array() as $row)
 		{ 
-			$thisref = &$this->childcategory;		
-			$thisref[] =   $row['category_id'];
+			$thisref = &$this->childcategory;					 
+			$thisref[$row['child']]['category_id'] =   $row['category_id'];
+            $thisref[$row['child']]['name'] =   $row['name'];
+            $thisref[$row['child']]['permission_type'] =   $row['permission_type'];			
 			$this->childcategory =  &$thisref ; 		 
 			$this->display_children($row['category_id'], $level+1);
 		} 
@@ -1743,16 +1141,7 @@ class Post extends CI_Controller {
 			$this->display_parent($row['parent'], $level+1);
 		} 
 	}
-	/*
-	 * This function is used for setting up user's google 
-	 * adsense account by getting google ads client id.
-	*/
-	public function googleAd($google_ad_client="")
-	{
-		$data['google_ad_client'] = $google_ad_client!=""? $google_ad_client : $this->input->post('google_ad_client');
-		echo $this->load->view("post/google-ad",$data, true);
-	}
-
+	
 	public function myFavorites()
 	{
 		$user_id = $this->input->post("user_id");
@@ -1785,22 +1174,6 @@ class Post extends CI_Controller {
 		
 		 $condition ='user_id = '.$user_id.' AND post_id ='.$post_id ;
 		 $this->commonmodel->deleteRecords('post_subscribe_unsubscribe',$condition);
-	}
-
-	public function showMandatoryBlocks()
-	{
-		$sub_category_id = $this->input->post('sub_category_id');
-		
-		$mandatory_capsule_type_ids = $this->commonmodel->getRecords('sub_category_capsule','capsule_type_id',array('sub_category_id'=>$sub_category_id ,'mandatory'=>1));
-		$capsule_type_array = array();
-
-		foreach($mandatory_capsule_type_ids as $key=> $id)
-		{
-			$capsule_type_array[$key] = $id['capsule_type_id'];
-
-		}
-		echo implode(',',$capsule_type_array);
-		exit;
 	}
 
 	public function postAnswer()
@@ -2052,61 +1425,8 @@ class Post extends CI_Controller {
 		$this->load->view('includes/footer');
 	}
 	
-	/**
-	 * function is used to load more local posts from db 
-	 * Created date 28-11-2012 by Ashvin soni.
-	 * 
-	 */
-	public function loadMoreTagPosts()
-	{
-		$tag_name = $this->input->post('tag_name');
-		$offset = $this->input->post('offset');
-		$data['posts'] = $this->postmodel->getTagRelatedPost($tag_name, $offset);
-		$this->load->view("post/post-list-content",$data);
-	}
 	
 	
-	/**
-	 * function is used for follow location
-	 * Created date 28-11-2012 by Ashvin soni.
-	 * 
-	 */
-	public function followLocation()
-	{
-		$zip_code = $this->input->post('zip_code');
-		$single_post = $this->input->post('single_post');
-		$this->user_id = $this->session->userdata('user_id');
-		$this->postmodel->followLocation($zip_code,$this->user_id);
-        $status = 'success';
-		if($single_post == ''){
-			$followLocation = "<div class=\"follow-location\"><a href=\"javascript:void(0);\" onclick=\"unFollowLocation('".$zip_code."','')\" title=\"Unfollow Location\"></a><div>";
-		}else{
-			$followLocation = "<div class=\"follow-location\"><a href=\"javascript:void(0);\" onclick=\"unFollowLocation('".$zip_code."','single_post')\" title=\"Unfollow Location\"></a><div>";
-		}
-		echo json_encode(array('data'=>$followLocation,'status'=>$status));
-		exit;
-	}
-
-    /**
-     * function is used for unfollow location
-     * Created date 28-11-2012 by Ashvin soni.
-     *
-     */
-    public function unFollowLocation()
-    {
-        $zip_code = $this->input->post('zip_code');
-		$single_post = $this->input->post('single_post');
-        $this->user_id = $this->session->userdata('user_id');
-        $this->postmodel->unFollowLocation($zip_code,$this->user_id);
-        $status = 'success';
-		if($single_post == ''){
-        	$followLocation = "<div class=\"unfollow-location\"><a href=\"javascript:void(0);\" onclick=\"followLocation('".$zip_code."','')\" title=\"Follow Location\"></a></div>";
-		}else{
-			$followLocation = "<div class=\"unfollow-location\"><a href=\"javascript:void(0);\" onclick=\"followLocation('".$zip_code."','single_post')\" title=\"Follow Location\"></a></div>";
-		}
-        echo json_encode(array('data'=>$followLocation,'status'=>$status));
-        exit;
-    }
 	
 	/**
 	 * function is used for publish post 
@@ -2141,26 +1461,6 @@ class Post extends CI_Controller {
         echo json_encode(array('data'=>$publishPost,'status'=>$status));
         exit;
     }
-	
-	
-	/**
-	 * This function is used to load rating functionality 
-	 * Created by Neelesh Choukesy on 2012.03.20
-	 * 
-	 */
-	public function loadRatingPost()
-	{
-		$post_id = $this->input->post('post_id');
-		$edit = $this->input->post('edit');
-		$ip_address = $this->input->post('ip_address');
-		$data = $this->postmodel->getAvgRatingPost($post_id);
-		$data['post_id'] = $post_id;
-		$data['edit'] = $edit;
-		$data['ip_address'] = $ip_address;
-		
-		$this->load->view('rating-post',$data);
-	}
-	
 	
 	/**
 	 * This function is used to apply rating functionality on post
@@ -2255,11 +1555,6 @@ class Post extends CI_Controller {
 		exit;
 	}
 	
-	
-	 
-
-
-
-} //main class end
+}
 /* End of file post.php */
 /* Location: ./application/controllers/post.php */

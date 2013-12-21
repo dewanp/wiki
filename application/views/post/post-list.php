@@ -11,6 +11,8 @@
             ?>
                 <li><a href="javascript:void(0);" class="active"><?php if(strtolower($type)=='paragraph'){echo 'Articles';}else{ echo 'Posts';}?> </a></li>
 			</ul>
+            
+            
             <?php
 			if(is_numeric($type)){
 		   			 if($permission){
@@ -26,10 +28,10 @@
                             
                                 <li><?php echo anchor('post/displayEditCategory/'.$type,'Manage Category')?></li>
                                 <li><a href="javascript:void(0);" onclick="deleteCategory(<?php echo $type;?>)">Delete Category</a></li>
-                                <li><?php echo anchor('post/add/'.$type,'Write Post')?></li>
+                                <li><?php echo anchor('post/add/'.$type,'Add Post')?></li>
                                
 							<?php }elseif($permission == 2){?>
-                          		 <li><?php echo anchor('post/add/'.$type,'Write Post')?></li>
+                          		 <li><?php echo anchor('post/add/'.$type,'Add Post')?></li>
                            	
 							<?php }elseif($permission == 3){?>
                             	<li><?php $p_url =  getPostUrl($post['post_id']); echo anchor($p_url,'View' ,'class="publish"')?></li>
@@ -44,6 +46,11 @@
               <?php }?>
             
 		</div>
+             
+         <div class="" style="margin-left:25px;">
+           <?php $this->load->view('post/folder-view');?>
+         </div>
+         
 		<?php if(!empty($posts)){?>
 		<div class="rightinner" id="show-post">   
 			<?php $this->load->view('post/post-list-content');?>
@@ -59,4 +66,6 @@
 		<?php } ?>
 	</div>
 	<div class="clear"></div>
+   
+    
 </div>

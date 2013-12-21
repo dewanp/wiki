@@ -31,46 +31,21 @@
                             <span class="error"><?php echo form_error('description'); ?></span>
                           </td>
                         </tr>
-                        <tr>
-                        	<td valign="top"><label class="name">Select Category</label></td>
-                            <td>
-								<?php $i = 1;
-									if(isset($category) && empty($category)){
-										$category = array();
-									}
-									
-									if(!empty($category_list))
-									{
-										//echo'<pre>';print_r($category_list);
-										foreach($category_list as $key=>$val)
-										{
-											if($val['category_id'] != '' && $val['name'] != '')
-											{
-								?>
-										<span class="w50per">
-                                            <input type="checkbox" id="category" name="category[]" value="<?php echo $val['category_id'];?>" <?php if(isset($category) && in_array($val['category_id'],$category)){?> checked="checked" <?php }?>/>
-                                            <?php echo $val['name'];?>
-                                        </span>
-								<?php $i++; 
-											}
-										}
-									}else{
-										echo 'Categories are not available.';
-								?>
-										<input type="hidden" name="category[]"  id="category" value="no category"/>
-								<?php 
-									}
-								?>
-                                <span class="error"><?php echo form_error('category'); ?></span>
-                            </td>
-                        </tr>
+                       
+                        
                         
                         <tr>
                           <td>&nbsp;</td>
-                          <td><input type="submit" class="btnorange" value="Submit"/></td>
+                          <td>
+                          	<input type="submit" class="btnorange" value="Submit" style="margin-right:10px;"/>
+                            <a href="post/allcategories" >
+                            <input type="button" name="cancel" value="Cancel" class="btngrey"/>
+                            </a>
+                          </td>
                         </tr>
                       </table>
                       <input type="hidden" name="add_post"  id="add_post" value="Add new post"/>
+                      <input type="hidden" name="category"  id="category" value="<?php echo $category;?>"/>
                     </form>
   				</div>
         </div>
