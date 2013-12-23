@@ -530,6 +530,7 @@ class Post extends CI_Controller {
 			ksort($this->parentcategory);
             $data['breadcrumb'] = $this->parentcategory;
 			$data['child_category'] = $this->childcategory;
+			//echo'<pre>';print_r($data['child_category']);
              
 			$data['permission'] = $permission;
 			$data['posts'] = $this->postmodel->getCategoriesPosts($this->user_id,$type);
@@ -1111,16 +1112,21 @@ class Post extends CI_Controller {
 	/* Function for get sub-catetgories related to root category*/
 	function display_children($parent, $level)
 	{ 
- 		$query = 'SELECT c.category_id,c.name,cr.permission_type FROM category c left join user_category_relation cr on c.parent=cr.category_id and cr.user_id="'.$this->user_id.'" WHERE c.parent="'.$parent.'"';
+ 		$query = 'SELECT c.category_id,c.name,cr.permission_type FROM category c left join user_category_relation cr on c.category_id=cr.category_id and cr.user_id="'.$this->user_id.'" WHERE c.parent="'.$parent.'" AND c.is_active = 1';
 		$resultt = $this->db->query($query);
 	
 		foreach($resultt->result_array() as $row)
 		{ 
-			$thisref = &$this->childcategory;					 
-			$thisref[$row['child']]['category_id'] =   $row['category_id'];
-            $thisref[$row['child']]['name'] =   $row['name'];
-            $thisref[$row['child']]['permission_type'] =   $row['permission_type'];			
-			$this->childcategory =  &$thisref ; 		 
+		 
+			if($row['permission_type'] > 0)
+			{
+				$thisref = &$this->childcategory;					 
+				$thisref[$row['category_id']]['id'] =   $row['category_id'];
+				$thisref[$row['category_id']]['name'] =   $row['name'];
+				$thisref[$row['category_id']]['permission_type'] =   $row['permission_type'];			
+				$this->childcategory =  &$thisref; 
+			}
+			 
 			$this->display_children($row['category_id'], $level+1);
 		} 
 	}
@@ -1128,12 +1134,13 @@ class Post extends CI_Controller {
 	/* Function for get sub-catetgories related to root category*/
 	function display_parent($child, $level)
 	{ 
-		$query = 'SELECT c.parent,c.name,cr.permission_type FROM category c left join user_category_relation cr on c.parent=cr.category_id and cr.user_id="'.$this->user_id.'" WHERE c.category_id="'.$child.'"';
+		$query = 'SELECT c.category_id,c.parent,c.name,cr.permission_type FROM category c left join user_category_relation cr on c.parent=cr.category_id and cr.user_id="'.$this->user_id.'" WHERE c.category_id="'.$child.'"';
 		$resultt = $this->db->query($query);
 	
 		foreach($resultt->result_array() as $row)
 		{ 
-			$thisref = &$this->parentcategory;		
+			$thisref = &$this->parentcategory;
+			$thisref[$row['parent']]['id'] =   $row['category_id'];
 			$thisref[$row['parent']]['parent'] =   $row['parent'];
             $thisref[$row['parent']]['name'] =   $row['name'];
             $thisref[$row['parent']]['permission_type'] =   $row['permission_type'];
@@ -1141,6 +1148,54 @@ class Post extends CI_Controller {
 			$this->display_parent($row['parent'], $level+1);
 		} 
 	}
+	
+	
+	/*
+	 * This function is used to show post to user.
+	 * Called by Ajax function.
+	*/
+	public function postBasicInfo()
+	{
+		$post_id = $this->input->post('post_id');
+		$view_type = $this->input->post('view_type','view');
+		$data['post_id'] = $post_id;
+		// load current post
+		$post = $this->commonmodel->getRecords('post', '', array('post_id' => $post_id), '', true);	
+		$data['post'] = $post;
+		
+
+		//User information of this post
+		$user_info = $this->commonmodel->getRecords('user','user_name,profile_name', array('user_id'=>$post['user_id']), '',true);
+		$data['user_info'] = $user_info ;
+		
+		// Zip code of current user
+		$data['isZipCode'] = $this->commonmodel->isZipCode();
+		
+		// post category
+		$data['post_category'] = $this->commonmodel->getRecords('category', '', array('category_id' => $post['category_id']) , '', true);
+		// post sub category
+		$data['post_sub_category'] = $this->commonmodel->getRecords('sub_category', '', array('sub_category_id' => $post['sub_category_id']) , '', true);
+		$data['category_list'] = $this->commonmodel->getRecords('category');
+		$data['sub_category_list'] = $this->commonmodel->getRecords('sub_category');
+		// post tags
+		$data['tags'] = $this->postmodel->tagDetailByPostId($post_id);
+
+		$result =$this->db->select('z.city, s.state')
+							->from('post as p')
+							->join('usa_zip_codes as z','p.post_zip_code = z.zip_code','left')
+							->join('state as s','z.state = s.abbreviation','left')
+							->where('p.post_id',$post_id)
+							->get();
+		$result = $result->row_array();
+		$data['post']['city'] = $result['city'];
+		$data['post']['state'] = $result['state'];
+		$data['ip_address'] = $this->input->ip_address();
+		
+		echo $this->load->view('post/basic-info/'.$view_type, $data, true);
+		exit;
+	}
+	
+	
 	
 	public function myFavorites()
 	{

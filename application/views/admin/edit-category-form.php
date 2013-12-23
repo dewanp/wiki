@@ -153,7 +153,7 @@
                     <td>
                         
                     	<input type="submit" class="btnorange" value="<?php if($category_detail['category_id']){
-                            ?>Update<?php }else{?>Save<?php } ?>" name="save" />
+                            ?>Update<?php }else{?>Save<?php } ?>" name="save" onclick="return valid_admin_selection()"/>
                         
                     	 
                         <input type="hidden" name="edit_category_id" id="edit_category_id" value="<?php echo $category_detail['category_id']; ?>"/>

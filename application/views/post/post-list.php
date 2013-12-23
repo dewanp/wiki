@@ -4,12 +4,24 @@
 		<div class="breadcrumb"> <span class="arrowleft"></span>
 			<ul>
 				<li><a href="<?php echo site_url('post/allcategories'); ?>" class="active">Home</a></li>
-				<?php
-            foreach($breadcrumb as $row){ ?>
-                <li><a href="<?php if(isset($row['permission_type'])){ echo site_url('post/showposts/'.$row['parent']);}else{ echo 'javascript:void(0);';}?>" <?php if($row['parent']==$type){ echo 'class="active"';}?>><?php echo $row['name'];?> </a></li>
+				<?php foreach($breadcrumb as $row){ 
+				
+					$category_url ='javascript:void(0)';
+					if(isset($row['permission_type']) && $row['id'] != $type)
+					{
+						$category_url = site_url('post/showposts/'.$row['parent']);
+					}
+					$active_class = '';
+					if($row['id']==$type)
+					{
+						$active_class = 'class="active"';
+					}
+					
+			?>
+                <li><a href="<?php echo $category_url;?>" <?php echo $active_class;?>><?php echo $row['name'];?> </a></li>
           <?php  }
             ?>
-                <li><a href="javascript:void(0);" class="active"><?php if(strtolower($type)=='paragraph'){echo 'Articles';}else{ echo 'Posts';}?> </a></li>
+    
 			</ul>
             
             

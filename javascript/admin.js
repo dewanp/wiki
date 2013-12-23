@@ -133,3 +133,17 @@ function overwrite_child()
 	}
 }
 
+//Function for checked atleast one admin is selected or not
+function valid_admin_selection()
+{
+	if( $("#admin_chosen ul.chosen-choices li").length == 1 && $('#prev_admin').text().trim().length <= 0 ){
+		alert('Please select at least one admin for category.');
+		return false;
+	}
+	
+	if( $("#admin_chosen ul.chosen-choices li").length > 1 || $('#prev_admin').text().trim().length > 0 ){
+		return true;
+	}
+	return false;
+}
+
