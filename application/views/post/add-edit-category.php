@@ -1,12 +1,10 @@
 <div id="wrapper">
 	<div class="left-content-main"><?php echo $sidebar;?></div>
 	<div class="rightmain">
-        <div class="breadcrumb"> <span class="arrowleft"></span>
-            <ul>
-                <li><a href="javascript:void(0);" class="active">Home</a></li>
-                <li><a href="javascript:void(0);" class="active">All Categories</a></li>
-            </ul>
-        </div>
+      <?php $this->load->view('post/breadcrumb');?>
+         <div class="" style="margin-left:25px;">
+           <?php $this->load->view('post/folder-view');?>
+         </div>
         <div class="rightinner"> 
             	<div class="showcomment"> 
 			   <?php $this->load->view('admin/edit-category-form',$data); ?>

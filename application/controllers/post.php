@@ -670,12 +670,12 @@ class Post extends CI_Controller {
 	/*
 	 * This function is used to load view for Edit category .
 	*/
-	public function displayEditCategory($category_id)
+	public function displayEditCategory($parent_category_id=0,$category_id=0)
 	{
 		 
-		if($category_id)
-			
+		if($category_id)	{		
 			$permission = $this->commonmodel->check_permission($category_id,$this->user_id);
+             
 			$data['permission'] = $permission;
 			if($permission != 1){
 				redirect('post/allcategories');
@@ -688,7 +688,7 @@ class Post extends CI_Controller {
 			$category_detail = $this->mymodel->displayEditCategory($category_id);
 			$data['title'] = "Vinfotech-wiki Admin Section";
 			$data['active'] ="category";
-			$data['category_detail'] = $category_detail;
+			$data['category_detail'] = $category_detail;            
 			$data['parent_category'] = $category_detail['parent'];
 			
             $category_result = $this->display_children($category_id,0);
@@ -697,7 +697,35 @@ class Post extends CI_Controller {
                 $data['have_child_cat']= 0;
                 else
             $data['have_child_cat']= 1;
-			
+                
+                
+                $this->display_children($category_id,0);
+            $this->display_parent($category_id,0);
+            ksort($this->childcategory);
+			ksort($this->parentcategory);
+            $data['type'] = $category_id;
+            $data['permission'] = $permission;
+        }if($parent_category_id){ 
+            $permission = $this->commonmodel->check_permission($parent_category_id,$this->user_id);
+             
+			$data['permission'] = $permission;
+			if($permission != 1){
+				redirect('post/allcategories');
+				exit;
+			}
+            $this->display_children($parent_category_id,0);
+            $this->display_parent($parent_category_id,0);
+            ksort($this->childcategory);
+			ksort($this->parentcategory);
+            $data['parent_category'] = $parent_category_id;
+            $data['type'] = $parent_category_id;
+            $data['permission'] = $permission;
+        }
+        
+        
+        	
+            $data['breadcrumb'] = $this->parentcategory;
+			$data['child_category'] = $this->childcategory;
 			$data['section'] = 'front-end';
 			
 			$user_result = $this->db->select('user_id ,profile_name')->from('user')->where('is_active',1)->order_by('profile_name','asc')->get();
@@ -1134,17 +1162,20 @@ class Post extends CI_Controller {
 	/* Function for get sub-catetgories related to root category*/
 	function display_parent($child, $level)
 	{ 
-		$query = 'SELECT c.category_id,c.parent,c.name,cr.permission_type FROM category c left join user_category_relation cr on c.parent=cr.category_id and cr.user_id="'.$this->user_id.'" WHERE c.category_id="'.$child.'"';
+		$query = 'SELECT c.category_id,c.is_active,c.parent,c.name,cr.permission_type FROM category c left join user_category_relation cr on c.category_id=cr.category_id and cr.user_id="'.$this->user_id.'" WHERE c.category_id="'.$child.'" ';
 		$resultt = $this->db->query($query);
 	
 		foreach($resultt->result_array() as $row)
 		{ 
-			$thisref = &$this->parentcategory;
-			$thisref[$row['parent']]['id'] =   $row['category_id'];
-			$thisref[$row['parent']]['parent'] =   $row['parent'];
-            $thisref[$row['parent']]['name'] =   $row['name'];
-            $thisref[$row['parent']]['permission_type'] =   $row['permission_type'];
-			$this->parentcategory =  &$thisref ; 		 
+            if($row['is_active']==1){
+                $thisref = &$this->parentcategory;
+                $thisref[$row['parent']]['id'] =   $row['category_id'];
+                $thisref[$row['parent']]['parent'] =   $row['parent'];
+                $thisref[$row['parent']]['name'] =   $row['name'];
+                $thisref[$row['parent']]['permission_type'] =   $row['permission_type'];
+                $this->parentcategory =  &$thisref ; 		
+                //echo '<pre>';print_r($thisref);
+            }
 			$this->display_parent($row['parent'], $level+1);
 		} 
 	}
