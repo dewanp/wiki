@@ -705,6 +705,7 @@ class Post extends CI_Controller {
 			ksort($this->parentcategory);
             $data['type'] = $category_id;
             $data['permission'] = $permission;
+            $data['add_category'] = 0;
         }if($parent_category_id){ 
             $permission = $this->commonmodel->check_permission($parent_category_id,$this->user_id);
              
@@ -720,6 +721,8 @@ class Post extends CI_Controller {
             $data['parent_category'] = $parent_category_id;
             $data['type'] = $parent_category_id;
             $data['permission'] = $permission;
+            $data['add_category'] = 1;
+            
         }
         
         
