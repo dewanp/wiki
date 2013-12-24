@@ -275,6 +275,7 @@ a:hover {color:#333;}
 .breadcrumb li:first-child {background-image:none; padding:0 5px 0 0; margin-left:5px;}
 .breadcrumb li a {font-size:12px; color:#999;}
 .breadcrumb li a:hover,.breadcrumb li a.active {color:#666;}
+.breadcrumb li a.active {color:#666;cursor: default;}
 .advertise {float:left; margin:10px 0 40px; *padding-bottom:20px;}
 
 /*Input Type - Text, Textarea*/
@@ -1186,7 +1187,7 @@ ul.pagination li a {background:url(../images/gallery-control.png) no-repeat; dis
 .changecat .catpopup .catmid .coleft ul li a {background:url(../images/grey-arrow.png) no-repeat left 4px; color:#666; padding-left:20px;}
 .changecat .catpopup .catmid .coleft ul li a:hover {color:#FF8C44;}
 
-.catbox {float:left; width:700px; padding:10px; border:8px solid #eee; background:#fff; margin:5px 0 10px;}
+.catbox {float:left; width:95%; padding:10px; border:8px solid #eee; background:#fff; margin:5px 0 10px;}
 .catbox .catsearch {float:left; width:695px; border-bottom:1px solid #DEDEDE; padding:10px 0 20px;}
 .fieldboxcat {float:left; width:510px; margin:18px 0 0 30px;}
 .fieldboxcat.fieldboxcat2 {margin:0 0 0 30px;}
@@ -2041,3 +2042,8 @@ ul#category_display li{float:left;width:60px;height:60px;word-break: break-all;c
     float: left;
     font-size: 14px;margin: 0px 10px 0 0;
     padding: 8px 15px;}
+
+.nolink{cursor: default;}
+.breadcrumb li a.nolink:hover {
+color: #999;
+}

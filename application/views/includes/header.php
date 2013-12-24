@@ -102,7 +102,7 @@
 				<div class="main-nav">
 				
 					<ul>
-					  <li class="home"><a href="javascript:void(0);" class="active">Home<span class="arrow"></span></a></li>					 
+					  <li class="home"> <a href="<?php echo site_url('post/allcategories');?>" class="active">Home<span class="arrow"></span></a></li>					 
 					  <li class="all-post"><?php echo anchor('post/showposts/all','All Posts<span class="arrow"></span>');?></li>
 					</ul>
 					

@@ -11,9 +11,9 @@
 	<div class="left-nav-wrapper normal">
      
      <div class="nav-links helps crepostmain">
-            <h2 class="title border-none">
+<!--            <h2 class="title border-none">
                 <?php echo anchor('post/allcategories','<strong>View All Categories</strong>');?>
-            </h2>
+            </h2>-->
      </div>
 		
 		<div class="left-nav-main"> 

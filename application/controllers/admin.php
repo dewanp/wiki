@@ -1574,7 +1574,7 @@ class Admin extends CI_Controller
 				if($this->input->post('section')=='back-end')
 					redirect(base_url().'admin/displayEditCategory/'.$edit_category_id);
 				else if($this->input->post('section')=='front-end')
-					redirect(base_url().'post/displayEditCategory/'.$edit_category_id);
+					redirect(base_url().'post/displayEditCategory/0/'.$edit_category_id);
 			}
 		}
 		else

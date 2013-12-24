@@ -211,21 +211,21 @@ class Commonmodel extends CI_Model {
 	{
 		if($cat_id != '' && $user_id != '' && is_numeric($cat_id))
 		{
-			$admin_query = "SELECT ucr.user_id FROM user_category_relation AS ucr left join category c on c.category_id=ucr.category_id and ucr.user_id=".$this->user_id." WHERE ucr.user_id = ".$user_id." AND ucr.category_id = ".$cat_id." AND ucr.permission_type = 1 and c.is_active=1";
+			 $admin_query = "SELECT ucr.user_id FROM user_category_relation AS ucr left join category c on c.category_id=ucr.category_id and ucr.user_id=".$this->user_id." WHERE ucr.user_id = ".$user_id." AND ucr.category_id = ".$cat_id." AND ucr.permission_type = 1 and c.is_active=1";
 			$admin_result = $this->db->query($admin_query);
 			$admin_permission = $admin_result->row_array();
 			if(!empty($admin_permission)){
 				return 1;
 			}
 			
-			$rw_query = "SELECT ucr.user_id FROM user_category_relation AS ucr left join category c on c.category_id=ucr.category_id and ucr.user_id=".$this->user_id." WHERE ucr.user_id = ".$user_id." AND ucr.category_id = ".$cat_id." AND ucr.permission_type =2 and c.is_active=1";
+			$rw_query = "SELECT ucr.user_id FROM user_category_relation AS ucr left join category c on c.category_id=ucr.category_id and ucr.user_id=".$this->user_id." AND ucr.permission_type =2 WHERE ucr.user_id = ".$user_id." AND ucr.category_id = ".$cat_id."  and c.is_active=1";
 			$rw_result = $this->db->query($rw_query);
 			$rw_permission = $rw_result->row_array();
 			if(!empty($rw_permission)){
 				return 2;
 			}
 		
-			$r_query = "SELECT ucr.user_id FROM user_category_relation AS ucr left join category c on c.category_id=ucr.category_id and ucr.user_id=".$this->user_id." WHERE ucr.user_id = ".$user_id." AND ucr.category_id = ".$cat_id." AND ucr.permission_type = 3 and c.is_active=1";
+			$r_query = "SELECT ucr.user_id FROM user_category_relation AS ucr left join category c on c.category_id=ucr.category_id and ucr.user_id=".$this->user_id." AND ucr.permission_type = 3 WHERE ucr.user_id = ".$user_id." AND ucr.category_id = ".$cat_id." and c.is_active=1";
 			$r_result = $this->db->query($r_query);
 			$r_permission = $r_result->row_array();
 			if(!empty($r_permission)){
