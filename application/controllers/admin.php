@@ -3014,7 +3014,7 @@ class Admin extends CI_Controller
 			foreach($user_result->result_array() as $val)
 			{
 				if( (in_array($val['user_id'],$previous_admin_ids)) ){
-					$prev_admin[] = '<label>'.$val['profile_name'].'</label>';
+					$prev_admin[] = '<li class="search-choice"><span>'.$val['profile_name'].'</span></li>';
 				} 
                 $sel ='';
                 if( in_array($val['user_id'],$current_admin_ids)){
@@ -3057,7 +3057,7 @@ class Admin extends CI_Controller
 			
 			$outputt = array(
 						'status'=>'admin_exist',						
-						'prevadmin' => implode(', ',$prev_admin),
+						'prevadmin' => implode(' ',$prev_admin),
 						'users' => $admusers,
 						'rwusers' => $rwusers,
 						'rusers' => $rusers);

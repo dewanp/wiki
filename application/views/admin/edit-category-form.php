@@ -53,7 +53,9 @@
                     <td> Admin </td>
                     <td>
                     	<div id="prev_admin">
-                     	
+                        	<ul class="prev_admin_ul" id="prev_admin_ul">
+                            
+                            </ul>
                      	</div> 
                          <select id="admin" name ="admin[]" class="inputmain" multiple="multiple" data-placeholder="--- Select People ---" style="width:298px;">
                              

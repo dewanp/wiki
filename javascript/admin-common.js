@@ -49,7 +49,7 @@ function toggledropdown()
                         var admval; 
                         
                         
-						$('#prev_admin').html(response.prevadmin); 
+						$('#prev_admin #prev_admin_ul').html(response.prevadmin); 
 						
 						$('#read_write option').remove();
 						$('#read_write').html(response.rwusers);

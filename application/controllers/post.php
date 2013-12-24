@@ -321,12 +321,6 @@ class Post extends CI_Controller {
 			$post_id = "0";
 		}
 		
-		$rs_post_hit = $this->db->select("*")->from('post_hit')->where(array('post_id'=>$post_id ,'ip_address'=> $this->input->ip_address()))->get();
-		if(!$rs_post_hit->num_rows()){
-			$this->db->insert('post_hit',array('post_id'=>$post_id ,'ip_address'=> $this->input->ip_address()));
-		}
-		
-		
 		$user_id = $this->session->userdata('user_id');
 		$data = array();
 		$data['user_id'] = $user_id;
@@ -360,24 +354,6 @@ class Post extends CI_Controller {
 				$data['my_favorites'] = "";
 		}
 
-		//post subscribe-unsubscribe
-		if($this->commonmodel->isLoggedIn()) {
-			$check_subscribe = $this->commonmodel->getRecords('post_subscribe_unsubscribe','',array('user_id'=>$user_id,'post_id'=>$post_id),'',true);
-
-			if(array_key_exists('post_subscribe_unsubscribe_id',$check_subscribe))
-			{
-				$data['subscribe_unsubscribe'] = '<div class="unSubPost"><a href="javascript:void(0);" onclick ="subscribePost ('.$user_id.','.$post_id.')" title="Subscribe Post"></a></div>';
-			}
-			else
-			{
-				$data['subscribe_unsubscribe'] = '<div class="subPost"> <a href="javascript:void(0);" onclick ="unsubscribePost('.$user_id.','.$post_id.')" title="Unsubscribe Post"></a></div>';
-			}
-		}
-		else
-		{
-				$data['subscribe_unsubscribe'] = "";
-		}
-		
 		// post image
 		$data['post_image'] = $this->commonmodel->getRecords('file_upload', '', array('file_upload_id' => $post['post_image']) , '', true);
 		// post category
@@ -1642,6 +1618,24 @@ class Post extends CI_Controller {
 		$parentusers = array('parentusers'=>$output);
 		echo json_encode($parentusers);
 		exit;
+	}
+	
+	/**
+	 * This function is used to load rating functionality 
+	 * Created by Neelesh Choukesy on 2012.03.20
+	 * 
+	 */
+	public function loadRatingPost()
+	{
+		$post_id = $this->input->post('post_id');
+		$edit = $this->input->post('edit');
+		$ip_address = $this->input->post('ip_address');
+		$data = $this->postmodel->getAvgRatingPost($post_id);
+		$data['post_id'] = $post_id;
+		$data['edit'] = $edit;
+		$data['ip_address'] = $ip_address;
+		
+		$this->load->view('rating-post',$data);
 	}
 	
 }

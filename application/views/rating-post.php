@@ -3,7 +3,7 @@
 	$checked = "";
 	?>
 	<?php for($i=1;$i<=5;$i++){?>
-		<input name="star2" type="radio" class="wow<?php echo $post_id;?>" value="<?php echo $i;?>" <?php if((int)$rate==$i && $rate) {echo 'checked="checked"'; $rate = 6;}?>/>
+		<input name="star1" type="radio" class="wow<?php echo $post_id;?>" value="<?php echo $i;?>" <?php if((int)$rate==$i && $rate) {echo 'checked="checked"'; $rate = 6;}?>/>
 	<?php } ?>
 <?php 
 	if($edit)

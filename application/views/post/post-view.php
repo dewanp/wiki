@@ -1,62 +1,4 @@
-<?php
-$google_ad_admin_percent = $this->commonmodel->getRecords('google_ad', 'admin_percent', array('google_ad_id' => 1), '', true);
 
-$admin_percent=$google_ad_admin_percent['admin_percent'];
-
-$user_percent = 100-$admin_percent;
-
-if(!isset($_SESSION['google_add'][$post_id]['count']))
-{
-	$_SESSION['google_add'][$post_id]['count'] = 0;
-}
-else
-{
-	$_SESSION['google_add'][$post_id]['count'] = $_SESSION['google_add'][$post_id]['count']+1;
-}
-
-//$total_hits = $_SESSION['google_add'][$post_id]['count'];
-//$total_hits = $pageview;
-$total_hits = 10;
-
-if($admin_percent%10 == 0)
-{ 
-	$admin_hits = $admin_percent/10;
-	$user_hits = $user_percent/10;
-	$hit_count = $total_hits%10;
-	
-}
-else
-{
-	$admin_hits = $admin_percent/5;
-	$user_hits = $user_percent/5;
-	$hit_count = $total_hits%20;
-}
-
-if($hit_count<$user_hits)
-{	
-	// user google ad client
-	$user_client = $this->commonmodel->getRecords('user_earnings_account', 'user_code', array('user_id' => $post['user_id'], 'account_type'=>2, 'is_active' =>1), '', true);
-	if(!empty($user_client)){
-		$google_ad_client = $user_client['user_code'];
-	}else{
-		$admin_client = $this->commonmodel->getRecords('user_earnings_account', 'user_code', array('user_id' => 1, 'account_type'=>2), '', true);
-		$google_ad_client = $admin_client['user_code'];	
-	}	
-	
-	//$google_ad_client = 'ca-pub-124862319174302';
-	//$google_ad_client = 'user add';
-}
-else
-{
-	// admin google ad client
-	$admin_client = $this->commonmodel->getRecords('user_earnings_account', 'user_code', array('user_id' => 1, 'account_type'=>2), '', true);
-	$google_ad_client = $admin_client['user_code'];
-	
-	//$google_ad_client = 'ca-pub-124862319174302';
-	//$google_ad_client = 'admin add';
-}
-?>
-<div style="display:none;" id="google_ad_client_val"><?php echo $google_ad_client;?></div>
 <div id="wrapper" class="viewpage">
   <div class="left-content-main"><?php echo $sidebar;?>  </div>
   
@@ -75,16 +17,6 @@ else
 		</li>
         
 		<li style="float:right; background:none;" id ="my_favorites"><?php echo $my_favorites; ?></li>
-        
-      
-      <?php /*?><?php if ($this->commonmodel->isLoggedIn() && $user_id == $post['user_id']) {?>
-          <li style="float:right; background:none;" id ="edit_post">
-              <div class="edit-post">
-                  <a href="<?php echo site_url('post/edit/'.$post_id); ?>" hidefocus="true" style="outline: medium none;" title="Edit Post"></a>
-              </div>
-          </li>
-      <?php }?><?php */?>
-      
       </ul>
       
     </div>
@@ -94,13 +26,6 @@ else
 				postBasicInfo('<?php echo $post_id?>','view')
 			</script>
 		</div>
-        
-        
-        
-		
-		
-        
-        
     </div>
   </div>
   <?php }else{?>  
