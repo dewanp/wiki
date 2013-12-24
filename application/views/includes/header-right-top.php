@@ -16,7 +16,7 @@
 	   </ul>
 	   </div> 
 	</div>
-	<div class="serach-box">
+	<!--<div class="serach-box">
 		<form action="<?php echo site_url('search')?>" method="post">
 			<div class="field">
 				<label for="header-keyword" class="infield">Search for Posts</label>
@@ -24,7 +24,7 @@
 			</div>
 			<input type="submit" value="" />
 		</form>
-	</div>
+	</div>-->
 <?php }else{?>
 	<div class="signinbox">
 		<div class="loginbtn"><?php echo anchor('user/login','Login','class="txtlogin"')?> <a href="javascript:void(0);" class="sep arrowclick"> <img src="images/login-arrow.png" alt="" class="arrow" /></a> </div>
