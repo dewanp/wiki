@@ -9,7 +9,7 @@
     </script>
     
     <table border="0" cellspacing="0" cellpadding="0" class="tbldtl">
-                
+             
 			 <?php if($section == 'front-end'){?>
                 <input type="hidden" id="parent_category" name ="parent_category" value="<?php echo $parent_category;?>"/>
              <?php }else if($section == 'back-end'){?>
@@ -41,13 +41,12 @@
                         </span>
                     </td>
                 </tr>
-                
-                
                 <?php if($section == 'front-end' && $permission==1 && $inheritance==0){
 						$style ='style="display:none;"';
-					  }else if($section == 'front-end' && $permission==1 && $inheritance==1){
+					  }else if( ($section == 'front-end' && $permission==1 && $inheritance==1) || ($section == 'front-end' && $add_category==1) ){
 					  	$style ='style=""';
 					  }
+					  
 				?>
                 <tr id="admin_tr" class="" <?php echo $style;?>>
                     <td> Admin </td>

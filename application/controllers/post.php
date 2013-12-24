@@ -651,7 +651,7 @@ class Post extends CI_Controller {
 		 
 		if($category_id)	{		
 			$permission = $this->commonmodel->check_permission($category_id,$this->user_id);
-             
+            
 			$data['permission'] = $permission;
 			if($permission != 1){
 				redirect('post/allcategories');
@@ -675,7 +675,7 @@ class Post extends CI_Controller {
             $data['have_child_cat']= 1;
                 
                 
-                $this->display_children($category_id,0);
+            $this->display_children($category_id,0);
             $this->display_parent($category_id,0);
             ksort($this->childcategory);
 			ksort($this->parentcategory);
@@ -684,12 +684,16 @@ class Post extends CI_Controller {
             $data['add_category'] = 0;
         }if($parent_category_id){ 
             $permission = $this->commonmodel->check_permission($parent_category_id,$this->user_id);
-             
+           
 			$data['permission'] = $permission;
 			if($permission != 1){
 				redirect('post/allcategories');
 				exit;
 			}
+			
+			$inherited = $this->commonmodel->check_inherited($parent_category_id,$this->user_id);
+			$data['inheritance'] = $inherited;
+		
             $this->display_children($parent_category_id,0);
             $this->display_parent($parent_category_id,0);
             ksort($this->childcategory);
@@ -698,7 +702,6 @@ class Post extends CI_Controller {
             $data['type'] = $parent_category_id;
             $data['permission'] = $permission;
             $data['add_category'] = 1;
-            
         }
         
         
