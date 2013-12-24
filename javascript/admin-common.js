@@ -34,12 +34,14 @@ function toggletr()
 function toggledropdown()
 {
 	var value = $('#parent_category').val();
+	var is_inherited_admin = $('#is_inherited_admin').val();
+	var section = $('#section').val();
 	 
 	 
 	$.ajax({
 			type : 'post',
 			url : site_url + "admin/getAdminInfo",
-			data: "parent_category_id="+value+'&edit_category_id='+$('#edit_category_id').val(),
+			data: "parent_category_id="+value+'&edit_category_id='+$('#edit_category_id').val()+'&is_inherited_admin='+is_inherited_admin+'&section='+section,
 			success : function(data){
 					var response = $.parseJSON(data);
 					if(response.status == 'admin_exist')
@@ -56,6 +58,7 @@ function toggledropdown()
 						
 						$('#read option').remove();
 						$('#read').html(response.rusers);
+						$('#same_level_admin').val(response.same_level_admin);
                         
                         
                           $("select#admin option:selected").each(function(){              

@@ -684,7 +684,7 @@ class Post extends CI_Controller {
             $data['add_category'] = 0;
         }if($parent_category_id){ 
             $permission = $this->commonmodel->check_permission($parent_category_id,$this->user_id);
-           
+          
 			$data['permission'] = $permission;
 			if($permission != 1){
 				redirect('post/allcategories');

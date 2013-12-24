@@ -41,8 +41,10 @@
                         </span>
                     </td>
                 </tr>
+               
                 <?php if($section == 'front-end' && $permission==1 && $inheritance==0){
-						$style ='style="display:none;"';
+						//$style ='style="display:none;"';
+						$style ='style=""';
 					  }else if( ($section == 'front-end' && $permission==1 && $inheritance==1) || ($section == 'front-end' && $add_category==1) ){
 					  	$style ='style=""';
 					  }
@@ -159,6 +161,9 @@
                     	 
                         <input type="hidden" name="edit_category_id" id="edit_category_id" value="<?php echo $category_detail['category_id']; ?>"/>
                         <input type="hidden" name="section" id="section" value="<?php echo $section; ?>"/>
+                        <input type="hidden" name="is_inherited_admin" id="is_inherited_admin" value="<?php echo $inheritance; ?>"/>
+                         <input type="hidden" name="same_level_admin" id="same_level_admin" value=""/>
+                        
                         <a href="<?php if($section == 'front-end') echo site_url('post/allcategories'); else echo site_url('admin/displaycategorylist');?>"><input type="button" class="btngrey" value="Cancel"  name="cancel" /></a>
                          
                          

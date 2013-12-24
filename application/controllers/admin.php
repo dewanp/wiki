@@ -1434,6 +1434,7 @@ class Admin extends CI_Controller
 				//parameters for add user_category_relation
 				$user_id = $this->session->userdata('user_id');
 				$admins = $this->input->post('admin');
+				$same_level_admin = explode(',',$this->input->post('same_level_admin'));
 				$read_write = $this->input->post('read_write');
 				$read = $this->input->post('read');
 				
@@ -1481,6 +1482,24 @@ class Admin extends CI_Controller
                         }
 					}
 				}
+				
+				if( !empty($same_level_admin) )
+				{	
+					
+					foreach($same_level_admin as $key=>$val)
+					{
+                        if(!in_array($val, $uniqe_user)){
+                            $uniqe_user[]=$val;
+                                $admindata[] = array('user_id' => $val,
+											 'category_id' => $edit_category_id,
+											 'permission_type' =>1,
+											 'is_inherited' => 0,
+											 'created_by' => $user_id
+											 );	
+                        }
+					}
+				}
+				
 				
 				if(!empty($read_write))
 				{	
@@ -2979,6 +2998,8 @@ class Admin extends CI_Controller
 	{
 		$parent_category_id = $this->input->post('parent_category_id');
         $edit_category_id = $this->input->post('edit_category_id');
+		$section = $this->input->post('section');
+		$is_inherited_admin = $this->input->post('is_inherited_admin');
 		
         
         if($edit_category_id){
@@ -3017,10 +3038,16 @@ class Admin extends CI_Controller
 					$prev_admin[] = '<li class="search-choice"><span>'.$val['profile_name'].'</span></li>';
 				} 
                 $sel ='';
-                if( in_array($val['user_id'],$current_admin_ids)){
+				
+				if( in_array($val['user_id'],$current_admin_ids)){
                     $sel = 'selected="selected"';
+					if( $section == 'front-end' && $is_inherited_admin == 0){
+						$same_level_admin[] = $val['user_id'];
+                    	$sel .= 'disabled';
+                	}
                 }
                 if( !in_array($val['user_id'],$previous_admin_ids)){
+					 
                   $admusers .= '<option value="'.$val['user_id'].'" '.$sel.'>'.$val['profile_name'].'</option>';
                 }
                 				 
@@ -3060,7 +3087,8 @@ class Admin extends CI_Controller
 						'prevadmin' => implode(' ',$prev_admin),
 						'users' => $admusers,
 						'rwusers' => $rwusers,
-						'rusers' => $rusers);
+						'rusers' => $rusers,
+						'same_level_admin'=> implode(',',$same_level_admin));
 			echo json_encode($outputt);
 			exit;
 		 
