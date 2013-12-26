@@ -367,6 +367,21 @@
 		$result = $this->db->query($sql);
 		return $result->row_array();
 	}
+	
+	function parent_or_not($category_id)
+	{
+		$sql = 'SELECT parent FROM category WHERE category_id = '.$category_id;
+		$result = $this->db->query($sql)->row_array();
+		if( $result['parent'] == 0)
+		{
+			//category id parent
+			return 1;
+		}
+		//category is child
+		return 0;
+	}
+	
+	
 
 	
 }

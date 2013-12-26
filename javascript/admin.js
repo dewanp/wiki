@@ -109,9 +109,19 @@ function deleteCategory(category_id)
 			data: "category_id="+category_id,
 			success: function (data){ 
 				var response = $.parseJSON(data)
-				if(response.status == 'success'){
+				
+				window.location.reload();
+				/*if(response.status == 'success'){
 					$('#list_'+category_id).remove();
 				}
+				
+				if(response.category_count){
+					$('#category_count_up').text('');
+					$('#category_count_up').text( '(' + response.category_count + ')' );
+					
+					$('#category_count').text('');
+					$('#category_count').text(response.category_count);
+				}*/
 			}
 		});
 	}

@@ -6,7 +6,7 @@
         <div class="maintitle">
             <h1>Category List</h1>
            	<div class="pleft" style="margin-top:5px;">
-            <span class="left" style="margin:-5px 0 0 5px;">(<?php echo $count_user; ?>)  </span>  </div>
+            <span class="left" style="margin:-5px 0 0 5px;" id="category_count_up">(<?php echo $count_user; ?>)</span>  </div>
             
             <a class="btnorange" href="<?php echo site_url('admin/displayAddCategory')?>" style="float:right;">
             <span class="back-icon"></span>Add Category</a>
@@ -27,7 +27,7 @@
         </div>
         </form>
         <div class="pagi-main">
-            <div class="pleft"><span class="left">Total Category : <?php echo $count_user; ?> </span>  </div>
+            <div class="pleft"><span class="left">Total Category :<label id="category_count"> <?php echo $count_user; ?></label> </span>  </div>
             <!-- Pagination Region : Start -->
             <div class="pagination-region">
                 <div class="paginationdiv">

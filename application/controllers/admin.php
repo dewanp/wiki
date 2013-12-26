@@ -1485,7 +1485,6 @@ class Admin extends CI_Controller
 				
 				if( !empty($same_level_admin) )
 				{	
-					
 					foreach($same_level_admin as $key=>$val)
 					{
                         if(!in_array($val, $uniqe_user)){
@@ -2981,6 +2980,27 @@ class Admin extends CI_Controller
 	{
 		$category_id = $this->input->post('category_id');
 		
+		//first get categoyr_id is parent or not if category_id is parent then delete all related child
+		//and if cet_id is not parent then delete only category.
+		$parent_or_not = $this->mymodel->parent_or_not($category_id);
+		
+		if($parent_or_not == 1)
+		{
+		   $category_result = $this->display_children($category_id,0);
+           if( !empty($this->childcategory) ){
+		   		foreach( $this->childcategory as $key=>$val)
+				{
+					$this->db->where('category_id', $val);
+					$this->db->or_where('parent', $val);
+					$this->db->delete('category');
+					
+					$this->db->where('category_id', $val);
+					$this->db->delete('user_category_relation');
+				}
+		   }
+           
+		}
+		
 		$this->db->where('category_id', $category_id);
 		$this->db->or_where('parent', $category_id);
 		$this->db->delete('category');
@@ -2988,7 +3008,11 @@ class Admin extends CI_Controller
 		$this->db->where('category_id', $category_id);
 		$this->db->delete('user_category_relation');
 		
-		$output['status'] = 'success';
+		$this->db->from ('category');
+		$all =$this->db->count_all_results();
+		
+		$output = array();
+		$output = array('category_count'=>$all, 'status' =>'success');
 		echo json_encode($output);
 		exit;
 	}
@@ -3214,6 +3238,28 @@ class Admin extends CI_Controller
 			$this->display_children($row['category_id'], $level+1);
 		} 
 	} 
+	
+	/* Function for get sub-catetgories related to root category*/
+	function display_parent($child, $level)
+	{ 
+		$query = 'SELECT c.category_id,c.is_active,c.parent,c.name,cr.permission_type FROM category c left join user_category_relation cr on c.category_id=cr.category_id and cr.user_id="'.$this->user_id.'" WHERE c.category_id="'.$child.'" ';
+		$resultt = $this->db->query($query);
+	
+		foreach($resultt->result_array() as $row)
+		{ 
+            if($row['is_active']==1){
+                $thisref = &$this->parentcategory;
+                $thisref[$row['parent']]['id'] =   $row['category_id'];
+                $thisref[$row['parent']]['parent'] =   $row['parent'];
+                $thisref[$row['parent']]['name'] =   $row['name'];
+                $thisref[$row['parent']]['permission_type'] =   $row['permission_type'];
+                $this->parentcategory =  &$thisref ; 		
+                //echo '<pre>';print_r($thisref);
+            }
+			$this->display_parent($row['parent'], $level+1);
+		} 
+	}
+	
 
 }
 // End of  admin.php  controller file 
