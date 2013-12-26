@@ -56,6 +56,8 @@ function toggledropdown()
 						$('#read_write option').remove();
 						$('#read_write').html(response.rwusers);
 						
+						$('#prev_read_user #prev_read_ul').html(response.prev_read_user); 
+						
 						$('#read option').remove();
 						$('#read').html(response.rusers);
 						$('#same_level_admin').val(response.same_level_admin);

@@ -78,4 +78,7 @@ img.thumb { border: medium none;  float: left;   height: 30px;   margin-top: -3p
 
 .prev_admin_ul li{background-clip: padding-box; background-color: #E4E4E4;background-image: linear-gradient(#F4F4F4 20%, #F0F0F0 50%, #E8E8E8 52%, #EEEEEE 100%);border: 1px solid #AAAAAA;border-radius: 3px;box-shadow: 0 0 2px #FFFFFF inset, 0 1px 0 rgba(0, 0, 0, 0.05);color: #333333;cursor: default; line-height: 13px;margin: 3px 0 3px 5px;padding: 3px 20px 3px 5px;position: relative; width:40px;float:left;list-style-type:none;}
 
+.prev_read_ul{width:100%; display: block;float: left;}
+
+.prev_read_ul li{background-clip: padding-box; background-color: #E4E4E4;background-image: linear-gradient(#F4F4F4 20%, #F0F0F0 50%, #E8E8E8 52%, #EEEEEE 100%);border: 1px solid #AAAAAA;border-radius: 3px;box-shadow: 0 0 2px #FFFFFF inset, 0 1px 0 rgba(0, 0, 0, 0.05);color: #333333;cursor: default; line-height: 13px;margin: 3px 0 3px 5px;padding: 3px 20px 3px 5px;position: relative; width:40px;float:left;list-style-type:none;}
 

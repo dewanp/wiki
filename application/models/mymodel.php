@@ -331,7 +331,8 @@
 	
 	/* Function for the get user list for admin */
 	function  getAdminInfo($category_id,$type = 1, $is_inherited=0)
-	{ if($category_id != ''){
+	{ 
+		if($category_id != ''){
 		$sql = 'SELECT ucr.user_id,ucr.is_inherited FROM user_category_relation AS ucr WHERE ucr.permission_type = '.$type;
 		
 			$sql .= ' AND ucr.category_id = '.$category_id;
@@ -343,6 +344,23 @@
         
 		
 	}
+	
+	//Function or get previos read user for any category
+	function getPrevReadUser($category_id,$type = 1,$is_inherited=0)
+	{
+		if($category_id != '')
+		{
+			$sql = 'SELECT ucr.user_id,ucr.is_inherited FROM user_category_relation AS ucr WHERE ucr.permission_type = '.$type;
+		
+			$sql .= ' AND ucr.category_id = '.$category_id;
+			
+            if($is_inherited)
+                $sql .= ' AND ucr.is_inherited = '.$is_inherited;
+            $result = $this->db->query($sql);
+		return $result->result_array();
+		}
+	}
+	
 	
 	/* Function for the get user list for read/write */
 	function  getAdminRwInfo($category_id)
@@ -380,10 +398,8 @@
 		//category is child
 		return 0;
 	}
-	
-	
-
-	
+        
+        
 }
 /* End of file adminmodel.php */
 /* Location: ./application/models/adminmodel.php */

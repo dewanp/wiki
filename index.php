@@ -58,7 +58,8 @@ switch($_SERVER['SERVER_NAME'])
  * By default development will show errors but testing and live will hide them.
  */
 
-error_reporting('E_ALL ^ E_NOTICE ^ E_WARNING');
+//error_reporting('E_ALL ^ E_NOTICE ^ E_WARNING');
+error_reporting('E_ALL');
 
 /*
  *---------------------------------------------------------------

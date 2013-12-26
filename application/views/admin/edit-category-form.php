@@ -100,6 +100,12 @@
                 <tr>
                     <td> Read </td>
                     <td> 
+                    	<div id="prev_read_user">
+                        	<ul class="prev_read_ul" id="prev_read_ul">
+                            
+                            </ul>
+                     	</div> 	
+                    		
                          <select id="read" name ="read[]" class="inputmain" multiple="multiple"  data-placeholder="--- Select People ---" onchange="removeCheckR()" style="width:298px;">
                             
 						<?php if($category_detail['category_id'] == '')
