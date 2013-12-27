@@ -1599,8 +1599,9 @@ class Admin extends CI_Controller
 						{
 							$prev_admin = array();
 							if($val['permission_type']==1) {
+                                
 							 	$this->db->delete('user_category_relation',array('category_id'=>$childcat,'permission_type'=>1,'is_inherited'=>1));
-								
+				$this->db->delete('user_category_relation',array('category_id'=>$childcat,'user_id'=>$val['user_id']));
 								
 								$result_admin =  $this->mymodel->getAdminInfo($parent,1);
 								if(!empty($result_admin)){
