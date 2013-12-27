@@ -16,7 +16,8 @@
         <div class="grid grid4">
         <ul><li> <table width="100%" cellspacing="0" cellpadding="0" border="0" class="tblgrid"><tbody>
             	<tr>
-                    <th style="width:91%!important;">Category Name</th>
+                    <th style="width:68%!important;">Category Name</th>
+                    <th style="width:23%!important;">Permissions</th>
                     <th>Options</th>
                 </tr>
             

@@ -186,9 +186,12 @@
 	
 	function displayCategoryChildList($limit='',$offset='')
 	{
-		$sql =" SELECT c.category_id AS id, c.name, c.is_active,c.parent AS parent_id
-			   from category as c
-			   order by c.category_id desc"; 
+		$sql =" SELECT c.category_id AS id, c.name, c.is_active,c.parent AS parent_id,
+				(SELECT GROUP_CONCAT(us.profile_name) FROM user as us WHERE us.user_id 
+				IN(SELECT ucr.user_id FROM user_category_relation as ucr WHERE ucr.category_id = c.category_id AND ucr.permission_type = 1))
+				AS user_names
+				from category as c
+			   order by c.category_id desc";
 			   if($offset != ''){
 			 	$sql .=" limit $offset , $limit ";
 			 }
@@ -228,7 +231,7 @@
 	function displayCategoryChildListSecond($group_id)
 	{
 		$sql =" SELECT c.category_id AS id, c.name, c.is_active,c.parent AS parent_id
-			   from category as c ";
+				from category as c ";
 		$category_list_result = $this->db->query($sql);
 		$query = $category_list_result->result_array();
 		
@@ -265,7 +268,7 @@
 	
 	
 	function displayFrontCategoryDropdown($user_id)
-	{	$user_id = 11;
+	{
 		$query = 'SELECT cat.category_id,cat.name FROM category AS cat LEFT JOIN user_category_relation AS ucr ON ucr.category_id = cat.category_id WHERE ucr.user_id = '.$user_id.' AND ucr.permission_type = 1';
 		$category_list_result = $this->db->query($query);
 		return $category_list_result->result_array();

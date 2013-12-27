@@ -283,6 +283,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9f9f9', end
 .grid .tblgrid {width:100%;}
 .grid .tblgrid tr th {background:#5380AA; color:#fff; padding:8px;}
 .grid .tblgrid tr td {border-bottom:0px solid #DEDEDE; padding:8px; color:#666;}
+.grid .tblgrid tr td:nth-child(2) {padding:0px;}
 .grid .tblgrid tr td.alt {background:#EDF0F5;}
 .viewlink {float:right; text-decoration:underline; color:#FF8C44; padding-right:10px; font-size:12px;}
 .viewlink:hover {text-decoration:none; color:#333;}
