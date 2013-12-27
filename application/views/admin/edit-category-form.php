@@ -145,8 +145,8 @@
                     <?php }?>
               
                 
-                <?php if($category_detail['category_id'] && $have_child_cat==1){?>
-                <tr>
+                <?php //if($category_detail['category_id'] && $have_child_cat==1){?>
+                <!--<tr>
                     <td>&nbsp;</td>
                     <td>
                       <div class="field">
@@ -154,8 +154,8 @@
                        Overwrite child categories
                       </div>
                     </td>
-                </tr>
-                <?php }?>
+                </tr>-->
+                <?php //}?>
                 
                 <tr>
                     <td>&nbsp;</td>

@@ -8,7 +8,7 @@ class Admin extends CI_Controller
 	function __construct()
 	{
 		parent :: __construct();
-		$this->load->helper( array('url','form','email','string'));
+		$this->load->helper( array('url','form','email','string','captcha'));
 		$this->load->library(array('form_validation','session','pagination'));
         $this->load->model(array('commonmodel','mymodel','adminmodel'));
 
