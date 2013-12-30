@@ -13,7 +13,6 @@ class Admin extends CI_Controller
         $this->load->model(array('commonmodel','mymodel','adminmodel'));
 
 		$this->load->database();
-
 	}
 	
 	/*
@@ -21,14 +20,11 @@ class Admin extends CI_Controller
 	*/
 
 	public function index()
-	{
-		
+	{	
 		$data['title'] = "Vinfotech-wiki Admin Section";
 		$this->load->view('admin/include/header-login', $data);
 		$this->load->view('admin/login');
 		$this->load->view('admin/include/footer');
-		
-
 	}
 
 	/*
@@ -178,9 +174,7 @@ class Admin extends CI_Controller
 
 
 
-/* 
- * This function is used for log out from account.
-*/
+	/** This function is used for log out from account.*/
 	function logout()
 		{
 			$this->session->sess_destroy();
@@ -188,9 +182,7 @@ class Admin extends CI_Controller
 		}
 
 	
-	/* 
-	 * This function is used for displaying data on dashboard of admin section
-	*/
+	/*This function is used for displaying data on dashboard of admin section*/
 	public function dashboard()
 	{		
 		if($this->mymodel->isLoggedIn()){
@@ -207,10 +199,8 @@ class Admin extends CI_Controller
 			 redirect();
 		 }
 	}
-	/* -------------MANAGE USER SECTION START HERE ---------
-	 *  This function is used for displaying list of  active user 
-	*/
 	
+	/*This function is used for displaying list of  active user */
 	public function manageUsers()
 	{
 		if($this->mymodel->isLoggedIn()){
@@ -246,7 +236,6 @@ class Admin extends CI_Controller
 			
 			$data['manage_user'] = $this->mymodel->ManageUser($limit ,$start,$search_user);
 			
-			//echo'<pre>'; print_r($data['manage_user']);exit;
 			$data['title'] = "Vinfotech-wiki Admin Section";
 			$data['active'] ="manage_user";
 			$data['count_user'] = $all ;
@@ -268,10 +257,7 @@ class Admin extends CI_Controller
 	}
 	
 	
-	/* 
-	 * This function is used for displaying list of suspeded users.
-	*/
-	
+	/*This function is used for displaying list of suspeded users.*/
 	public function suspendedUserList()
 	{
 		if($this->mymodel->isLoggedIn()){
@@ -318,16 +304,7 @@ class Admin extends CI_Controller
 	}
 	
 	
-	 
-	
-	
-	
-	
-	
-	/* 
-	 * This function is used to load view for edit user details
-	*/
-	
+	/*This function is used to load view for edit user details*/
 	public function manageUsersEditDetails($user_id)
 	{
 		if($this->mymodel->isLoggedIn()){
@@ -345,10 +322,8 @@ class Admin extends CI_Controller
 			redirect();
 		}
 	}
-	/* 
-	 * This function is  used to load view of login history of a user
-	*/
 	
+	/*This function is  used to load view of login history of a user*/
 	public function manageUsersLoginHistory($user_id)
 	{
 		if($this->mymodel->isLoggedIn()){
@@ -399,9 +374,7 @@ class Admin extends CI_Controller
 
 	}
 	
-	/*
-	 * This function is used to display history of content of particular user
-	*/
+	/*This function is used to display history of content of particular user*/
 	public function manageUsersContentHistory($user_id)
 	{
 		if($this->mymodel->isLoggedIn()){
@@ -472,10 +445,7 @@ class Admin extends CI_Controller
 	}
 	
 	
-	/* 
-	 * This function is used for suspending users
-	 * created on 11/apr/2012
-	*/
+	/*This function is used for suspending users*/
      function suspendUsers($user_id="",$RedirectPage='0')
 	 {
 
@@ -552,10 +522,7 @@ class Admin extends CI_Controller
 		 }
 	 }
 	 
-	 /* 
-	  * This function is used for activating suspended user.
-	 */
-	 
+	 /*This function is used for activating suspended user.*/
 	 function resumeSuspendedUsers($user_id="",$RedirectPage='0',$activateManually='0')
 	 {
 		  if($this->input->post('check'))
@@ -658,9 +625,7 @@ class Admin extends CI_Controller
 		 
 	 }
 	
-	/* 
-	 * This function is used to load Add user view .
-	*/
+	/* This function is used to load Add user view.*/
 	public function displayAddUserView()
 	{
 		if($this->mymodel->isLoggedIn()){
@@ -677,9 +642,8 @@ class Admin extends CI_Controller
 			redirect();
 		}
 	}
-	/* 
-	 * This is function perform Add new User
-	*/
+	
+	/*This is function perform Add new User*/
 	function addUser()
 	{ 
 		if($this->input->post('add_user')== "Add New User")
@@ -781,9 +745,8 @@ class Admin extends CI_Controller
 		}
 		
 	}
-	/*
-	 * Callback function : used to check whether user_name already exist or not
-	*/
+	
+	/*Callback function : used to check whether user_name already exist or not*/
 	
 	function check_username($username)
 	{
@@ -798,9 +761,8 @@ class Admin extends CI_Controller
 			return true;
 		}
 	}
-	/*
-	 * Callback function : used to check whether email id already exist or not.
-	*/
+	
+	/*Callback function : used to check whether email id already exist or not.*/
 	function check_email($email)
 	{
 		$result = $this->commonmodel->getRecords('user','email',array('email'=>$email),'',true);
@@ -814,9 +776,8 @@ class Admin extends CI_Controller
 			return true ;
 		}
 	}
-	/* 
-	 * This function is used to displaying details about specific user.
-	*/
+	
+	/*This function is used to displaying details about specific user.*/
 	function manageUserViewDetails($user_id)
 	{	 
 		if($this->mymodel->isLoggedIn()){
@@ -835,10 +796,8 @@ class Admin extends CI_Controller
 				redirect();
 			}
 	}
-	/*
-	 * This  function used for updating data of user
-	 * Function call from  "manage-users-edit-details" on form submition	
-	 */
+	
+	/*This  function used for updating data of user*/
 	function updateUserData()
 	{
 		if($this->input->post('save')!= null){			 			 
@@ -884,13 +843,6 @@ class Admin extends CI_Controller
 			$data['video'] = $data['all_result']['video'];
 			$data['post'] = $data['all_result']['post'];
 			$data['all_result'] = "";
-
-			
-			/* echo "<pre>";
-			print_r($data);
-			exit;
-			 */
-
 			$data['active'] ="manage_content";
 			$data['title'] = "Vinfotech-wiki Admin Section";
 
@@ -904,7 +856,6 @@ class Admin extends CI_Controller
 		}
 	}
 	
-
 
 	public function editPost($post_id)
 	{
@@ -962,25 +913,9 @@ class Admin extends CI_Controller
 		}
 
 	}
-	 /*
-  * This function is used to update capsule wrapper. 
-   * Called by  Ajax function
- */
-	public function updateCapsuleWrapper(){
-		$post_id = $this->input->post('post_id');
-		$view_type = $this->input->post('view_type','view');
-		$capsule_type = $this->input->post('capsule_type');
-		$data['post_id'] = $post_id;
-		$data['post_capsules'] =  $this->mymodel->capsuleDetail($post_id, $capsule_type);
-		
-		echo $this->load->view('post/capsule-wrapper/'.$view_type, $data, true);
-		exit;
-	}
+	 
 
-/*
- * This function is used to show post to user.
- * Called by Ajax function.
-*/
+	/* This function is used to show post to user.*/
 	public function postBasicInfo(){
 		$post_id = $this->input->post('post_id');
 		$view_type = $this->input->post('view_type','view');
@@ -1110,12 +1045,6 @@ class Admin extends CI_Controller
 		}
 	}
 
-	
-	
-	/* --------------MANAGE USER SECTION END HERE---------------*/
-	
-	/* --------------MANAGE CONTENT SECTION START HERE -----------*/
-	
 	public function manageContent()
 	{
 		if($this->mymodel->isLoggedIn()){
@@ -1222,31 +1151,311 @@ class Admin extends CI_Controller
 	}
 
 	
-
-	/*
- * This function is used to show tags to user while tagging to post.
-*/
-	public function tagAutocomplete(){
-		$tag = $this->input->get('term');	
+    /* This function is used to load view of Post Type List. */
+	function displayPostTypeList()
+	{
+	    if($this->mymodel->isLoggedIn()){
+			$start=0;
+			$limit=20;
 		
-		$tags = $this->db->select('*')
-						->from('tag')
-						->like('name', $tag)
-						->get();
-		
-		$tag_array = array();
-		foreach($tags->result_array() as $tag_detail){
-			$tag_array[] = array('id' => $tag_detail['tag_id'], 'value' =>$tag_detail['name'],'label' =>$tag_detail['name']);
+			$this->db->from ('sub_category');
+			$all =$this->db->count_all_results();
+	 	
+			$data['post_type_list'] = $this->mymodel->displayPostTypeList($limit,$start);
+			$data['title'] = "Vinfotech-wiki Admin Section";
+			$data['active'] ="post_type";
+			$data['count_user'] = $all;
+	
+			$this->load->view('admin/include/header', $data);
+			$this->load->view('admin/post-type-list');
+			$this->load->view('admin/include/footer');
 		}
-		$tags_array = $tag_array;
+		else
+		{
+			redirect();
+		}
+	 }
+
+	 
+	
+	/*Check whether sub category name already exist or not*/
+	function checkSubCategoryName($name, $sub_category_id)
+	{
+	    $condition = array('name'=>$name);
+		$result_array =$this->commonmodel->getRecords('sub_category','sub_category_id',$condition);
+				
+		foreach($result_array as $row)
+		{
+
+			if( $row['sub_category_id'] != $sub_category_id)
+			{
+				$this->form_validation->set_message('checkSubCategoryName', 'The %s  already exist');
+			   return false;
+			}
+		}
+	
+	}
+
+	
+	public function orderPostType()
+	{
 		
-		echo json_encode($tags_array);
-		exit;
+		if($this->mymodel->isLoggedIn())
+		{
+			$sub_category = $this->input->post('sub_category_id');
+			foreach($sub_category as $key => $sub_category_id){
+				$this->commonmodel->commonAddEdit('sub_category', array('weight' => $key), $sub_category_id);
+			}
+			exit;
+		}
+		else
+		{
+			redirect();
+		}
+
+	}
+
+	/**Ajax edit request for inputs.*/
+	public function editInputs()
+	{
+		if($this->mymodel->isLoggedIn())
+		{
+			$post_data = $this->input->post();
+			
+			$this->commonmodel->addEditRecords($post_data['table'], $post_data, $post_data['row_id']);
+			echo $this->db->insert_id();
+
+
+		}
+		else
+		{
+			$this->session->sess_destroy();
+			redirect();
+		}
+	}
+
+	/*This function is used for displaying list of abused posts.*/
+	public function reportAbuseList()
+	{
+		if($this->mymodel->isLoggedIn()){
+			$start=0;
+			$limit=20;
+			$start = $this->uri->segment(3,$start);			
+		
+			$this->db->from ('report_abuse');
+			//$this->db->where('is_active', '1');
+			$all =$this->db->count_all_results();
+	 	
+			$config['base_url'] = site_url("admin/reportabuselist");
+			$config['total_rows'] =  $all ;
+			$config['per_page'] = $limit;
+			$config['uri_segment'] = '3' ;
+			$config['num_links'] = '2';
+			$config['next_link'] = 'Next';
+			$config['prev_link'] ='Previous';
+			$this->pagination->initialize($config);
+				
+			$data['abuse_list'] = $this->mymodel->reportAbuseList($limit,$start );
+			$data['title'] = "Vinfotech-wiki Admin Section";
+			$data['active'] ="report_abuse";
+
+			$this->load->view('admin/include/header', $data);
+			$this->load->view('admin/report-abuse');
+			$this->load->view('admin/include/footer');
+
+			$this->session->set_userdata('redirect_url',current_url());
+		}
+		else
+		{
+			redirect();
+		}
+	}
+
+	/* This function is used for displaying detail of abused post.*/
+	public function reportAbusedPost($post_id)
+	{
+		if($this->mymodel->isLoggedIn()){
+						
+			$result = $this->db->select("report_abuse.*,post.title")
+				 ->from('report_abuse')
+				 ->join('post', 'report_abuse.post_id = post.post_id', 'left')
+				 ->where('report_abuse.post_id', $post_id)
+				 ->get();
+
+			$data['abuse_list'] = $result->result_array();
+			$data['title'] = "Vinfotech-wiki Admin Section";
+			$data['active'] ="report_abuse";
+			$data['post_id'] =$post_id;
+
+			$data['redirect_url'] =  $this->session->userdata('redirect_url') ? $this->session->userdata('redirect_url') : site_url('admin/reportabuselist');
+
+			$this->load->view('admin/include/header', $data);
+			$this->load->view('admin/report-abuse-detail');
+			$this->load->view('admin/include/footer');
+
+			$this->session->unset_userdata('redirect_url');
+		}
+		else
+		{
+			redirect();
+		}
+	}
+
+
+	public function viewComments()
+	{
+		if($this->mymodel->isLoggedIn()){
+			$start=0;
+			$limit=20;
+			$data = array();
+			
+			$post_id = $this->uri->segment(3);
+			$start = $this->uri->segment(4,$start);
+	
+			$all =  count($this->mymodel->viewComments($start,$limit,$post_id,true));
+				
+			$config['base_url'] = site_url("admin/viewComments");
+			$config['total_rows'] =  $all ;
+			$config['per_page'] = $limit;
+			$config['uri_segment'] = '4' ;
+			$config['num_links'] = '2';
+			$config['next_link'] = 'Next';
+			$config['prev_link'] ='Previous';
+												
+		    $data['all_posts'] = $this->mymodel->viewComments($start,$limit,$post_id);
+				
+			if(array_key_exists('search',$_GET) && $_GET['search']!=''){}
+			else{	$this->pagination->initialize($config); }
+			$data['title'] = "Vinfotech-wiki Admin Section";
+			$data['active'] ="manage_content";
+			$data['post_id'] =$post_id	;
+			
+			$this->load->view('admin/include/header', $data);
+			$this->load->view('admin/view-comments',$data);
+			$this->load->view('admin/include/footer');
+		}
+		else
+		{
+			redirect();
+		}
+	}
+
+	public function deleteComments($comment_id='',$post_id='')
+	{
+		if($this->mymodel->isLoggedIn()){
+			if(is_numeric($comment_id)){
+				$this->mymodel->deleteComments($comment_id);
+				  //$all_posts = count($this->mymodel->viewComments('','',$post_id,true));line to delete
+				redirect("/admin/viewComments/$post_id");	
+			}
+		}
+		else
+		{
+			redirect();
+		}
+	}
+
+	function sendVerificationEmail($user_id='')
+	{
+			
+			$result =$this->db->select('*')->from('user')->where('user_id',$user_id)->get();
+			$user_rec = $result->row_array();
+			
+			$this->commonmodel->setMailConfig();
+
+			$newlink = str_replace('/ink-admin','',site_url());
+			
+			$link = $newlink."user/verifyuserlink/".$user_rec['token'];
+			
+			
+			
+			/*****************************************/	
+			$subject = constant('VERIFICATION_MAIL_SUBJECT');
+														
+			//for mail text
+			$mail_text = constant('VERIFICATION_MAIL');
+			$mail_search = array("{USER_NAME}","{VERIFICATION_LINK}");
+			$mail_replace = array("".$user_rec['user_name']."","".$link."");
+			
+			$mail_body = str_replace($mail_search, $mail_replace, $mail_text);
+			
+			//for mail footer
+			$mail_footer = constant('VERIFICATION_MAIL_FOOTER');
+			
+			// for mail tepmlate
+			$template_string = constant('MAIL_TEMPLATE');
+			$template_search = array("{MAIL_BODY}","{MAIL_FOOTER}");
+			$template_replace = array("".$mail_body."","".$mail_footer."");
+					
+			$message =	str_replace($template_search, $template_replace, $template_string);
+			/*****************************************/	
+			
+			
+			$this->email->from(FROM_EMAIL, 'InkSmash');
+			$this->email->to($user_rec['email']);
+			$this->email->subject('Welcome to InkSmash!');	
+			$this->email->message($message);
+
+			$this->commonmodel->sendEmail();
+
+			$this->viewAccountInformation($user_id,'A email verification link has been sent to users email!');
 	}
 	
-	/*----------------MANAGE CONTENT SECTION END HERE -------------*/
+	function resetPassword($user_id='')
+	{
+			$result =$this->db->select('email,user_name')->from('user')->where('user_id',$user_id)->get();
+			$user_rec = $result->row_array();
+			$email = $user_rec['email'];
+			$uniqid = uniqid();
+			$newlink = str_replace('/ink-admin','',base_url());
+			$link = $newlink.'user/resetPassword/'.$uniqid;
+			$query = $this->db->update_string('user', array('token'=>$uniqid), "email = '$email'");
+			$this->db->query($query);
 
-	/* -------------CATEGORY SECTION START HERE--------------*/
+		
+
+			/*****************************************/	
+			$subject = constant('USER_FORGOT_PASSWORD_SUBJECT');
+														
+			//for mail text
+			$mail_text = constant('USER_FORGOT_PASSWORD_MAIL');
+			$mail_search = array("{USER_NAME}","{CHANGE_PASS_LINK}");
+			$mail_replace = array("".$user_rec['user_name']."","".$link."");
+			
+			$mail_body = str_replace($mail_search, $mail_replace, $mail_text);
+			
+			//for mail footer
+			$mail_footer = constant('USER_FORGOT_PASSWORD_MAIL_FOOTER');
+			
+			// for mail tepmlate
+			$template_string = constant('MAIL_TEMPLATE');
+			$template_search = array("{MAIL_BODY}","{MAIL_FOOTER}");
+			$template_replace = array("".$mail_body."","".$mail_footer."");
+					
+			$message =	str_replace($template_search, $template_replace, $template_string);
+			/*****************************************/	
+
+			$this->commonmodel->setMailConfig();
+			$this->email->from(FROM_EMAIL, 'InkSmash');
+			$this->email->to($email);
+			$this->email->subject('Reset Password Link!!');
+			$this->email->message($message);
+			$this->commonmodel->sendEmail();
+
+			
+			$this->viewAccountInformation($user_id,'A reset password link has been sent to users email!');
+	}
+
+	
+	function viewAccountInformation($user_id,$message='')
+	{
+		$user_detail = $this->mymodel->manageUserViewDetails($user_id);
+		$data['user_detail'] = $user_detail;
+		$data['message'] = $message;
+		$this->load->view('admin/account-information',$data);
+	}
+	
+	
 	
 	/* This function is used for load view of categor list.	*/
 	 function displayCategoryList()
@@ -1285,73 +1494,49 @@ class Admin extends CI_Controller
 		}
 	 }
 
-	 /* 
-	  * This function is used for toggel the status of category i.e Active or de-active.
-	 */
-	 
-	 function Category_status_change($category_id="" , $status="")
-	 {
-		  $is_active_array = $this->input->post('is_active');
-			if($this->input->post('active')== "Activate Selected")
-			 {
-				 $checked_user = $this->input->post('check');
-				
-				if(!empty($checked_user))
-				{
-					foreach($checked_user as $key =>$value)
-					 {
-						$data = array('is_active'=>'1');
-						$this->db->where('category_id',$value);
-						$this->db->update('category',$data);
-					 }
-				}
-			 }
-			 else if($this->input->post('deactive')== "Deactivate Selected")
-				 {
-					$checked_user = $this->input->post('check');
-					if(!empty($checked_user))
-						{
-							foreach($checked_user as $key =>$value)
-								{
-									$data = array('is_active'=>'0');
-									$this->db->where('category_id',$value);
-									$this->db->update('category',$data);
-								}
-						}
-				 }
-			 else
-			 {
-					 if($status == 1)
-						$data = array('is_active'=>'0');
-					 else
-						$data = array('is_active'=>'1');
-						
-					 $this->db->where('category_id',$category_id);
-					 $this->db->update('category',$data);
-			 }
-			 redirect('admin/displaycategorylist');
- 	 }
 	
-/* 
- * This function is used to load view of Add new Category.
-*/
-
+	/* This function is used to load view of Add new Category.*/
 	function displayAddCategory()
 	{
         $this->displayEditCategory();
 	}
-
+	
+	/*This function is used to load view for Edit category .*/
+	public function displayEditCategory($category_id)
+	{
+		if($this->mymodel->isLoggedIn()){
+		if($category_id)
+			$category_detail = $this->mymodel->displayEditCategory($category_id);
+			$data['title'] = "Vinfotech-wiki Admin Section";
+			$data['active'] ="category";
+			$data['category_detail'] = $category_detail;
+			$data['parent_category'] = $category_detail['parent'];
+            $category_result = $this->display_children($category_id,0);
+            
+            if(empty($this->childcategory)) 
+                $data['have_child_cat']= 0;
+                else
+            $data['have_child_cat']= 1;
+			$data['category_result'] = $this->mymodel->displayCategoryDropdown();
+			
+	 		$data['section'] = 'back-end';
+			$this->load->view('admin/include/header', $data);
+			$this->load->view('admin/edit-category');
+			$this->load->view('admin/include/footer');
+		}
+		else
+		{
+			redirect();
+		}
+	}
  
 
-	/*
-	 * This function perform action of edit any category .
-	*/
+	/*This function perform action of edit any category .*/
 	public function editCategory()
 	{
 	   
 		if($this->input->post())
 		{
-		 
 		$edit_category_id =  $this->input->post('edit_category_id');
 		$category_name= $this->input->post('category_name');
 		$parent		 =  $this->input->post('parent_category');
@@ -1437,12 +1622,11 @@ class Admin extends CI_Controller
 				$read = $this->input->post('read');
 			
 				//Now first delete all record related to category except in_herited = 1 and isert data
-			//after this get all child categories related to category if find then remove all users with permission type 1 and is_inherited 1
+				//after this get all child categories related to category if find then remove all users with permission type 1 and is_inherited 1
 				//and insert into db
 				$this->db->delete('user_category_relation',array('category_id'=>$edit_category_id));
 			 
-			//insert data
-			$admindata = array(); $uniqe_user=array();
+				$admindata = array(); $uniqe_user=array();
 			
 			if( !empty($parent) )
 			{
@@ -1451,7 +1635,7 @@ class Admin extends CI_Controller
 				if(!empty($parent_admin))
 				{
 					$parent_admin_cat = explode(',',$parent_admin['user_ids']);
-					if(!empty($parent_admin_cat) && $parent_admin_cat[0] != '')
+					/*if(!empty($parent_admin_cat) && $parent_admin_cat[0] != '')
 					{
 						foreach($parent_admin_cat as $key=>$val)
 						{
@@ -1462,9 +1646,8 @@ class Admin extends CI_Controller
 											 'is_inherited' => 1,
 											 'created_by' => $user_id
 											 );
-						  
 						}
-					}
+					}*/
 				}
 					
 				//now get r/w for parent category
@@ -1477,7 +1660,7 @@ class Admin extends CI_Controller
 							$uniqe_user[]=$prevrwval['user_id'];
 							$admindata[] = array('user_id' => $prevrwval['user_id'],
 												'category_id' => $edit_category_id,
-												'permission_type' =>3,
+												'permission_type' =>2,
 												'is_inherited' => 1,
 												'created_by' => $user_id
 												);
@@ -1509,6 +1692,20 @@ class Admin extends CI_Controller
 			{	
 				foreach($admins as $key=>$val)
 				{
+					
+					if(!empty($parent_admin_cat) && $parent_admin_cat[0] != '')
+					{
+						if( in_array($val, $parent_admin_cat) ){
+							$uniqe_user[]=$val;
+							$admindata[] = array('user_id' => $val,
+												'category_id' => $edit_category_id,
+												'permission_type' =>1,
+												'is_inherited' => 1,
+												'created_by' => $user_id
+												);	
+						}
+					}
+					
 					if(!in_array($val, $uniqe_user)){
 						$uniqe_user[]=$val;
 						$admindata[] = array('user_id' => $val,
@@ -1571,19 +1768,13 @@ class Admin extends CI_Controller
 				}
 			}
 			
-			
-			//echo'<pre>';print_r($uniqe_user);
-			//echo'<pre>';print_r($admindata);exit;
-			
-			
-			
 			$this->db->insert_batch('user_category_relation', $admindata);
 			
 			
 			//after this get all child categories and delete all user record for permission type 1 and inherited == 1
 			//Imp code for get all subcategories related to category in one array
 			$category_result = $this->display_children($edit_category_id,0);
-				
+			
 			if( !empty($this->childcategory) )
 			{
 				foreach($this->childcategory as $childcat)
@@ -1591,6 +1782,7 @@ class Admin extends CI_Controller
 				
 					$inherited_admin = array();
 					$unique_user = array();
+					
 					
 					$this->db->delete('user_category_relation',array('category_id'=>$childcat,'permission_type'=>2,'is_inherited'=>1));
 					$this->db->delete('user_category_relation',array('category_id'=>$childcat,'permission_type'=>3,'is_inherited'=>1));
@@ -1603,13 +1795,14 @@ class Admin extends CI_Controller
 								
 								
 								$result_admin =  $this->mymodel->getAdminInfo($parent,1);
+								
 								if(!empty($result_admin)){
 									foreach($result_admin as $val1){
 										$prev_admin[]=$val1;
 									}
 								}
 									
-								if(!in_array($val['user_id'],$prev_admin)){
+								//if(in_array($val['user_id'],$prev_admin)){
 								$is_inherited=1;
 								$unique_user[]  = $val['user_id'];
 								$inherited_admin[] = array('user_id' => $val['user_id'],
@@ -1618,10 +1811,10 @@ class Admin extends CI_Controller
 													 'is_inherited' => $is_inherited,
 													 'created_by' => $user_id
 													 );	
-							 }
+							 //}
+							 
 							}elseif($val['permission_type']==2) {
 							 	
-								
 								$prev_admin = array();
 								$result_admin =  $this->mymodel->getAdminInfo($parent,2);
 								if(!empty($result_admin)){
@@ -1630,19 +1823,28 @@ class Admin extends CI_Controller
 									}
 								}
 								
-									
-								if(!in_array($val['user_id'],$prev_admin) && !in_array($val['user_id'],$unique_user)){
-								$is_inherited=1;$unique_user[]  = $val['user_id'];
-								$inherited_admin[] = array('user_id' => $val['user_id'],
+								$is_inherited=1;	
+								if(!in_array($val['user_id'],$prev_admin) && !in_array($val['user_id'],$unique_user))
+								{
+									$unique_user[]  = $val['user_id'];
+									$inherited_admin[] = array('user_id' => $val['user_id'],
+														 'category_id' => $childcat,
+														 'permission_type' =>2,
+														 'is_inherited' => $is_inherited,
+														 'created_by' => $user_id
+															 );	
+								}else{
+									$inherited_admin[] = array('user_id' => $val['user_id'],
 													 'category_id' => $childcat,
-													 'permission_type' =>3,
+													 'permission_type' =>2,
 													 'is_inherited' => $is_inherited,
 													 'created_by' => $user_id
 														 );	
-														 
-									}
-							 }elseif($val['permission_type']==3) {/*
-							 	//$this->db->delete('user_category_relation',array('category_id'=>$childcat,'permission_type'=>3,'is_inherited'=>1));
+								}
+								//echo'<pre>';print_r($admindata);
+								//echo'<pre>';print_r($inherited_admin);exit;
+							 }elseif($val['permission_type']==3) {
+							 	$this->db->delete('user_category_relation',array('category_id'=>$childcat,'permission_type'=>3,'is_inherited'=>1));
 								
 								$prev_admin = array();
 								$result_admin =  $this->mymodel->getAdminInfo($parent,3);
@@ -1664,10 +1866,9 @@ class Admin extends CI_Controller
 							 	}
 						
 							 
-						*/}
+						}
 					 
-				}
-						//echo'<pre>';print_r($inherited_admin);
+				} 
 						if(!empty($inherited_admin))
 							$this->db->insert_batch('user_category_relation', $inherited_admin);
 				}
@@ -1684,1379 +1885,7 @@ class Admin extends CI_Controller
 	}
 	
 	
-/*
-	 * This function is used to load view for Edit category .
-	*/
-	public function displayEditCategory($category_id)
-	{
-		if($this->mymodel->isLoggedIn()){
-		if($category_id)
-			$category_detail = $this->mymodel->displayEditCategory($category_id);
-			$data['title'] = "Vinfotech-wiki Admin Section";
-			$data['active'] ="category";
-			$data['category_detail'] = $category_detail;
-			$data['parent_category'] = $category_detail['parent'];
-            $category_result = $this->display_children($category_id,0);
-            
-            if(empty($this->childcategory)) 
-                $data['have_child_cat']= 0;
-                else
-            $data['have_child_cat']= 1;
-			$data['category_result'] = $this->mymodel->displayCategoryDropdown();
-			
-	 		$data['section'] = 'back-end';
-			$this->load->view('admin/include/header', $data);
-			$this->load->view('admin/edit-category');
-			$this->load->view('admin/include/footer');
-		}
-		else
-		{
-			redirect();
-		}
-	}
-
-	/* 
-	 * This function check duplicate category. 
-	*/
-	function checkDuplicateCategory($value,$category_id ='')
-	{
-		$this->db->where(strtolower('name'),strtolower($value));
-		if($category_id!=''){
-			$this->db->where('category_id !=',$category_id);
-		}
-		$query = $this->db->get('category');
-		if ($query->num_rows() > 0){
-			$this->form_validation->set_message('checkDuplicateCategory', 'That category already exist.');
-			return false;
-		}
-		else{
-			return true;
-		}
-
-	}
-	/* --------CATEGORY SECTION END HERE ------------------ */
-
-	/* -----------SUB CATEGORY(POST TYPE) SECTION START HERE ---------*/
-
-    /* This function is used to load view of Post Type List. */
-
 	
-	
-	
-   function displayPostTypeList()
-	{
-	    if($this->mymodel->isLoggedIn()){
-			$start=0;
-			$limit=20;
-		
-			$this->db->from ('sub_category');
-			$all =$this->db->count_all_results();
-	 	
-			$data['post_type_list'] = $this->mymodel->displayPostTypeList($limit,$start);
-			$data['title'] = "Vinfotech-wiki Admin Section";
-			$data['active'] ="post_type";
-			$data['count_user'] = $all;
-	
-			$this->load->view('admin/include/header', $data);
-			$this->load->view('admin/post-type-list');
-			$this->load->view('admin/include/footer');
-		}
-		else
-		{
-			redirect();
-		}
-	 }
-
-	 /*
-	 * This function is used to load view of  " Adding new Sub category ".
-	 */
-
-   function  displayAddSubCategory()
-	{
-	   if($this->mymodel->isLoggedIn()){
-			$data['title'] = "Vinfotech-wiki Admin Section";
-			$data['active'] ="post_type";
-			$data['capsule_list'] = $this->mymodel->capsuleTypeList();
-			
-			$this->load->view('admin/include/header', $data);
-			$this->load->view('admin/add-sub-category');
-			$this->load->view('admin/include/footer');
-		}
-		else
-		{
-			redirect();
-		}
-	}
-	/*
-	 * This function perform action for adding new category in category table.
-	*/
-    function addSubCategory()
-	{
-	  if($this->input->post('add_user') == 'Add New Sub Category')
-		{
-			$this->form_validation->set_rules('sub_category_name','Sub Category Name', 'required|trim|xss_clean|callback_sub_category_check');
-			if( $this->form_validation->run() == FALSE )
-			{
-				$data['title'] = "Vinfotech-wiki Admin Section";
-				$data['active'] ="post_type";
-				
-				$data['capsule_list'] = $this->mymodel->capsuleTypeList();
-				
-				$this->load->view('admin/include/header', $data);
-				$this->load->view('admin/add-sub-category');
-				$this->load->view('admin/include/footer');
-			}
-			else
-			{
-				$this->mymodel->addNewPostTypeList();
-				redirect('admin/displayposttypelist');
-			}
-		}
-		else
-		{
-			redirect('admin/displayposttypelist');
-		}
-	  
-	}
-
-	/* 
-	* This is callback function used to identify  whether this sub category already exist or not.
-	 * if exist return false with error message "Sub category already exist"
-	 * else return true.
-	*/
-
-	function sub_category_check($name)
-	{
-		$name = ucwords(strtolower($name));
-		$this->db->select('name')
-				 -> from('sub_category')
-				 -> where('name',$name);
-	    $query = $this->db->get();
-		if($query->num_rows() >0)
-		{
-			$this->form_validation->set_message('sub_category_check', 'The %s  already exist');
-			return FALSE;
-		}
-		else
-		{
-			return true;
-		}
-	}
-
-	/*
-	  * This function is used for toggle the is_active column of sub_category table
-	  * Here we can  activate or deactivate sub categories.
-	*/
-	function sub_Category_status_change($category_id="" , $status="")
-	 {
-		  $is_active_array = $this->input->post('is_active');
-		  if($this->input->post('active')== "Activate Selected")
-			  {
-			   $checked_user = $this->input->post('check');
-				if(!empty($checked_user))
-				  {
-					foreach($checked_user as $key =>$value) 
-					 {
-						$data = array('is_active'=>'1');
-						$this->db->where('sub_category_id',$value);
-						$this->db->update('sub_category',$data);
-					 }
-				  }
-			 }
-			 else if($this->input->post('deactive')== "Deactivate Selected")
-				 {
-					$checked_user = $this->input->post('check');
-					if(!empty($checked_user))
-						{
-							foreach($checked_user as $key =>$value)
-								{
-									$data = array('is_active'=>'0');
-									$this->db->where('sub_category_id',$value);
-									$this->db->update('sub_category',$data);
-								}
-						}
-				 }
-		 else
-		 {
-			 if($status == 1)
-				$data = array('is_active'=>'0');
-			 else
-				$data = array('is_active'=>'1');
-				
-			 $this->db->where('sub_category_id',$category_id);
-			 $this->db->update('sub_category',$data);
-			 
-		 }
-		 redirect('admin/displayposttypelist');
- 	 }
-
-/*
-* This function is used to load view for Editing/updating existing sub categories
-*/
-	 public function displayEditSubCategory($sub_category_id)
-	{
-		if($this->mymodel->isLoggedIn()){
-			$sub_category_detail = $this->mymodel->displayEditSubCategory($sub_category_id);
-			$data['title'] = "Vinfotech-wiki Admin Section";
-			$data['active'] ="post_type";
-			$data['sub_category_detail'] = $sub_category_detail;
-
-			$data['capsule_list'] = $this->mymodel->capsuleTypeList();
-						
-			$this->db->select('capsule_type_id');            // query for retriving capsule_type id
-			$this->db->from('sub_category_capsule');         // corresponding to given sub_category_id
-			$this->db->where('sub_category_id', $sub_category_id);
-			$this->db->where('mandatory',1);
-			$result = $this->db->get();
-
-			$data['selected_capsule'] = $result->result_array(); 	
-			
-			$this->load->view('admin/include/header', $data);
-			$this->load->view('admin/edit-sub-category');
-			$this->load->view('admin/include/footer');
-		}
-		else
-		{
-			redirect();
-		}
-	}
-/*
- * This function perform action for Editing/Updating  existing sub category
-*/
-	public function editSubCategory()
-	{
-		if($this->input->post('save') == 'Save')
-		{
-			$sub_category_id = $this->input->post('sub_category_id');
-			
-			$this->form_validation->set_rules('sub_category_name','Sub Category Name', 'required|trim|xss_clean|callback_checkSubCategoryName['.$sub_category_id.']');
-			
-			if( $this->form_validation->run() == FALSE )
-			{
-				// Reload Same Edit Sub Category Page
-				$sub_category_detail = $this->mymodel->displayEditSubCategory($sub_category_id);
-				$data['title'] = "Vinfotech-wiki Admin Section";
-				$data['active'] ="post_type";
-				$data['sub_category_detail'] = $sub_category_detail;
-
-				$data['capsule_list'] = $this->mymodel->capsuleTypeList();
-							
-				$this->db->select('capsule_type_id');            // query for retriving capsule_type id
-				$this->db->from('sub_category_capsule');         // corresponding to given sub_category_id
-				$this->db->where('sub_category_id', $sub_category_id);
-				$this->db->where('mandatory',1);
-				$result = $this->db->get();
-
-				$data['selected_capsule'] = $result->result_array(); 	
-				
-				$this->load->view('admin/include/header', $data);
-				$this->load->view('admin/edit-sub-category');
-				$this->load->view('admin/include/footer');
-			}
-			else
-			{								
-				$this->db->delete('sub_category_capsule',array('sub_category_id'=>$sub_category_id));
-
-				$this->mymodel->editSubCategory($sub_category_id);
-				redirect('admin/displayposttypelist');
-			}
-		}
-		else
-		{
-			redirect('admin/displayposttypelist');
-		}
-		
-	}
-		/*
-	 * Call back function for edit category page
-	 * Check whether sub category name already exist or not
-	*/
-	function checkSubCategoryName($name, $sub_category_id)
-	{
-	    $condition = array('name'=>$name);
-		$result_array =$this->commonmodel->getRecords('sub_category','sub_category_id',$condition);
-				
-		foreach($result_array as $row)
-		{
-
-			if( $row['sub_category_id'] != $sub_category_id)
-			{
-				$this->form_validation->set_message('checkSubCategoryName', 'The %s  already exist');
-			   return false;
-			}
-		}
-	
-	}
-/* -----------SUB CATEGORY(POST TYPE) SECTION END HERE ---------*/
-
-	
-	public function orderPostType()
-	{
-		
-		if($this->mymodel->isLoggedIn())
-		{
-			$sub_category = $this->input->post('sub_category_id');
-			foreach($sub_category as $key => $sub_category_id){
-				$this->commonmodel->commonAddEdit('sub_category', array('weight' => $key), $sub_category_id);
-			}
-			exit;
-		}
-		else
-		{
-			redirect();
-		}
-
-	}
-
-/* Google Ad Sense  */
-
-   public function updateGoogleAdClientId()
-	{
-		if($this->mymodel->isLoggedIn())
-			{
-				$data['title'] = "Vinfotech-wiki Admin Section";
-				$data['active'] ="google_ads";
-				$result =  $this->db->select('user_code,user_earnings_account_id')
-									->from('user_earnings_account')
-									->where('user_id',$this->session->userdata['user_id'])
-									->where('account_type','2')
-									->get();
-				$data['google_ad'] = $result->row_array();
-				$rs_percent = $this->db->select('google_ad_id,admin_percent')
-									   ->from('google_ad')
-									   ->get();
-				$data['admin_percent'] = $rs_percent->row_array();
-
-				
-								
-				$this->load->view('admin/include/header', $data);
-				$this->load->view('admin/update-google-ads');
-				$this->load->view('admin/include/footer');
-				
-			}
-			else
-		{
-				redirect();
-		}
-	}
-
-	function check_percent($percent)
-	{
-		if($percent%5 !=0)
-		{
-			$this->form_validation->set_message('check_percent', 'The %s  should be multiple of 5');
-			return false;
-		}
-		else
-		{
-			return true ;
-			
-		}
-	}
-
-	/**
-	 * Ajax edit request for inputs.
-	 *
-	 */
-	public function editInputs()
-	{
-		if($this->mymodel->isLoggedIn())
-		{
-			$post_data = $this->input->post();
-			
-			$this->commonmodel->addEditRecords($post_data['table'], $post_data, $post_data['row_id']);
-			echo $this->db->insert_id();
-
-
-		}
-		else
-		{
-			$this->session->sess_destroy();
-			redirect();
-		}
-	}
-
-	/* 
-	 * This function is used for displaying list of abused posts.
-	 * Created by Neelesh Choukesy on 2012.05.29
-	*/
-	
-	public function reportAbuseList()
-	{
-		if($this->mymodel->isLoggedIn()){
-			$start=0;
-			$limit=20;
-			$start = $this->uri->segment(3,$start);			
-		
-			$this->db->from ('report_abuse');
-			//$this->db->where('is_active', '1');
-			$all =$this->db->count_all_results();
-	 	
-			$config['base_url'] = site_url("admin/reportabuselist");
-			$config['total_rows'] =  $all ;
-			$config['per_page'] = $limit;
-			$config['uri_segment'] = '3' ;
-			$config['num_links'] = '2';
-			$config['next_link'] = 'Next';
-			$config['prev_link'] ='Previous';
-			$this->pagination->initialize($config);
-				
-			$data['abuse_list'] = $this->mymodel->reportAbuseList($limit,$start );
-			$data['title'] = "Vinfotech-wiki Admin Section";
-			$data['active'] ="report_abuse";
-
-			$this->load->view('admin/include/header', $data);
-			$this->load->view('admin/report-abuse');
-			$this->load->view('admin/include/footer');
-
-			$this->session->set_userdata('redirect_url',current_url());
-		}
-		else
-		{
-			redirect();
-		}
-	}
-
-	/* 
-	 * This function is used for displaying detail of abused post.
-	 * Created by Neelesh Choukesy on 2012.05.29
-	*/
-	
-	public function reportAbusedPost($post_id)
-	{
-		if($this->mymodel->isLoggedIn()){
-						
-			$result = $this->db->select("report_abuse.*,post.title")
-				 ->from('report_abuse')
-				 ->join('post', 'report_abuse.post_id = post.post_id', 'left')
-				 ->where('report_abuse.post_id', $post_id)
-				 ->get();
-
-			$data['abuse_list'] = $result->result_array();
-			$data['title'] = "Vinfotech-wiki Admin Section";
-			$data['active'] ="report_abuse";
-			$data['post_id'] =$post_id;
-
-			$data['redirect_url'] =  $this->session->userdata('redirect_url') ? $this->session->userdata('redirect_url') : site_url('admin/reportabuselist');
-
-			$this->load->view('admin/include/header', $data);
-			$this->load->view('admin/report-abuse-detail');
-			$this->load->view('admin/include/footer');
-
-			$this->session->unset_userdata('redirect_url');
-		}
-		else
-		{
-			redirect();
-		}
-	}
-
-
-
-	/* -------------- View All Comments of Post -----------*/
-	
-	public function viewComments()
-	{
-		if($this->mymodel->isLoggedIn()){
-			$start=0;
-			$limit=20;
-			$data = array();
-			
-			$post_id = $this->uri->segment(3);
-			$start = $this->uri->segment(4,$start);
-	
-			$all =  count($this->mymodel->viewComments($start,$limit,$post_id,true));
-				
-			$config['base_url'] = site_url("admin/viewComments");
-			$config['total_rows'] =  $all ;
-			$config['per_page'] = $limit;
-			$config['uri_segment'] = '4' ;
-			$config['num_links'] = '2';
-			$config['next_link'] = 'Next';
-			$config['prev_link'] ='Previous';
-												
-		    $data['all_posts'] = $this->mymodel->viewComments($start,$limit,$post_id);
-				
-			if(array_key_exists('search',$_GET) && $_GET['search']!=''){}
-			else{	$this->pagination->initialize($config); }
-			$data['title'] = "Vinfotech-wiki Admin Section";
-			$data['active'] ="manage_content";
-			$data['post_id'] =$post_id	;
-			
-			$this->load->view('admin/include/header', $data);
-			$this->load->view('admin/view-comments',$data);
-			$this->load->view('admin/include/footer');
-		}
-		else
-		{
-			redirect();
-		}
-	}
-
-
-    /* -------------- Delete comments -----------*/
-	
-	public function deleteComments($comment_id='',$post_id='')
-	{
-		if($this->mymodel->isLoggedIn()){
-			if(is_numeric($comment_id)){
-				$this->mymodel->deleteComments($comment_id);
-				  //$all_posts = count($this->mymodel->viewComments('','',$post_id,true));line to delete
-				redirect("/admin/viewComments/$post_id");	
-			}
-		}
-		else
-		{
-			redirect();
-		}
-	}
-
-	/* -------------- This function is used to send Verification Email to user by admin from User detail page --------------*/
-	
-	function sendVerificationEmail($user_id='')
-	{
-			
-			$result =$this->db->select('*')->from('user')->where('user_id',$user_id)->get();
-			$user_rec = $result->row_array();
-			
-			$this->commonmodel->setMailConfig();
-
-			$newlink = str_replace('/ink-admin','',site_url());
-			
-			$link = $newlink."user/verifyuserlink/".$user_rec['token'];
-			
-			
-			
-			/*****************************************/	
-			$subject = constant('VERIFICATION_MAIL_SUBJECT');
-														
-			//for mail text
-			$mail_text = constant('VERIFICATION_MAIL');
-			$mail_search = array("{USER_NAME}","{VERIFICATION_LINK}");
-			$mail_replace = array("".$user_rec['user_name']."","".$link."");
-			
-			$mail_body = str_replace($mail_search, $mail_replace, $mail_text);
-			
-			//for mail footer
-			$mail_footer = constant('VERIFICATION_MAIL_FOOTER');
-			
-			// for mail tepmlate
-			$template_string = constant('MAIL_TEMPLATE');
-			$template_search = array("{MAIL_BODY}","{MAIL_FOOTER}");
-			$template_replace = array("".$mail_body."","".$mail_footer."");
-					
-			$message =	str_replace($template_search, $template_replace, $template_string);
-			/*****************************************/	
-			
-			
-			$this->email->from(FROM_EMAIL, 'InkSmash');
-			$this->email->to($user_rec['email']);
-			$this->email->subject('Welcome to InkSmash!');	
-			$this->email->message($message);
-
-			$this->commonmodel->sendEmail();
-
-			$this->viewAccountInformation($user_id,'A email verification link has been sent to users email!');
-	}
-
-	
-	/* -------------- This function is used to send reset password link to user by admin from User detail page  --------------*/
-	function resetPassword($user_id='')
-	{
-			$result =$this->db->select('email,user_name')->from('user')->where('user_id',$user_id)->get();
-			$user_rec = $result->row_array();
-			$email = $user_rec['email'];
-			$uniqid = uniqid();
-			$newlink = str_replace('/ink-admin','',base_url());
-			$link = $newlink.'user/resetPassword/'.$uniqid;
-			$query = $this->db->update_string('user', array('token'=>$uniqid), "email = '$email'");
-			$this->db->query($query);
-
-		
-
-			/*****************************************/	
-			$subject = constant('USER_FORGOT_PASSWORD_SUBJECT');
-														
-			//for mail text
-			$mail_text = constant('USER_FORGOT_PASSWORD_MAIL');
-			$mail_search = array("{USER_NAME}","{CHANGE_PASS_LINK}");
-			$mail_replace = array("".$user_rec['user_name']."","".$link."");
-			
-			$mail_body = str_replace($mail_search, $mail_replace, $mail_text);
-			
-			//for mail footer
-			$mail_footer = constant('USER_FORGOT_PASSWORD_MAIL_FOOTER');
-			
-			// for mail tepmlate
-			$template_string = constant('MAIL_TEMPLATE');
-			$template_search = array("{MAIL_BODY}","{MAIL_FOOTER}");
-			$template_replace = array("".$mail_body."","".$mail_footer."");
-					
-			$message =	str_replace($template_search, $template_replace, $template_string);
-			/*****************************************/	
-
-			$this->commonmodel->setMailConfig();
-			$this->email->from(FROM_EMAIL, 'InkSmash');
-			$this->email->to($email);
-			$this->email->subject('Reset Password Link!!');
-			$this->email->message($message);
-			$this->commonmodel->sendEmail();
-
-			
-			$this->viewAccountInformation($user_id,'A reset password link has been sent to users email!');
-	}
-
-	
-	/* ---- load user status section using ajax from user detail page in admin ($RedirectPage wou1d be 1 for this case) -----*/
-	function viewAccountInformation($user_id,$message='')
-	{
-		$user_detail = $this->mymodel->manageUserViewDetails($user_id);
-		$data['user_detail'] = $user_detail;
-		$data['message'] = $message;
-		$this->load->view('admin/account-information',$data);
-	}
-	
-	
-	/* 
-	 * This function is used for displaying list of contact detail.
-	 * Created by Ashvin soni on 2013.01.18
-	*/
-	
-	public function contactdetail()
-	{
-		if($this->mymodel->isLoggedIn()){
-			$start=0;
-			$limit=20;
-			$data = array();
-			
-			$all = $this->db->from ('contact_data')->count_all_results();
-	 	
-			$start = $this->uri->segment(3,$start);			
-			$config['base_url'] = site_url("admin/contactdetail");
-			$config['total_rows'] =  $all ;
-			$config['per_page'] = $limit;
-			$config['uri_segment'] = '3' ;
-			$config['num_links'] = '2';
-			$config['next_link'] = 'Next';
-			$config['prev_link'] ='Previous';
-				
-			$data['contact_list'] = $this->mymodel->contactDetailList($limit,$start);
-			
-			if(array_key_exists('search',$_GET) && $_GET['search']!=''){}
-			else{			$this->pagination->initialize($config); }
-			
-			$data['title'] = "Vinfotech-wiki Admin Section";
-			$data['active'] ="contact_detail";
-
-			$this->load->view('admin/include/header', $data);
-			$this->load->view('admin/contact-detail');
-			$this->load->view('admin/include/footer');
-
-			$this->session->set_userdata('redirect_url',current_url());
-		}
-		else
-		{
-			redirect();
-		}
-	}
-	
-	/*	Function for delete contact detail.
-	*	Created date :- 2013-01-18 by Ashvin soni
-	*	get contact_detail_id.
-	*/
-	function contactDetailDelete($contact_data_id)
-	{
-		if($this->mymodel->isLoggedIn()){
-			
-			$this->db->delete('contact_data', array('contact_data_id' => $contact_data_id));
-		}
-		else
-		{
-			redirect();
-		}
-	}
-	
-	
-	/* 
-	 * This function is used for displaying list of subscribed users.
-	 * Created by Ashvin soni on 2013.01.18
-	*/
-	
-	public function subscribeduser()
-	{
-		if($this->mymodel->isLoggedIn()){
-			$start=0;
-			$limit=20;
-			$data = array();
-			
-			$all = $this->db->from ('subscribe')->count_all_results();
-	 	
-			$start = $this->uri->segment(3,$start);
-			$config['base_url'] = site_url("admin/subscribeduser");
-			$config['total_rows'] =  $all ;
-			$config['per_page'] = $limit;
-			$config['uri_segment'] = '3' ;
-			$config['num_links'] = '2';
-			$config['next_link'] = 'Next';
-			$config['prev_link'] ='Previous';
-				
-			$data['subscribed_user'] = $this->mymodel->subscribedUserList($limit,$start);
-			
-			if(array_key_exists('search',$_GET) && $_GET['search']!=''){}
-			else{ $this->pagination->initialize($config); }
-			
-			$data['title'] = "Vinfotech-wiki Admin Section";
-			$data['active'] ="subscribed_user";
-
-			$this->load->view('admin/include/header', $data);
-			$this->load->view('admin/subscribed-user');
-			$this->load->view('admin/include/footer');
-
-			$this->session->set_userdata('redirect_url',current_url());
-		}
-		else
-		{
-			redirect();
-		}
-	}
-	
-	/*	Function for delete subscribed user.
-	*	Created date :- 2013-01-18 by Ashvin soni
-	*	get contact_detail_id.
-	*/
-	function subscribedUserDelete($subscribe_id)
-	{
-		if($this->mymodel->isLoggedIn()){
-			
-			$this->db->delete('subscribe', array('subscribe_id' => $subscribe_id));
-		}
-		else
-		{
-			redirect();
-		}
-	}
-	
-	
-	/*	Function for used to subscribed user list as 
-	*	Excel format.
-	*	Created date :- 2013-01-18 by Ashvin soni 
-	*/
-	 public function subscribedUserExcel()
-	 {
-		
-		if($this->mymodel->isLoggedIn()){
-			
-			$filename = 'subscribed-user.csv';
-			
-			$query = "SELECT su.emailid FROM subscribe AS su WHERE su.isactive = 1";
-			$data = $this->db->query($query);
-			$emails_list = $data->result_array();
-			
-			$csv_output = "SUBSCRIBED USERS EMAIL";
-			$csv_output .= "\n";
-			
-			foreach( $emails_list as $email )
-			{
-				$csv_output .= $email['emailid'];
-				$csv_output .= "\n";
-			}
-			header("Content-type: application/x-msexcel"); 
-			header("Content-disposition: attachment; filename=".$filename); 
-			header("Pragma: no-cache"); 
-			header("Expires: 0");
-			
-			print $csv_output; 
-			exit;
-		
-		}else{
-			redirect();		
-		}
-	 } //end of function
-	
-	
-	/*
-	* Function is used for the show listings of contest.
-	*/
-	public function showcontestlisting()
-	{
-		if($this->mymodel->isLoggedIn())
-		{
-			$start=0;
-			$limit=20;
-			$data = array();
-			
-			$all = $this->db->from('contest')->count_all_results();
-			
-			$start = $this->uri->segment(3,$start);
-			$config['base_url'] = site_url("admin/showcontestlisting");
-			$config['total_rows'] =  $all ;
-			$config['per_page'] = $limit;
-			$config['uri_segment'] = '3' ;
-			$config['num_links'] = '2';
-			$config['next_link'] = 'Next';
-			$config['prev_link'] ='Previous';
-				
-			$data['contest_list'] = $this->mymodel->contestList($limit,$start);
-			
-			if(array_key_exists('search',$_GET) && $_GET['search']!=''){}
-			else{ $this->pagination->initialize($config); }
-			
-			$data['title'] = "Vinfotech-wiki Admin Section";
-			$data['active'] ="contests";
-			$data['contest_added'] = "";
-	
-			$this->load->view('admin/include/header', $data);
-			$this->load->view('admin/contest/list-contest');
-			$this->load->view('admin/include/footer');
-	
-			$this->session->set_userdata('redirect_url',current_url());
-		}
-		else
-		{
-			redirect();
-		}
-	}
-	
-	
-	/*
-	* This function is used for the display contest.
-	*/
-	public function displayaddcontest()
-	{
-		if($this->mymodel->isLoggedIn())
-		{			
-			$data['title'] = "Vinfotech-wiki Admin Section";
-			$data['active'] ="contests";
-			$data['contest_added'] = "";
-	
-			$this->load->view('admin/include/header', $data);
-			$this->load->view('admin/contest/add-contest');
-			$this->load->view('admin/include/footer');
-		}
-		else
-		{
-			redirect();
-		}
-	}
-	
-	
-	/*
-	* Function is used for the add contest
-	*/
-	public function addcontest()
-	{
-		//echo'<pre>'; print_r($this->input->post());exit;
-		if($this->input->post('add_contest')== "Add New Contest")
-		{
-				$this->form_validation->set_rules('title', 'Title', 'trim|required|min_length[6]');
-				$this->form_validation->set_rules('tag', 'Tag', 'required|callback_tagcheck');				
-				$this->form_validation->set_rules('editorData', 'Description', 'required');
-				$this->form_validation->set_rules('contest_runs_from', 'Contest runs from', 'trim|required');
-				$this->form_validation->set_rules('contest_runs_to', 'Contest runs to', 'trim|required');
-				$this->form_validation->set_rules('prize_amount', 'Prize amount', 'trim|required|integer');
-				$this->form_validation->set_rules('list_description[]', 'Parameter Contests', 'required');
-				
-			if($this->form_validation->run() == FALSE)
-			{
-					$data['contest_added'] = "";
-			}
-			else
-			{ 
-					$unique_contest_token = time().rand(0,9999999);
-					$title = $this->input->post('title',true);
-					$description = $this->input->post('editorData',true);
-					$contest_runs_from = $this->input->post('contest_runs_from',true);
-					$contest_runs_to = $this->input->post('contest_runs_to',true);
-					$prize_amount = $this->input->post('prize_amount');
-					$file_upload_id = $this->input->post('file_upload_id');
-					$parameter_contest = $this->input->post('list_description');
-					$status = 1;
-				
-					$data_array = array('unique_contest_token'=>$unique_contest_token,
-										'title'=>$title,
-										'description'=> $description,
-										'runs_from' => strtotime($contest_runs_from),
-										'runs_to' => strtotime($contest_runs_to),
-										'prize'=> $prize_amount,
-										'contest_image' => $file_upload_id,
-										'status' => $status
-									 );
-					
-					$this->commonmodel->addEditRecords('contest',$data_array);
-					$new_contest_id = $this->db->insert_id();
-					
-					// search for attach tags
-					$tag_array = $this->input->post('tag');
-					$tag_term_id = array();
-					
-					// All tag id new and old one
-					foreach($tag_array as $tag){
-						$trimed_tag = trim($tag);
-						
-						$avail_tag = $this->commonmodel->getRecords('tag','tag_id',array('name' =>$trimed_tag),'',true);	
-						// tag will be numeric if it was selected old one otherwise
-						
-						if(!empty($avail_tag)){
-							$tag_term_id[$avail_tag['tag_id']] = $avail_tag['tag_id'];
-						}else{					
-							//adding new tag to database if user creates any new tag
-							$replace_array = array('+', '=', '_', '!', '/', '\\' ,'?', '@', '#', '<', '>', '$', '%', '^', '&', '*', '(', ')', ':', ';');
-							$trimed_tagg = str_replace($replace_array, '-', $trimed_tag);
-							$new_tag = array('name' => $trimed_tagg);
-							$this->commonmodel->commonAddEdit('tag', $new_tag);		
-							$new_tag_id = $this->db->insert_id();
-							$tag_term_id[$new_tag_id] = $new_tag_id;
-						}
-					}
-				
-					// adding records to category term post table for making relation with term and contest
-					foreach($tag_term_id as $tag_id){
-						$this->commonmodel->commonAddEdit('contest_tag', array('contest_id' => $new_contest_id, 'tag_id'=> $tag_id));
-					}
-					
-					foreach($parameter_contest as $parameter_val){
-						$this->commonmodel->commonAddEdit('contest_parameters', array('parameter'=> $parameter_val, 'contest_id' => $new_contest_id));
-					}
-					
-					$data['contest_added'] = "done";
-					redirect('admin/showcontestlisting');
-				}
-					$data['title'] = "Vinfotech-wiki Admin Section";
-					$data['active'] ="contests";
-			
-					$this->load->view('admin/include/header', $data);
-					$this->load->view('admin/contest/add-contest');
-					$this->load->view('admin/include/footer');
-			 }
-			 else
-			{
-				redirect('admin/showcontestlisting');
-			}
-	}
-	
-	
-	/*
-	* This function is used for checking existing tags for a contest.
-	*/
-	function tagcheck($str)
-	{
-		if(count($str)>1){
-			$nearr = array();
-			foreach($str as $v){
-				$nearr[strtolower($v)]=strtolower($v);
-			}
-			if(count($nearr)==count($str)){
-				return true;
-			}else{
-				$this->form_validation->set_message('tagcheck', 'All tags should be different.');
-				return false;
-			}			
-		}else{
-			$this->form_validation->set_message('tagcheck', 'Please add At least Two tags.');
-			return false;
-		}
-	}
-	
-	
-	/*	Function for delete contest data.
-	*	Created date :- 2013-04-10 by Ashvin soni
-	*	get contest_id and delete from contest, contest_parameter table.
-	*/
-	public function contestdelete($contest_id)
-	{
-		if($this->mymodel->isLoggedIn())
-		{
-			$this->commonmodel->commonAddEdit('contest', array('is_deleted' => 1),$contest_id);
-		}
-		else
-		{
-			redirect('admin/showcontestlisting');
-		}
-	}
-	
-	
-	/*	Function for restore contest data.
-	*	Created date :- 2013-05-17 by Ashvin soni
-	*	get contest_id and restore from contest, contest_parameter table.
-	*/
-	public function contestrestore($contest_id)
-	{
-		if($this->mymodel->isLoggedIn())
-		{
-			$this->commonmodel->commonAddEdit('contest', array('is_deleted' => 0),$contest_id);
-		}
-		else
-		{
-			redirect('admin/showcontestlisting');
-		}
-	}
-	
-	
-	/*	Function for delete contest data permanently.
-	*	Created date :- 2013-04-10 by Ashvin soni
-	*	get contest_id and delete from contest, contest_parameter table.
-	*/
-	public function deletepermanent($contest_id)
-	{
-		if($this->mymodel->isLoggedIn())
-		{
-			$where = "contest_id = ".$contest_id;
-			$this->commonmodel->deleteRecords('contest',$where);
-			$this->commonmodel->deleteRecords('contest_tag',$where);
-			$this->commonmodel->deleteRecords('contest_parameters',$where);
-			$this->commonmodel->deleteRecords('contest_winners',$where);
-		}
-		else
-		{
-			redirect('admin/showcontestlisting');
-		}
-	}
-	
-	
-		
-	
-	/*	Function for close any contest.
-	*	Created date :- 2013-04-24 by Ashvin soni
-	*	get contest_id and close from contest, contest_parameter table.
-	*/
-	public function contestclose($contest_id, $status)
-	{
-		if($this->mymodel->isLoggedIn())
-		{
-			$where = "contest_id = ".$contest_id;
-			$this->commonmodel->closecontest('contest',$where, $status);
-		}
-		else
-		{
-			redirect();
-		}
-	}			
-	
-	
-	/*
-	* Function is used for the edit a contest using it's id
-	*/
-	public function contestedit($contest_id)
-	{
-		if($this->mymodel->isLoggedIn()){
-			$contest_detail = $this->mymodel->manageContestEditDetails($contest_id);
-			
-			$tag_array = $contest_detail['tag_ids'];	
-			$expode_tag_array = explode(",", $tag_array);		
-			$tag_term_id = array();
-			
-			foreach($expode_tag_array as $tag){
-				$trimed_tag = trim($tag);
-				$avail_tag = $this->commonmodel->getRecords('tag','tag_id,name',array('tag_id' =>$trimed_tag),'',true);
-								
-				// tag will be numeric if it was selected old one otherwise
-				if(!empty($avail_tag)){
-					$tag_term_id[$avail_tag['tag_id']] = $avail_tag['name'];
-				}			
-			}			
-			$data['title'] = "Vinfotech-wiki Admin Section";
-			$data['active'] ="contests";
-			$data['contest_detail'] = $contest_detail;
-			$data['tag_term_id'] = $tag_term_id;
-	
-			$this->load->view('admin/include/header', $data);
-			$this->load->view('admin/contest/edit-contest');
-			$this->load->view('admin/include/footer');
-		}
-		else
-		{
-			redirect();
-		}
-	}
-	
-	
-	function arraycheck($arr)
-	{
-		//echo'<pre>';print_r($arr);exit;
-		/*foreach($arr as $key=>$val)
-		{*/
-			if(count(trim($arr)) > 1)
-			{
-				return true;
-			}else{
-				$this->form_validation->set_message('arraycheck', 'Parameter contest field is required.');
-				return false;
-			}
-		//}
-	}
-	
-	
-	/* Function is used for the save data on edit contest */
-	public function editcontest()
-	{				
-		if($this->input->post('edit_contest') == "Edit Contest")
-		{				
-				$this->form_validation->set_rules('title', 'Title', 'trim|required|min_length[6]');
-				$this->form_validation->set_rules('tag', 'Tag', 'required|callback_tagcheck');
-				$this->form_validation->set_rules('editorData', 'Description', 'required');
-				$this->form_validation->set_rules('contest_runs_from', 'Contest runs from', 'trim|required');
-				$this->form_validation->set_rules('contest_runs_to', 'Contest runs to', 'trim|required');
-				$this->form_validation->set_rules('prize_amount', 'Prize amount', 'trim|required|integer');
-				$this->form_validation->set_rules('list_description[]', 'Parameter Contest', 'required');
-				
-				
-				if($this->form_validation->run() == FALSE)
-				{
-					$data['contest_added'] = "";
-				}
-				else
-				{
-					$contest_id = $this->input->post('contest_id');
-					$unique_contest_token = $this->input->post('contest_token');
-					$title = $this->input->post('title',true);
-					$description = $this->input->post('editorData',true);	
-					$contest_runs_from = $this->input->post('contest_runs_from',true);
-					$contest_runs_to = $this->input->post('contest_runs_to',true);
-					$prize_amount = $this->input->post('prize_amount');
-					$file_upload_id = $this->input->post('file_upload_id');
-					$parameter_contest = $this->input->post('list_description');
-					$status = 1;
-				
-					$data_array = array('unique_contest_token'=>$unique_contest_token,
-										'title'=>$title,
-										'description'=> $description,
-										'runs_from' => strtotime($contest_runs_from),
-										'runs_to' => strtotime($contest_runs_to),
-										'prize'=> $prize_amount,
-										'contest_image' => $file_upload_id,
-										'status' => $status
-									 );
-					
-					$this->commonmodel->addEditRecords('contest',$data_array,$contest_id);
-					$new_contest_id = $contest_id;
-					
-					// search for attach tags
-					$tag_array = $this->input->post('tag');
-					
-					// All tag id new and old one
-					foreach($tag_array as $tag)
-					{
-						$trimed_tag = trim($tag);
-						$avail_tag = $this->commonmodel->getRecords('tag','tag_id',array('name' =>$trimed_tag),'',true);	
-						// tag will be numeric if it was selected old one otherwise
-						
-						if(!empty($avail_tag)){
-							$tag_term_id[$avail_tag['tag_id']] = $avail_tag['tag_id'];
-						}else{					
-							//adding new tag to database if user creates any new tag
-							$replace_array = array('+', '=', '_', '!', '/', '\\' ,'?', '@', '#', '<', '>', '$', '%', '^', '&', '*', '(', ')', ':', ';');
-							$trimed_tagg = str_replace($replace_array, '-', $trimed_tag);
-							$new_tag = array('name' => $trimed_tagg);
-							$this->commonmodel->commonAddEdit('tag', $new_tag);		
-							$new_tag_id = $this->db->insert_id();
-							$tag_term_id[$new_tag_id] = $new_tag_id;
-						}
-										
-					}
-					// adding records to category term post table for making relation with term and contest
-					foreach($tag_term_id as $tag_id)
-					{
-						$avail_tag = $this->commonmodel->getRecords('contest_tag','contest_id,tag_id',array('contest_id' =>$new_contest_id, 'tag_id'=>$tag_id),'',true);
-						
-						if(!empty($avail_tag)){
-							$this->db->delete('contest_tag', array('contest_id' => $new_contest_id));
-							$this->commonmodel->commonAddEdit('contest_tag', array('contest_id' => $new_contest_id, 'tag_id'=> $tag_id));
-						
-						}else{
-							$this->commonmodel->commonAddEdit('contest_tag', array('contest_id' => $new_contest_id, 'tag_id'=> $tag_id));
-							$new_tag_id = $this->db->insert_id();
-							$tag_term_id[$new_tag_id] = $new_tag_id;
-						}
-					}
-					// adding records to category term post table for making relation with term and post*/
-					foreach($parameter_contest as $key=>$parameter_val)
-					{
-						$avail_para = $this->commonmodel->getRecords('contest_parameters','*',array('contest_id' =>$new_contest_id,'parameter_id' => $key),'',true);						
-						if(!empty($avail_para))
-						{
-							$where = "contest_id = '$new_contest_id' and parameter_id = '$key' ";
-							$this->commonmodel->commonAddEditParameter('contest_parameters', array('parameter'=> $parameter_val, 'contest_id' => $new_contest_id),$where);
-						
-						}else{
-							
-							if(strlen($parameter_val)>1){
-							
-								$this->commonmodel->commonAddEdit('contest_parameters', array('parameter'=> $parameter_val, 'contest_id' => $new_contest_id));
-							}
-						}
-					}
-					
-					$data['contest_added'] = "done";
-					redirect('admin/showcontestlisting');
-				}
-					$data['title'] = "Vinfotech-wiki Admin Section";
-					$data['active'] ="contests";
-					
-					$this->load->view('admin/include/header', $data);
-					$this->load->view('admin/contest/edit-contest');
-					$this->load->view('admin/include/footer');
-			 }
-		else
-		{
-			redirect('admin/showcontestlisting');
-
-		}
-	}
-	
-	
-	/*	Function for delete contest data.
-	*	Created date :- 2013-04-10 by Ashvin soni
-	*	get contest_id and delete from contest, contest_parameter table.
-	*/
-	public function deleteParameter()
-	{
-		$parameter_id = $this->input->post('parameter_id');
-		if($this->mymodel->isLoggedIn())
-		{
-			$where = "parameter_id = ".$parameter_id;
-			$this->commonmodel->deleteRecords('contest_parameters',$where);
-		}
-		else
-		{
-			redirect();
-		}
-	}
-	
-	
-	/*
-	* Function is used for the small view of a contest using it's id
-	*/
-	public function contestview($contest_id)
-	{
-		if($this->mymodel->isLoggedIn())
-		{
-			$contest_detail = $this->mymodel->manageContestEditDetails($contest_id);
-			
-			$data['title'] = "Vinfotech-wiki Admin Section";
-			$data['active'] ="contests";
-			$data['contest_detail'] = $contest_detail;
-	
-			$this->load->view('admin/include/header', $data);
-			$this->load->view('admin/contest/view-contest');
-			$this->load->view('admin/include/footer');
-		}
-		else
-		{
-			redirect();
-		}
-	}
-	
-	/*
-	* Function is used for the detail view of a contest using it's id
-	* And we can edit from this function.
-	*/
-	public function contestviewdetail($contest_id)
-	{
-		if($this->mymodel->isLoggedIn())
-		{
-			$contest_detail = $this->mymodel->manageContestEditDetails($contest_id);
-			//echo'<pre>'; print_r($contest_detail);exit;
-			$data['manage_user'] = $this->mymodel->ManageUserContest();
-						
-			$data['title'] = "Vinfotech-wiki Admin Section";
-			$data['active'] ="contests";
-			$data['contest_detail'] = $contest_detail;
-			
-			$this->load->view('admin/include/header', $data);
-			$this->load->view('admin/contest/view-contest-detail');
-			$this->load->view('admin/include/footer');
-		}
-		else
-		{
-			redirect();
-		}
-	}
-	
-	/* Function for get user's related post for select box */
-	public function usersPost()
-	{
-		$user_id = $this->input->post('user_id');
-		$rs_posts = $this->db->select('p.*')
-									 ->from('post as p')									 									 
-									 ->where('p.user_id' ,$user_id)
-									 ->where('p.is_active' ,1)
-									 ->where('p.is_block' ,0)
-									 ->group_by('p.post_id')
-									 ->order_by("p.created_date", "desc")
-									 ->get();
-		
-		$result = $rs_posts->result_array();
-		$output['status'] = 'success';
-		
-		$output ='<option value="0">Select the title of the post form the user which won</option>'; 
-		foreach( $result as $key => $value)
-		{
-        	$output .=  '<option value="'.$value['post_id'].'">'.$value['title'].'</option>'; 
-		}
-		echo json_encode($output);
-		exit;
-	}
-	
-	
-	/* Function  for save winneres list in database */
-	public function savewinners()
-	{		
-		$contest_id = $this->input->post('contest_id');
-		$userslist = $this->input->post('userSelectlist');
-		
-		//echo'<pre>'; print_r($userslist);
-		
-		$postslist = $this->input->post('userPostlist');
-		
-		//echo'<pre>'; print_r($postslist);
-		
-		//$combine_arr = array_combine($userslist,$postslist);
-		
-		
-		$sub_arr = array();
-		foreach($userslist as $key=>$user){
-				
-				$sub_arr[$user][] = $postslist[$key];
-				
-				
-		 }
-		 
-	  foreach($sub_arr as $key => $subArray){
-			foreach($subArray as $val){
-				$newArray[][$key] = $val;
-			}
-		}
-		
-		foreach($newArray as $key => $val)
-		{
-			foreach($val as $userid=>$postid)
-			{
-				$avail_winner = $this->commonmodel->getRecords('contest_winners','*',array('contest_id' =>$contest_id,'user_id' => $userid, 'post_id'=>$postid),'',true);						
-				if(!empty($avail_winner))
-				{
-					//return false;
-					//$where = "contest_id = '$contest_id' and user_id = '$userid' ";
-					//$this->commonmodel->commonAddEditParameter('contest_parameters', array('parameter'=> $parameter_val, 'contest_id' => $new_contest_id),$where);
-				
-				}else{
-						$this->commonmodel->commonAddEdit('contest_winners', array('user_id'=> $userid, 'post_id'=> $postid, 'contest_id' => $contest_id));
-				}
-			}
-		}
-		redirect('admin/showcontestlisting');
-	}
-	
-	/* Function for delete winner options using user_id and post_id */
-	public function deletewinneroption()
-	{
-		$user_id = $this->input->post('user_id');
-		$post_id = $this->input->post('post_id');
-		$this->db->delete('contest_winners', array('user_id' => $user_id, 'post_id'=>$post_id));
-		
-		$output['status'] = 'success';
-		echo json_encode($output);
-		exit;
-	}
 	
 	/* Function for delete category and sub category */
 	public function deleteCategory()
@@ -3070,7 +1899,8 @@ class Admin extends CI_Controller
 		if($parent_or_not == 1)
 		{
 		   $category_result = $this->display_children($category_id,0);
-           if( !empty($this->childcategory) ){
+           if( !empty($this->childcategory) )
+		   {
 		   		foreach( $this->childcategory as $key=>$val)
 				{
 					$this->db->where('category_id', $val);
@@ -3107,125 +1937,152 @@ class Admin extends CI_Controller
         $edit_category_id = $this->input->post('edit_category_id');
 		$section = $this->input->post('section');
 		$is_inherited_admin = $this->input->post('is_inherited_admin');
-		
         
-        if($edit_category_id){
-            $current_adm = $this->mymodel->getAdminInfo($edit_category_id,1,1);
+        if($edit_category_id)
+		{
+            $current_adm = $this->mymodel->getAdminInfo($edit_category_id,1);
+			$current_inherited_adm = $this->mymodel->getAdminInfo($edit_category_id,1,1);
             $rec_rw = $this->mymodel->getAdminInfo($edit_category_id,2);
+			$rec_inherited_rw = $this->mymodel->getAdminInfo($edit_category_id,2,1);
             $rec_r = $this->mymodel->getAdminInfo($edit_category_id,3);
         }
-        if($parent_category_id!='' && $parent_category_id!=0){
+		
+        if($parent_category_id !='' && $parent_category_id!=0)
+		{
             $previous_adm = $this->mymodel->getAdminInfo($parent_category_id,1); 
-            if($edit_category_id==''){
-                $rec_rw = $this->mymodel->getAdminInfo($parent_category_id,2);
+            if($edit_category_id=='')
+			{
+               $rec_rw = $this->mymodel->getAdminInfo($parent_category_id,2);
                $rec_r = $this->mymodel->getAdminInfo($parent_category_id,3);
             }
         }
 		
 		//Get previous read users for current category
-		if($edit_category_id){
+		if($edit_category_id)
+		{
             $prev_read_user = $this->mymodel->getPrevReadUser($edit_category_id,3,1);
         }
 		
 		$admusers = $rwusers = $rusers = '';
 		$admin_ids = $rw_ids = $r_ids = $prev_admin = $prev_read_arr = $prev_user_arr = $inherited_admin = array();
 		
-		
-			 
-			//get user list
-			$user_result = $this->db->select('user_id,profile_name')->from('user')->where('role',2)->where('is_active',1)->get();
+		//get user list
+		$user_result = $this->db->select('user_id,profile_name')->from('user')->where('role',2)->where('is_active',1)->get();
 			
-			//get admin users
-			foreach($previous_adm as $adminval){
-					$previous_admin_ids[] = $adminval['user_id'];
-                    $inherited_admin[$adminval['user_id']] = $adminval['is_inherited'];
-			}
+		//get admin users
+		foreach($previous_adm as $adminval){
+			$previous_admin_ids[] = $adminval['user_id'];
+			$inherited_admin[$adminval['user_id']] = $adminval['is_inherited'];
+		}
             
-			//get previous read user
-			if(!empty($prev_read_user))
+		//get previous read user
+		if(!empty($prev_read_user))
+		{
+			foreach($prev_read_user as $readval){
+				$prev_read_arr[] = $readval['user_id'];
+			}
+		}
+		
+		//get admin users
+		foreach($current_adm as $adminval){
+			$current_admin_ids[] = $adminval['user_id'];                     
+		}
+		foreach($current_inherited_adm as $inhritadminval){
+			$current_inherited_admin_ids[] = $inhritadminval['user_id'];                     
+		}
+		
+		foreach($user_result->result_array() as $val)
+		{
+			/*if( in_array($val['user_id'],$previous_admin_ids) )
 			{
-				foreach($prev_read_user as $readval){
-					$prev_read_arr[] = $readval['user_id'];
+				$prev_admin[] = '<li class="search-choice"><span>'.$val['profile_name'].'</span></li>';
+			}*/
+			
+			$sel ='';
+			if( in_array($val['user_id'],$current_admin_ids) || in_array($val['user_id'],$current_inherited_admin_ids))
+			{
+				$sel = 'selected="selected"';
+				if( $section == 'front-end' && $is_inherited_admin == 0)
+				{
+					$same_level_admin[] = $val['user_id'];
+					$sel .= 'disabled';
 				}
 			}
 			
-            foreach($current_adm as $adminval){
-					$current_admin_ids[] = $adminval['user_id'];                     
-			}
-             
-			foreach($user_result->result_array() as $val)
+			$admusers .= '<option value="'.$val['user_id'].'" '.$sel.'>'.$val['profile_name'].'</option>';
+			/*if( !in_array($val['user_id'],$previous_admin_ids))
 			{
-				if( (in_array($val['user_id'],$previous_admin_ids)) ){
-					$prev_admin[] = '<li class="search-choice"><span>'.$val['profile_name'].'</span></li>';
-				} 
-                $sel ='';
-				
-				if( in_array($val['user_id'],$current_admin_ids)){
-                    $sel = 'selected="selected"';
-					if( $section == 'front-end' && $is_inherited_admin == 0){
-						$same_level_admin[] = $val['user_id'];
-                    	$sel .= 'disabled';
-                	}
-                }
-                if( !in_array($val['user_id'],$previous_admin_ids)){
-					 
-                  $admusers .= '<option value="'.$val['user_id'].'" '.$sel.'>'.$val['profile_name'].'</option>';
-                }
-                				 
-			}
-			//get read/write users
-			foreach($rec_rw as $rwval){
-					$rw_ids[] = $rwval['user_id'];
-			}
-			foreach( $user_result->result_array() as $val)
-			{
-                if( !in_array($val['user_id'],$previous_admin_ids)){
+			  $admusers .= '<option value="'.$val['user_id'].'" '.$sel.'>'.$val['profile_name'].'</option>';
+			}*/
+							 
+		}
+		
+		//get read/write users
+		foreach($rec_rw as $rwval){
+				$rw_ids[] = $rwval['user_id'];
+		}
+		foreach($rec_inherited_rw as $inherited_rwval){
+				$rw_inherited_ids[] = $inherited_rwval['user_id'];
+		}
+		
+		foreach( $user_result->result_array() as $val )
+		{
+			/*if( !in_array($val['user_id'],$previous_admin_ids)){
 				if( in_array($val['user_id'],$rw_ids)){
-					$rwusers .= '<option value="'.$val['user_id'].'" selected="selected">'.$val['profile_name'].'</option>';
+						$rwusers .= '<option value="'.$val['user_id'].'" selected="selected">'.$val['profile_name'].'</option>';
 				}else{
-					$rwusers .= '<option value="'.$val['user_id'].'">'.$val['profile_name'].'</option>';
+						$rwusers .= '<option value="'.$val['user_id'].'">'.$val['profile_name'].'</option>';
 				}
-                }
-			}
-			//get read users
-			foreach($rec_r as $rval){
-					$r_ids[] = $rval['user_id'];
+			}*/
+			
+			$sel ='';
+			if( in_array($val['user_id'],$rw_ids) || in_array($val['user_id'],$rw_inherited_ids) )
+			{
+				$sel = 'selected="selected"';
 			}
 			
-			foreach( $user_result->result_array() as $val)
-			{
-                if( !in_array($val['user_id'],$prev_read_arr)){
+			$rwusers .= '<option value="'.$val['user_id'].'" '.$sel.'>'.$val['profile_name'].'</option>';
+		}
+		
+		//get read users
+		foreach($rec_r as $rval){
+				$r_ids[] = $rval['user_id'];
+		}
+		foreach( $user_result->result_array() as $val)
+		{
+			/*if( in_array($val['user_id'],$prev_read_arr)){
 					if( in_array($val['user_id'],$r_ids)){
-						$rusers .= '<option value="'.$val['user_id'].'" selected="selected">'.$val['profile_name'].'</option>';
+							$rusers .= '<option value="'.$val['user_id'].'" selected="selected">'.$val['profile_name'].'</option>';
 					}else{
-						$rusers .= '<option value="'.$val['user_id'].'">'.$val['profile_name'].'</option>';
+							$rusers .= '<option value="'.$val['user_id'].'">'.$val['profile_name'].'</option>';
 					}
-                }
-				
-				
-				if( (in_array($val['user_id'],$prev_read_arr)) ){
+			}
+			
+			if( (in_array($val['user_id'],$prev_read_arr)) ){
 					$prev_user_arr[] = '<li class="search-choice"><span>'.$val['profile_name'].'</span></li>';
 					//$read .= 'selected="selected disabled "';
-				}
-				
-				//$rusers .= '<option value="'.$val['user_id'].'" '.$read.'>'.$val['profile_name'].'</option>';
-				
 			}
+
+			$rusers .= '<option value="'.$val['user_id'].'" '.$read.'>'.$val['profile_name'].'</option>';
+			*/
+					
+			if(in_array($val['user_id'],$prev_read_arr) || in_array($val['user_id'],$r_ids) ){
+				$rusers .= '<option value="'.$val['user_id'].'" selected="selected">'.$val['profile_name'].'</option>';
+			}else{
+				$rusers .= '<option value="'.$val['user_id'].'">'.$val['profile_name'].'</option>';
+			}
+		}
 			
-			$outputt = array(
-						'status'=>'admin_exist',						
-						'prevadmin' => implode(' ',$prev_admin),
-						'prev_read_user' => implode(' ',$prev_user_arr),
-						'users' => $admusers,
-						'rwusers' => $rwusers,
-						'rusers' => $rusers,
-						'same_level_admin'=> implode(',',$same_level_admin));
-			echo json_encode($outputt);
-			exit;
+		$outputt = array(
+					'status'=>'admin_exist',
+					'users' => $admusers,
+					'rwusers' => $rwusers,
+					'rusers' => $rusers,
+					'same_level_admin'=> implode(',',$same_level_admin));
+		echo json_encode($outputt);
+		exit;
 		 
 	}
-	
-	
 	
 	
 	/** Function for get users list and show selected in dropa down */
@@ -3291,15 +2148,8 @@ class Admin extends CI_Controller
 			echo json_encode($outputt);
 			exit;
 		}
-		/*$output = '';
-		if( $category['user_id'] != ''){
-			$result = explode(',',$category['user_id']);
-			$output .= $category['user_id'];
-		}
-		$parentusers = array('parentusers'=>$output);
-		echo json_encode($parentusers);
-		exit;*/
 	}
+	
 	/*Function for get category users */
 	public function getCategryReadUsers()
 	{
@@ -3364,7 +2214,6 @@ class Admin extends CI_Controller
                 $thisref[$row['parent']]['name'] =   $row['name'];
                 $thisref[$row['parent']]['permission_type'] =   $row['permission_type'];
                 $this->parentcategory =  &$thisref ; 		
-                //echo '<pre>';print_r($thisref);
             }
 			$this->display_parent($row['parent'], $level+1);
 		} 

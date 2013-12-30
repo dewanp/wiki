@@ -334,14 +334,18 @@
 	
 	/* Function for the get user list for admin */
 	function  getAdminInfo($category_id,$type = 1, $is_inherited=0)
-	{ 
+	{
 		if($category_id != ''){
 		$sql = 'SELECT ucr.user_id,ucr.is_inherited FROM user_category_relation AS ucr WHERE ucr.permission_type = '.$type;
 		
 			$sql .= ' AND ucr.category_id = '.$category_id;
-            if($is_inherited)
-                $sql .= ' AND ucr.is_inherited = 0';
-            $result = $this->db->query($sql);
+			if($is_inherited){
+                $sql .= ' AND ucr.is_inherited = 1';
+			}else{
+				$sql .= ' AND ucr.is_inherited = 0';
+			}
+        //echo $sql;
+		$result = $this->db->query($sql);
 		return $result->result_array();
 		}
         

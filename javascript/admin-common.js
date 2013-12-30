@@ -51,12 +51,12 @@ function toggledropdown()
                         var admval; 
                         
                         
-						$('#prev_admin #prev_admin_ul').html(response.prevadmin); 
+						//$('#prev_admin #prev_admin_ul').html(response.prevadmin); 
 						
 						$('#read_write option').remove();
 						$('#read_write').html(response.rwusers);
 						
-						$('#prev_read_user #prev_read_ul').html(response.prev_read_user); 
+						//$('#prev_read_user #prev_read_ul').html(response.prev_read_user); 
 						
 						$('#read option').remove();
 						$('#read').html(response.rusers);
