@@ -348,8 +348,17 @@
 		$result = $this->db->query($sql);
 		return $result->result_array();
 		}
-        
-		
+	}
+	
+	//Function for get category creator
+	function getCatCreator($category_id)
+	{
+		if($category_id != '')
+		{
+			$sql = 'SELECT c.created_by FROM category AS c WHERE c.category_id = '.$category_id; 
+			$result = $this->db->query($sql);
+			return $result->row_array();
+		}
 	}
 	
 	//Function or get previos read user for any category

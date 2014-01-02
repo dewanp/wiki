@@ -4,14 +4,14 @@ class Admin extends CI_Controller
 {
 
 	public $childcategory = array();
-	
+	var $user_id =0;
 	function __construct()
 	{
 		parent :: __construct();
 		$this->load->helper( array('url','form','email','string','captcha'));
 		$this->load->library(array('form_validation','session','pagination'));
         $this->load->model(array('commonmodel','mymodel','adminmodel'));
-
+		$this->user_id = $this->session->userdata('user_id');
 		$this->load->database();
 	}
 	
@@ -1534,7 +1534,6 @@ class Admin extends CI_Controller
 	/*This function perform action of edit any category .*/
 	public function editCategory()
 	{
-	   
 		if($this->input->post())
 		{
 		$edit_category_id =  $this->input->post('edit_category_id');
@@ -1600,7 +1599,8 @@ class Admin extends CI_Controller
 			$category_data = array('name'=>$category_name,
 									   'description'=>$category_name,
 									   'is_active'  =>$is_active,									 
-									   'parent'=> $parent
+									   'parent'=> $parent,
+									   'created_by'=> $this->user_id
 											);
 
 			if($edit_category_id!=''){
@@ -1632,7 +1632,7 @@ class Admin extends CI_Controller
 			if( !empty($parent) )
 			{
 				//now get admin for parent_category
-				$parent_admin = $this->mymodel->getAdminCategories($parent);
+				//$parent_admin = $this->mymodel->getAdminCategories($parent);
 				if(!empty($parent_admin))
 				{
 					$parent_admin_cat = explode(',',$parent_admin['user_ids']);
@@ -1640,7 +1640,7 @@ class Admin extends CI_Controller
 					{
 						foreach($parent_admin_cat as $key=>$val)
 						{
-							$uniqe_user[]=$val;
+							//$uniqe_user[]=$val;
 							/*$admindata[] = array('user_id' => $val,
 											 'category_id' => $edit_category_id,
 											 'permission_type' =>1,
@@ -1652,7 +1652,7 @@ class Admin extends CI_Controller
 				}
 					
 				//now get r/w for parent category
-				$parent_rw =  $this->mymodel->getAdminInfo($parent,2);
+				//$parent_rw =  $this->mymodel->getAdminInfo($parent,2);
 				if(!empty($parent_rw))
 				{
 				   foreach($parent_rw as $prevrwkey=>$prevrwval)
@@ -1670,7 +1670,7 @@ class Admin extends CI_Controller
 				}
 				
 				//now get r/w and read for parent category
-				$parent_read =  $this->mymodel->getAdminInfo($parent,3);
+				//$parent_read =  $this->mymodel->getAdminInfo($parent,3);
 				if(!empty($parent_read))
 				{
 				   foreach($parent_r as $prevrkey=>$prevrval)
@@ -1701,7 +1701,7 @@ class Admin extends CI_Controller
 												'category_id' => $edit_category_id,
 												'permission_type' =>1,
 												'is_inherited' => 1,
-												'created_by' => $user_id
+												//'created_by' => $user_id
 												);	
 						}
 					}else{
@@ -1710,7 +1710,7 @@ class Admin extends CI_Controller
 											'category_id' => $edit_category_id,
 											'permission_type' =>1,
 											'is_inherited' => 0,
-											'created_by' => $user_id
+											//'created_by' => $user_id
 											);	
 					}
 					
@@ -1737,7 +1737,7 @@ class Admin extends CI_Controller
 									 'category_id' => $edit_category_id,
 									 'permission_type' =>1,
 									 'is_inherited' => 0,
-									 'created_by' => $user_id
+									 //'created_by' => $user_id
 									 );	
 					}
 				}
@@ -1764,7 +1764,7 @@ class Admin extends CI_Controller
 											'category_id' => $edit_category_id,
 											'permission_type' =>2,
 											'is_inherited' => 1,
-											'created_by' => $user_id
+											//'created_by' => $user_id
 											);	
 					}else{
 						$uniqe_user[]=$rwval;
@@ -1772,7 +1772,7 @@ class Admin extends CI_Controller
 										'category_id' => $edit_category_id,
 										'permission_type' =>2,
 										'is_inherited' => 0,
-										'created_by' => $user_id
+										//'created_by' => $user_id
 										);
 					}
 				}
@@ -1800,7 +1800,7 @@ class Admin extends CI_Controller
 											'category_id' => $edit_category_id,
 											'permission_type' =>3,
 											'is_inherited' => 1,
-											'created_by' => $user_id
+											//'created_by' => $user_id
 											);	
 					}else{
 						$uniqe_user[]=$rval;
@@ -1808,7 +1808,7 @@ class Admin extends CI_Controller
 										'category_id' => $edit_category_id,
 										'permission_type' =>3,
 										'is_inherited' => 0,
-										'created_by' => $user_id
+										//'created_by' => $user_id
 										);
 					}
 				}
@@ -1833,17 +1833,17 @@ class Admin extends CI_Controller
 					$unique_user = array();
 					
 					
-					$this->db->delete('user_category_relation',array('category_id'=>$childcat,'permission_type'=>2,'is_inherited'=>1));
-					$this->db->delete('user_category_relation',array('category_id'=>$childcat,'permission_type'=>3,'is_inherited'=>1));
+					//$this->db->delete('user_category_relation',array('category_id'=>$childcat,'permission_type'=>2,'is_inherited'=>1));
+					//$this->db->delete('user_category_relation',array('category_id'=>$childcat,'permission_type'=>3,'is_inherited'=>1));
 					
 						foreach($admindata as $key=>$val)
 						{
 							$prev_admin = array();
 							if($val['permission_type']==1) {
-							 	$this->db->delete('user_category_relation',array('category_id'=>$childcat,'permission_type'=>1,'is_inherited'=>1));
+							 	//$this->db->delete('user_category_relation',array('category_id'=>$childcat,'permission_type'=>1,'is_inherited'=>1));
 								$this->db->delete('user_category_relation',array('category_id'=>$childcat,'user_id'=>$val['user_id']));
 								
-								$result_admin =  $this->mymodel->getAdminInfo($parent,1);
+								//$result_admin =  $this->mymodel->getAdminInfo($parent,1);
 								
 								if(!empty($result_admin)){
 									foreach($result_admin as $val1){
@@ -1852,29 +1852,31 @@ class Admin extends CI_Controller
 								}
 									
 								//if(in_array($val['user_id'],$prev_admin)){
-								$is_inherited=1;
+								$is_inherited=0;
 								$unique_user[]  = $val['user_id'];
 								$inherited_admin[] = array('user_id' => $val['user_id'],
 													 'category_id' => $childcat,
 													 'permission_type' =>$val['permission_type'],
 													 'is_inherited' => $is_inherited,
-													 'created_by' => $user_id
+													 //'created_by' => $user_id
 													 );	
 							 //}
 							 
 							}elseif($val['permission_type']==2) {
 							 	
+								
+								
 								$this->db->delete('user_category_relation',array('category_id'=>$childcat,'user_id'=>$val['user_id']));
 								
 								$prev_admin = array();
-								$result_admin =  $this->mymodel->getAdminInfo($parent,2);
+								//$result_admin =  $this->mymodel->getAdminInfo($parent,2);
 								if(!empty($result_admin)){
 									foreach($result_admin as $key=>$val1){
 										$prev_admin[]=$val1;
 									}
 								}
 								
-								$is_inherited=1;
+								$is_inherited=0;
 								if(!in_array($val['user_id'],$prev_admin) && !in_array($val['user_id'],$unique_user))
 								{
 									$unique_user[]  = $val['user_id'];
@@ -1882,37 +1884,45 @@ class Admin extends CI_Controller
 														 'category_id' => $childcat,
 														 'permission_type' =>2,
 														 'is_inherited' => $is_inherited,
-														 'created_by' => $user_id
+														 //'created_by' => $user_id
 															 );	
 								}else{
 									$inherited_admin[] = array('user_id' => $val['user_id'],
 													 'category_id' => $childcat,
 													 'permission_type' =>2,
 													 'is_inherited' => $is_inherited,
-													 'created_by' => $user_id
+													 //'created_by' => $user_id
 														 );	
 								}
 							 }elseif($val['permission_type']==3) {
 							 	
-								$this->db->delete('user_category_relation',array('category_id'=>$childcat,'permission_type'=>3,'is_inherited'=>1));
-								$this->db->delete('user_category_relation',array('category_id'=>$childcat,'user_id'=>$val['user_id']));
-								
 								$prev_admin = array();
-								$result_admin =  $this->mymodel->getAdminInfo($parent,3);
+								$result_admin =  $this->mymodel->getAdminInfo($childcat,1);
+								$result_readwrite =  $this->mymodel->getAdminInfo($childcat,2);
+								
 								if(!empty($result_admin)){
 									foreach($result_admin as $key=>$val1){
-										$prev_admin[]=$val1;
+										$prev_admin[]=$val1['user_id'];
+									}
+								}
+								if(!empty($result_readwrite)){
+									foreach($result_readwrite as $key=>$val1){
+										$prev_admin[]=$val1['user_id'];
 									}
 								}
 								
+								//echo'<pre>';print_r($prev_admin);exit;
+								if(!in_array($val['user_id'],$prev_admin) && !in_array($val['user_id'],$unique_user) ){
+									$this->db->delete('user_category_relation',array('category_id'=>$childcat,'user_id'=>$val['user_id']));
 									
-								if(!in_array($val['user_id'],$prev_admin) && !in_array($val['user_id'],$unique_user)){
-								$is_inherited=1;$unique_user[]  = $val['user_id'];
-								$inherited_admin[] = array('user_id' => $val['user_id'],
+									$is_inherited=0;
+									$unique_user[]  = $val['user_id'];
+									
+									$inherited_admin[] = array('user_id' => $val['user_id'],
 													 'category_id' => $childcat,
 													 'permission_type' =>$val['permission_type'],
 													 'is_inherited' => $is_inherited,
-													 'created_by' => $user_id
+													 //'created_by' => $user_id
 													 );	
 							 	}
 						
@@ -1997,6 +2007,9 @@ class Admin extends CI_Controller
 			$current_inherited_adm = $this->mymodel->getAdminInfo($edit_category_id,1,1);
 			$rec_inherited_rw = $this->mymodel->getAdminInfo($edit_category_id,2,1);
 			$rec_inherited_r = $this->mymodel->getAdminInfo($edit_category_id,3,1);
+			
+			//now get created_by for particular category
+			$cat_creator =  $this->mymodel->getCatCreator($edit_category_id);
 		}
 		
         if($parent_category_id !='' && $parent_category_id!=0)
@@ -2043,7 +2056,7 @@ class Admin extends CI_Controller
 				if( in_array($val['user_id'],$current_admin_ids) || in_array($val['user_id'],$current_inherited_admin_ids) )
 				{
 					$sel = 'selected="selected"';
-					if( $section == 'front-end' && $is_inherited_admin == 0)
+					if( $section == 'front-end' && $this->user_id != $cat_creator['created_by'])
 					{
 						$same_level_admin[] = $val['user_id'];
 						$sel .= 'disabled';

@@ -500,13 +500,13 @@ class Post extends CI_Controller {
 				exit;
 			}
 			 
-			$this->display_children($type,0);
+			$this->display_children($type,0,0);
             $this->display_parent($type,0);
             ksort($this->childcategory);
 			ksort($this->parentcategory);
             $data['breadcrumb'] = $this->parentcategory;
 			$data['child_category'] = $this->childcategory;
-			//echo'<pre>';print_r($data['child_category']);
+			//echo'<pre>';print_r($data['child_category']);exit;
              
 			$data['permission'] = $permission;
 			$data['posts'] = $this->postmodel->getCategoriesPosts($this->user_id,$type);
@@ -516,6 +516,7 @@ class Post extends CI_Controller {
 			$data['login_user_id'] = $this->user_id;
 			
 			$data['status'] = 'not exist';
+			$data['section'] = 'single';
 			$data['post_capsule_list'] = $this->load->view('post/left-moreblock', $data, true);
 			$data['sidebar'] = $this->load->view('includes/sidebar', $data, true);
 			
@@ -1120,14 +1121,13 @@ class Post extends CI_Controller {
 	
 	
 	/* Function for get sub-catetgories related to root category*/
-	function display_children($parent, $level)
+	function display_children($parent, $level, $depth)
 	{ 
  		$query = 'SELECT c.category_id,c.name,cr.permission_type FROM category c left join user_category_relation cr on c.category_id=cr.category_id and cr.user_id="'.$this->user_id.'" WHERE c.parent="'.$parent.'" AND c.is_active = 1';
 		$resultt = $this->db->query($query);
 	
 		foreach($resultt->result_array() as $row)
 		{ 
-		 
 			if($row['permission_type'] > 0)
 			{
 				$thisref = &$this->childcategory;					 
@@ -1136,8 +1136,9 @@ class Post extends CI_Controller {
 				$thisref[$row['category_id']]['permission_type'] =   $row['permission_type'];			
 				$this->childcategory =  &$thisref; 
 			}
-			 
-			$this->display_children($row['category_id'], $level+1);
+			
+			if($level < $depth)
+			$this->display_children($row['category_id'], $level+1, $depth);
 		} 
 	}
 	
@@ -1156,7 +1157,6 @@ class Post extends CI_Controller {
                 $thisref[$row['parent']]['name'] =   $row['name'];
                 $thisref[$row['parent']]['permission_type'] =   $row['permission_type'];
                 $this->parentcategory =  &$thisref ; 		
-                //echo '<pre>';print_r($thisref);
             }
 			$this->display_parent($row['parent'], $level+1);
 		} 
